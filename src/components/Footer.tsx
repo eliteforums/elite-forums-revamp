@@ -1,4 +1,6 @@
 import logo from "@/assets/logo.png";
+import { motion } from "framer-motion";
+import { Mail, Phone, MapPin, ArrowUpRight, Linkedin, Twitter, Instagram } from "lucide-react";
 
 const footerLinks = {
   services: [
@@ -20,6 +22,12 @@ const footerLinks = {
   ],
 };
 
+const socialLinks = [
+  { icon: Linkedin, href: "#", label: "LinkedIn" },
+  { icon: Twitter, href: "#", label: "Twitter" },
+  { icon: Instagram, href: "#", label: "Instagram" },
+];
+
 const Footer = () => {
   const handleClick = (href: string) => {
     const element = document.querySelector(href);
@@ -29,90 +37,151 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-primary text-primary-foreground">
-      <div className="container py-16">
-        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-12">
+    <footer className="bg-primary text-primary-foreground relative overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-accent/10 rounded-full blur-[150px] pointer-events-none" />
+      
+      <div className="container py-20 relative">
+        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <div className="flex items-center gap-3 mb-6">
-              <img src={logo} alt="Elite Forums" className="h-10 w-10 invert" />
-              <span className="text-xl font-bold">Elite Forums</span>
-            </div>
-            <p className="text-primary-foreground/70 mb-6 max-w-sm leading-relaxed">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="flex items-center gap-3 mb-6"
+            >
+              <img src={logo} alt="Elite Forums" className="h-12 w-12 invert" />
+              <span className="text-2xl font-bold">Elite Forums</span>
+            </motion.div>
+            <p className="text-primary-foreground/70 mb-8 max-w-sm leading-relaxed text-lg">
               Empowering businesses with cutting-edge technology solutions. We
               transform ideas into digital reality through innovation and
               expertise.
             </p>
-            <div className="text-sm text-primary-foreground/60">
-              <p>Mumbai, MH 401209</p>
-              <p>+91 95118 68948</p>
-              <p>eliteforumsindia@zohomail.in</p>
+            
+            {/* Contact Info */}
+            <div className="space-y-4 mb-8">
+              <a href="tel:+919322510601" className="flex items-center gap-3 text-primary-foreground/70 hover:text-primary-foreground transition-colors group">
+                <div className="w-10 h-10 rounded-lg bg-primary-foreground/10 flex items-center justify-center group-hover:bg-accent/20 transition-colors">
+                  <Phone className="h-5 w-5" />
+                </div>
+                <span>+91 9322510601</span>
+              </a>
+              <a href="mailto:admin@eliteforums.in" className="flex items-center gap-3 text-primary-foreground/70 hover:text-primary-foreground transition-colors group">
+                <div className="w-10 h-10 rounded-lg bg-primary-foreground/10 flex items-center justify-center group-hover:bg-accent/20 transition-colors">
+                  <Mail className="h-5 w-5" />
+                </div>
+                <span>admin@eliteforums.in</span>
+              </a>
+              <div className="flex items-center gap-3 text-primary-foreground/70">
+                <div className="w-10 h-10 rounded-lg bg-primary-foreground/10 flex items-center justify-center">
+                  <MapPin className="h-5 w-5" />
+                </div>
+                <span>Mumbai, MH 401209</span>
+              </div>
+            </div>
+
+            {/* Social Links */}
+            <div className="flex gap-3">
+              {socialLinks.map((social, index) => (
+                <motion.a
+                  key={index}
+                  href={social.href}
+                  whileHover={{ scale: 1.1, y: -2 }}
+                  className="w-10 h-10 rounded-lg bg-primary-foreground/10 flex items-center justify-center hover:bg-accent/30 transition-colors"
+                  aria-label={social.label}
+                >
+                  <social.icon className="h-5 w-5" />
+                </motion.a>
+              ))}
             </div>
           </div>
 
           {/* Services */}
           <div>
-            <h4 className="font-semibold mb-4">Services</h4>
-            <ul className="space-y-3">
+            <h4 className="font-semibold text-lg mb-6">Services</h4>
+            <ul className="space-y-4">
               {footerLinks.services.map((link, index) => (
-                <li key={index}>
+                <motion.li
+                  key={index}
+                  whileHover={{ x: 5 }}
+                  transition={{ duration: 0.2 }}
+                >
                   <button
                     onClick={() => handleClick(link.href)}
-                    className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+                    className="text-primary-foreground/70 hover:text-primary-foreground transition-colors flex items-center gap-2 group"
                   >
-                    {link.name}
+                    <span>{link.name}</span>
+                    <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </button>
-                </li>
+                </motion.li>
               ))}
             </ul>
           </div>
 
           {/* Trainings */}
           <div>
-            <h4 className="font-semibold mb-4">Trainings</h4>
-            <ul className="space-y-3">
+            <h4 className="font-semibold text-lg mb-6">Trainings</h4>
+            <ul className="space-y-4">
               {footerLinks.trainings.map((link, index) => (
-                <li key={index}>
+                <motion.li
+                  key={index}
+                  whileHover={{ x: 5 }}
+                  transition={{ duration: 0.2 }}
+                >
                   <button
                     onClick={() => handleClick(link.href)}
-                    className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+                    className="text-primary-foreground/70 hover:text-primary-foreground transition-colors flex items-center gap-2 group"
                   >
-                    {link.name}
+                    <span>{link.name}</span>
+                    <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </button>
-                </li>
+                </motion.li>
               ))}
             </ul>
           </div>
 
           {/* Company */}
           <div>
-            <h4 className="font-semibold mb-4">Company</h4>
-            <ul className="space-y-3">
+            <h4 className="font-semibold text-lg mb-6">Company</h4>
+            <ul className="space-y-4">
               {footerLinks.company.map((link, index) => (
-                <li key={index}>
+                <motion.li
+                  key={index}
+                  whileHover={{ x: 5 }}
+                  transition={{ duration: 0.2 }}
+                >
                   <button
                     onClick={() => handleClick(link.href)}
-                    className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+                    className="text-primary-foreground/70 hover:text-primary-foreground transition-colors flex items-center gap-2 group"
                   >
-                    {link.name}
+                    <span>{link.name}</span>
+                    <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </button>
-                </li>
+                </motion.li>
               ))}
             </ul>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-primary-foreground/10 mt-12 pt-8">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="border-t border-primary-foreground/10 mt-16 pt-8"
+        >
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-sm text-primary-foreground/60">
               © {new Date().getFullYear()} Elite Forums. All rights reserved.
             </p>
-            <p className="text-sm text-primary-foreground/60">
+            <p className="text-sm text-primary-foreground/60 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
               Crafted with passion in Mumbai, India
             </p>
           </div>
-        </div>
+        </motion.div>
       </div>
     </footer>
   );
