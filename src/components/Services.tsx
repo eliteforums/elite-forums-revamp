@@ -7,91 +7,121 @@ import {
   MessageSquare,
   Cloud,
   TrendingUp,
+  ArrowUpRight,
 } from "lucide-react";
+import { motion } from "framer-motion";
+import { AnimatedSection, StaggerContainer, StaggerItem } from "./AnimatedSection";
 
 const services = [
   {
     icon: Globe,
     title: "Web Development",
     description:
-      "Premium responsive websites with cutting-edge technologies, optimized for performance and user experience across all devices.",
+      "Premium responsive websites with cutting-edge technologies, optimized for performance and user experience.",
+    color: "from-blue-500 to-cyan-500",
   },
   {
     icon: Smartphone,
     title: "App Development",
     description:
-      "Sophisticated mobile applications with intuitive interfaces and smooth performance for iOS and Android platforms.",
+      "Sophisticated mobile applications with intuitive interfaces for iOS and Android platforms.",
+    color: "from-purple-500 to-pink-500",
   },
   {
     icon: Bot,
     title: "AI Automation",
     description:
-      "Advanced AI-driven solutions that streamline business processes, analyze data, and provide actionable insights.",
+      "Advanced AI-driven solutions that streamline business processes and provide actionable insights.",
+    color: "from-orange-500 to-red-500",
   },
   {
     icon: Code2,
     title: "Custom Software",
     description:
-      "Build bespoke software solutions tailored to your unique business needs, from enterprise applications to customer-facing platforms.",
+      "Bespoke software solutions tailored to your unique business needs and requirements.",
+    color: "from-green-500 to-emerald-500",
   },
   {
     icon: Workflow,
     title: "Digital Transformation",
     description:
-      "Modernize your business with comprehensive digital strategies that integrate emerging technologies to stay competitive.",
+      "Modernize your business with comprehensive digital strategies and emerging technologies.",
+    color: "from-indigo-500 to-violet-500",
   },
   {
     icon: MessageSquare,
     title: "Custom Chatbots",
     description:
-      "Intelligent conversational interfaces that enhance customer engagement and streamline communication processes.",
+      "Intelligent conversational interfaces that enhance customer engagement.",
+    color: "from-pink-500 to-rose-500",
   },
   {
     icon: Cloud,
     title: "Cloud Computing",
     description:
-      "Expert cloud infrastructure setup, migration, and management services for optimal performance and scalability.",
+      "Expert cloud infrastructure setup, migration, and management for optimal scalability.",
+    color: "from-cyan-500 to-blue-500",
   },
   {
     icon: TrendingUp,
     title: "SEO & Marketing",
     description:
-      "Data-driven SEO and digital marketing strategies to grow your online visibility and reach your target audience.",
+      "Data-driven SEO and digital marketing strategies to grow your online visibility.",
+    color: "from-amber-500 to-orange-500",
   },
 ];
 
 const Services = () => {
   return (
-    <section id="services" className="py-24 bg-gradient-subtle">
-      <div className="container">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+    <section id="services" className="py-32 bg-secondary/30 relative overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-accent/5 rounded-full blur-[150px] pointer-events-none" />
+      
+      <div className="container relative">
+        <AnimatedSection className="text-center mb-16">
+          <span className="inline-block px-4 py-2 rounded-full bg-accent/10 text-accent text-sm font-medium mb-6">
+            What We Offer
+          </span>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6">
             Our Services
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
             Comprehensive technology solutions designed to drive your business
             forward in the digital age.
           </p>
-        </div>
+        </AnimatedSection>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6" staggerDelay={0.08}>
           {services.map((service, index) => (
-            <div
-              key={index}
-              className="bg-card rounded-xl p-6 shadow-sm hover:shadow-card-hover transition-all duration-300 group cursor-pointer border border-transparent hover:border-accent/20"
-            >
-              <div className="w-14 h-14 rounded-xl bg-accent/10 flex items-center justify-center mb-5 group-hover:bg-accent/20 transition-colors">
-                <service.icon className="h-7 w-7 text-accent" />
-              </div>
-              <h3 className="text-lg font-semibold text-foreground mb-3">
-                {service.title}
-              </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {service.description}
-              </p>
-            </div>
+            <StaggerItem key={index}>
+              <motion.div
+                whileHover={{ y: -10, scale: 1.02 }}
+                transition={{ duration: 0.3 }}
+                className="group relative bg-card rounded-2xl p-8 h-full border border-border hover:border-accent/30 transition-all duration-300 cursor-pointer overflow-hidden"
+              >
+                {/* Hover gradient overlay */}
+                <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} />
+                
+                <div className="relative z-10">
+                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${service.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                    <service.icon className="h-8 w-8 text-white" />
+                  </div>
+                  
+                  <div className="flex items-start justify-between mb-4">
+                    <h3 className="text-xl font-semibold text-foreground group-hover:text-accent transition-colors">
+                      {service.title}
+                    </h3>
+                    <ArrowUpRight className="h-5 w-5 text-muted-foreground opacity-0 group-hover:opacity-100 group-hover:text-accent transition-all transform translate-y-2 group-hover:translate-y-0" />
+                  </div>
+                  
+                  <p className="text-muted-foreground leading-relaxed">
+                    {service.description}
+                  </p>
+                </div>
+              </motion.div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
       </div>
     </section>
   );
