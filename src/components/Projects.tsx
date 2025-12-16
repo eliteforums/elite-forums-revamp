@@ -39,7 +39,7 @@ const projects = [
 
 const Projects = () => {
   return (
-    <section id="projects" className="py-32 bg-secondary/30 relative overflow-hidden">
+    <section id="projects" className="py-20 bg-secondary/30 relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-0 left-1/3 w-96 h-96 bg-accent/5 rounded-full blur-[150px] pointer-events-none" />
       
@@ -69,20 +69,19 @@ const Projects = () => {
                 className="group block"
               >
                 <div className="bg-card rounded-3xl overflow-hidden border border-border hover:border-accent/30 transition-all duration-500 h-full hover:shadow-card-hover">
-                  {/* Header gradient */}
-                  <div className={`h-56 bg-gradient-to-br ${project.gradient} flex items-center justify-center relative overflow-hidden`}>
-                    <motion.div
-                      initial={{ scale: 1 }}
-                      whileHover={{ scale: 1.2, rotate: 5 }}
-                      className="text-7xl font-bold text-white/20"
-                    >
-                      {project.title.charAt(0)}
-                    </motion.div>
+                  {/* Project Preview */}
+                  <div className="h-56 relative overflow-hidden bg-muted">
+                    <iframe
+                      src={project.link}
+                      title={project.title}
+                      className="w-full h-[400px] scale-[0.5] origin-top-left pointer-events-none"
+                      style={{ width: '200%', height: '800px' }}
+                      loading="lazy"
+                    />
+                    <div className={`absolute inset-0 bg-gradient-to-t ${project.gradient} opacity-20`} />
                     
-                    {/* Animated overlay */}
-                    <motion.div
-                      className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center"
-                    >
+                    {/* Hover overlay */}
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center">
                       <motion.div
                         initial={{ opacity: 0, scale: 0.5 }}
                         whileHover={{ opacity: 1, scale: 1 }}
@@ -90,7 +89,7 @@ const Projects = () => {
                       >
                         <ExternalLink className="h-6 w-6 text-white" />
                       </motion.div>
-                    </motion.div>
+                    </div>
                   </div>
                   
                   <div className="p-8">

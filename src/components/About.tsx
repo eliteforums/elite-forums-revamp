@@ -50,7 +50,7 @@ const values = [
 
 const About = () => {
   return (
-    <section id="about" className="py-32 bg-background relative overflow-hidden">
+    <section id="about" className="py-20 bg-background relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-accent/5 rounded-full blur-[150px] pointer-events-none" />
       
@@ -71,7 +71,7 @@ const About = () => {
         </AnimatedSection>
 
         {/* Values Grid */}
-        <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-24">
+        <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           {values.map((value, index) => (
             <StaggerItem key={index}>
               <motion.div
