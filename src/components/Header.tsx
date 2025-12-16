@@ -1,20 +1,23 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "@/assets/logo.png";
 
 const navLinks = [
-  { name: "Home", href: "#home" },
-  { name: "About", href: "#about" },
-  { name: "Services", href: "#services" },
-  { name: "Trainings", href: "#trainings" },
-  { name: "Projects", href: "#projects" },
-  { name: "Contact", href: "#contact" },
+  { name: "Home", href: "#home", isPage: false },
+  { name: "About", href: "#about", isPage: false },
+  { name: "Services", href: "#services", isPage: false },
+  { name: "Trainings", href: "/trainings", isPage: true },
+  { name: "Projects", href: "#projects", isPage: false },
+  { name: "Contact", href: "#contact", isPage: false },
 ];
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,11 +27,34 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleNavClick = (href: string) => {
+  const handleNavClick = (href: string, isPage: boolean) => {
     setIsMobileMenuOpen(false);
+    
+    if (isPage) {
+      navigate(href);
+      return;
+    }
+
+    // If we're not on the home page, navigate there first
+    if (location.pathname !== "/") {
+      navigate("/" + href);
+      return;
+    }
+
     const element = document.querySelector(href);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const handleLogoClick = () => {
+    if (location.pathname !== "/") {
+      navigate("/");
+    } else {
+      const element = document.querySelector("#home");
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
     }
   };
 
@@ -41,17 +67,17 @@ const Header = () => {
       }`}
     >
       <div className="container flex items-center justify-between">
-        <a href="#home" className="flex items-center gap-3">
+        <button onClick={handleLogoClick} className="flex items-center gap-3">
           <img src={logo} alt="Elite Forums" className="h-10 w-10" />
           <span className="text-xl font-bold text-foreground">Elite Forums</span>
-        </a>
+        </button>
 
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center gap-8">
           {navLinks.map((link) => (
             <button
               key={link.name}
-              onClick={() => handleNavClick(link.href)}
+              onClick={() => handleNavClick(link.href, link.isPage)}
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors relative group"
             >
               {link.name}
@@ -62,7 +88,7 @@ const Header = () => {
 
         <div className="hidden lg:block">
           <Button
-            onClick={() => handleNavClick("#contact")}
+            onClick={() => handleNavClick("#contact", false)}
             className="bg-gradient-primary hover:opacity-90 transition-opacity"
           >
             Get Started
@@ -90,14 +116,14 @@ const Header = () => {
             {navLinks.map((link) => (
               <button
                 key={link.name}
-                onClick={() => handleNavClick(link.href)}
+                onClick={() => handleNavClick(link.href, link.isPage)}
                 className="text-lg font-medium text-foreground py-2 text-left hover:text-accent transition-colors"
               >
                 {link.name}
               </button>
             ))}
             <Button
-              onClick={() => handleNavClick("#contact")}
+              onClick={() => handleNavClick("#contact", false)}
               className="mt-4 bg-gradient-primary hover:opacity-90 transition-opacity w-full"
             >
               Get Started

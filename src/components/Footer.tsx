@@ -1,6 +1,7 @@
 import logo from "@/assets/logo.png";
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, ArrowUpRight, Linkedin, Twitter, Instagram } from "lucide-react";
+import { Mail, Phone, MapPin, ArrowUpRight, Linkedin, Instagram } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 
 const footerLinks = {
   services: [
@@ -10,10 +11,10 @@ const footerLinks = {
     { name: "Cloud Computing", href: "#services" },
   ],
   trainings: [
-    { name: "Generative AI", href: "#trainings" },
-    { name: "MERN Stack", href: "#trainings" },
-    { name: "Data Science", href: "#trainings" },
-    { name: "Cloud Computing", href: "#trainings" },
+    { name: "Generative AI", href: "/trainings" },
+    { name: "MERN Stack", href: "/trainings" },
+    { name: "Data Science", href: "/trainings" },
+    { name: "Cloud Computing", href: "/trainings" },
   ],
   company: [
     { name: "About Us", href: "#about" },
@@ -23,16 +24,21 @@ const footerLinks = {
 };
 
 const socialLinks = [
-  { icon: Linkedin, href: "#", label: "LinkedIn" },
-  { icon: Twitter, href: "#", label: "Twitter" },
-  { icon: Instagram, href: "#", label: "Instagram" },
+  { icon: Linkedin, href: "https://in.linkedin.com/company/eliteforums", label: "LinkedIn" },
+  { icon: Instagram, href: "https://www.instagram.com/eliteforums/", label: "Instagram" },
 ];
 
 const Footer = () => {
+  const navigate = useNavigate();
+  
   const handleClick = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
+    if (href.startsWith("/")) {
+      navigate(href);
+    } else {
+      const element = document.querySelector(href);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
     }
   };
 

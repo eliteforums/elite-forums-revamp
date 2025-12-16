@@ -15,12 +15,12 @@ const teamQuotes = [
   },
   {
     quote: "Technology at its best doesn't replace human potential—it amplifies it.",
-    name: "Siddhant Mandlik",
+    name: "Raj Dabholkar",
     role: "COO",
   },
   {
     quote: "Every line of code we write represents an opportunity to make someone's life better.",
-    name: "Raj Dabholkar",
+    name: "Shreyash Vishwakarma",
     role: "Tech Lead",
   },
 ];
