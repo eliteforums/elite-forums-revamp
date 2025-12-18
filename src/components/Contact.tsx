@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { MapPin, Phone, Mail, Clock, Send, PhoneCall, MessageCircle, ArrowRight } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Send, PhoneCall, MessageCircle, ArrowRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import { AnimatedSection, AnimatedCard } from "./AnimatedSection";
-
+import { supabase } from "@/integrations/supabase/client";
 const contactInfo = [
   {
     icon: Phone,
@@ -59,21 +59,34 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const mailtoLink = `mailto:admin@eliteforums.in?subject=${encodeURIComponent(
-      formData.subject
-    )}&body=${encodeURIComponent(
-      `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
-    )}`;
+    try {
+      const { data, error } = await supabase.functions.invoke('send-contact-email', {
+        body: {
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+        },
+      });
 
-    window.location.href = mailtoLink;
+      if (error) throw error;
 
-    toast({
-      title: "Opening Email Client",
-      description: "Your default email app will open with your message.",
-    });
+      toast({
+        title: "Message Sent Successfully!",
+        description: "We've received your message and will get back to you soon.",
+      });
 
-    setFormData({ name: "", email: "", subject: "", message: "" });
-    setIsSubmitting(false);
+      setFormData({ name: "", email: "", subject: "", message: "" });
+    } catch (error: any) {
+      console.error("Error sending email:", error);
+      toast({
+        title: "Failed to Send Message",
+        description: "Please try again or contact us directly at admin@eliteforums.in",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleCall = () => {
@@ -277,7 +290,10 @@ const Contact = () => {
                     className="w-full bg-gradient-primary hover:opacity-90 transition-all py-7 group"
                   >
                     {isSubmitting ? (
-                      "Opening..."
+                      <>
+                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                        Sending...
+                      </>
                     ) : (
                       <>
                         Send Message
