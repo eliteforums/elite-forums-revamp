@@ -60,7 +60,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send notification email to admin
     const adminEmailResponse = await resend.emails.send({
-      from: "Elite Forums <noreply@eliteforums.in>",
+      from: "Elite Forums <contact@eliteforums.in>",
       to: ["admin@eliteforums.in"],
       subject: `🔔 New Inquiry: ${subject}`,
       html: `
@@ -115,7 +115,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send confirmation email to the customer
     const customerEmailResponse = await resend.emails.send({
-      from: "Elite Forums <noreply@eliteforums.in>",
+      from: "Elite Forums <contact@eliteforums.in>",
       to: [email],
       subject: "✨ Thank you for reaching out to Elite Forums!",
       html: `

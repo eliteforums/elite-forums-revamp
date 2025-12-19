@@ -7,7 +7,7 @@ const projects = [
     title: "NOSH IT",
     description:
       "Digital QR-based restaurant menu & ordering solution that streamlines dining experiences with contactless technology.",
-    link: "https://nosh-it-qr.vercel.app/",
+    link: "https://noshit.in",
     tags: ["Restaurant Tech", "QR Ordering", "Digital Menu"],
     gradient: "from-orange-500 via-red-500 to-pink-500",
   },
@@ -28,12 +28,28 @@ const projects = [
     gradient: "from-green-500 via-teal-500 to-cyan-500",
   },
   {
-    title: "Crystal International",
+    title: "Crysta International",
     description:
-      "Professional corporate business website showcasing enterprise solutions and global business services.",
+      "Premier management institute offering professional development and leadership training programs.",
     link: "https://www.crystalinternational.in/",
-    tags: ["Corporate", "Business", "Enterprise"],
+    tags: ["Management", "Education", "Leadership"],
     gradient: "from-indigo-500 via-purple-500 to-violet-500",
+  },
+  {
+    title: "SKP Films",
+    description:
+      "Professional production house creating compelling visual content, films, and video productions.",
+    link: "https://skpfilms.com",
+    tags: ["Production House", "Films", "Video"],
+    gradient: "from-amber-500 via-orange-500 to-red-500",
+  },
+  {
+    title: "Identity Brand",
+    description:
+      "Creative branding and marketing agency specializing in video production, brand identity, and visual storytelling.",
+    link: "https://identitybrand.in",
+    tags: ["Branding", "Marketing", "Video Production"],
+    gradient: "from-cyan-500 via-blue-500 to-indigo-500",
   },
 ];
 
