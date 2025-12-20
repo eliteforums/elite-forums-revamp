@@ -20,12 +20,21 @@ import {
   TrendingUp,
   Building2,
   Briefcase,
+  X,
+  Phone,
+  Mail,
+  Building,
+  User,
+  MessageSquare,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { AnimatedSection, StaggerContainer, StaggerItem } from "@/components/AnimatedSection";
 import CountUp from "@/components/CountUp";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const trainings = [
   {
@@ -141,7 +150,77 @@ const benefits = [
   "Corporate tie-ups for internships",
 ];
 
+const trainingOptions = [
+  "Generative AI",
+  "Web Development",
+  "MERN Stack",
+  "Data Science",
+  "AI/ML",
+  "App Development",
+  "Cloud Computing",
+  "Corporate Training",
+  "Custom Program",
+];
+
 const TrainingsPage = () => {
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    company: "",
+    trainingInterest: "",
+    message: "",
+  });
+
+  const scrollToPrograms = () => {
+    const element = document.getElementById("industry-programs");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!formData.name || !formData.email || !formData.phone || !formData.trainingInterest) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const { error } = await supabase.functions.invoke("send-training-enquiry", {
+        body: formData,
+      });
+
+      if (error) throw error;
+
+      toast.success("Thank you! Your enquiry has been submitted. We'll contact you soon.");
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        company: "",
+        trainingInterest: "",
+        message: "",
+      });
+      setIsFormOpen(false);
+    } catch (error: any) {
+      console.error("Error submitting form:", error);
+      toast.error("Failed to submit enquiry. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <>
       <Helmet>
@@ -191,22 +270,22 @@ const TrainingsPage = () => {
                     into industry-ready experts with cutting-edge skills.
                   </p>
                   <div className="flex flex-wrap gap-4">
-                    <Link to="/#contact">
-                      <Button
-                        size="lg"
-                        className="bg-gradient-primary hover:opacity-90 transition-all group px-8 py-7 text-lg"
-                      >
-                        Explore Programs
-                        <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                      </Button>
-                    </Link>
+                    <Button
+                      size="lg"
+                      onClick={scrollToPrograms}
+                      className="bg-gradient-primary hover:opacity-90 transition-all group px-8 py-7 text-lg"
+                    >
+                      Explore Programs
+                      <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                    </Button>
                     <Button
                       size="lg"
                       variant="outline"
+                      onClick={() => setIsFormOpen(true)}
                       className="px-8 py-7 text-lg border-2 border-accent/30 hover:border-accent hover:bg-accent/5"
                     >
                       <Play className="mr-2 h-5 w-5" />
-                      Watch Demo
+                      Enquire Now
                     </Button>
                   </div>
                 </AnimatedSection>
@@ -274,7 +353,7 @@ const TrainingsPage = () => {
           </section>
 
           {/* Courses Section - Professional Grid */}
-          <section className="py-24 bg-background relative overflow-hidden">
+          <section id="industry-programs" className="py-24 bg-background relative overflow-hidden scroll-mt-24">
             <div className="absolute top-1/2 right-0 w-96 h-96 bg-accent/5 rounded-full blur-[150px] pointer-events-none" />
             
             <div className="container relative">
@@ -344,15 +423,14 @@ const TrainingsPage = () => {
               </StaggerContainer>
 
               <AnimatedSection delay={0.3} className="text-center">
-                <Link to="/#contact">
-                  <Button
-                    size="lg"
-                    className="bg-gradient-primary hover:opacity-90 transition-all group px-10 py-7 text-lg"
-                  >
-                    Enquire About Training
-                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </Link>
+                <Button
+                  size="lg"
+                  onClick={() => setIsFormOpen(true)}
+                  className="bg-gradient-primary hover:opacity-90 transition-all group px-10 py-7 text-lg"
+                >
+                  Enquire About Training
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
               </AnimatedSection>
             </div>
           </section>
@@ -378,16 +456,15 @@ const TrainingsPage = () => {
                   <p className="text-lg text-primary-foreground/70 mb-8">
                     Our comprehensive training programs are designed to give you every advantage in your career journey.
                   </p>
-                  <Link to="/#contact">
-                    <Button
-                      size="lg"
-                      variant="secondary"
-                      className="group px-8 py-7 text-lg"
-                    >
-                      Get Started Today
-                      <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                  </Link>
+                  <Button
+                    size="lg"
+                    variant="secondary"
+                    onClick={() => setIsFormOpen(true)}
+                    className="group px-8 py-7 text-lg"
+                  >
+                    Get Started Today
+                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  </Button>
                 </AnimatedSection>
 
                 <AnimatedSection delay={0.2}>
@@ -435,13 +512,6 @@ const TrainingsPage = () => {
                         <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                       </Button>
                     </Link>
-                    <Button
-                      size="lg"
-                      variant="outline"
-                      className="px-8 py-7 text-lg border-2"
-                    >
-                      Download Brochure
-                    </Button>
                   </div>
                 </div>
               </AnimatedSection>
@@ -449,6 +519,166 @@ const TrainingsPage = () => {
           </section>
         </main>
         <Footer />
+
+        {/* Training Enquiry Form Modal */}
+        <AnimatePresence>
+          {isFormOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+              onClick={() => setIsFormOpen(false)}
+            >
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                transition={{ duration: 0.3 }}
+                className="bg-card border border-border rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Modal Header */}
+                <div className="sticky top-0 bg-card border-b border-border p-6 flex items-center justify-between">
+                  <div>
+                    <h3 className="text-xl font-bold text-foreground">Training Enquiry</h3>
+                    <p className="text-sm text-muted-foreground mt-1">Fill out the form and we'll get back to you</p>
+                  </div>
+                  <button
+                    onClick={() => setIsFormOpen(false)}
+                    className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center hover:bg-secondary/80 transition-colors"
+                  >
+                    <X className="h-5 w-5 text-foreground" />
+                  </button>
+                </div>
+
+                {/* Form */}
+                <form onSubmit={handleSubmit} className="p-6 space-y-5">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-foreground flex items-center gap-2">
+                      <User className="h-4 w-4 text-muted-foreground" />
+                      Full Name *
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      placeholder="Enter your full name"
+                      className="w-full px-4 py-3 rounded-lg bg-secondary border border-border focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all text-foreground placeholder:text-muted-foreground"
+                      required
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-foreground flex items-center gap-2">
+                      <Mail className="h-4 w-4 text-muted-foreground" />
+                      Email Address *
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      placeholder="Enter your email address"
+                      className="w-full px-4 py-3 rounded-lg bg-secondary border border-border focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all text-foreground placeholder:text-muted-foreground"
+                      required
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-foreground flex items-center gap-2">
+                      <Phone className="h-4 w-4 text-muted-foreground" />
+                      Phone Number *
+                    </label>
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      placeholder="Enter your phone number"
+                      className="w-full px-4 py-3 rounded-lg bg-secondary border border-border focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all text-foreground placeholder:text-muted-foreground"
+                      required
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-foreground flex items-center gap-2">
+                      <Building className="h-4 w-4 text-muted-foreground" />
+                      Company / Organization
+                    </label>
+                    <input
+                      type="text"
+                      name="company"
+                      value={formData.company}
+                      onChange={handleInputChange}
+                      placeholder="Enter your company name (optional)"
+                      className="w-full px-4 py-3 rounded-lg bg-secondary border border-border focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all text-foreground placeholder:text-muted-foreground"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-foreground flex items-center gap-2">
+                      <GraduationCap className="h-4 w-4 text-muted-foreground" />
+                      Training Interest *
+                    </label>
+                    <select
+                      name="trainingInterest"
+                      value={formData.trainingInterest}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-3 rounded-lg bg-secondary border border-border focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all text-foreground"
+                      required
+                    >
+                      <option value="">Select a program</option>
+                      {trainingOptions.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-foreground flex items-center gap-2">
+                      <MessageSquare className="h-4 w-4 text-muted-foreground" />
+                      Additional Message
+                    </label>
+                    <textarea
+                      name="message"
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      placeholder="Tell us about your training requirements..."
+                      rows={4}
+                      className="w-full px-4 py-3 rounded-lg bg-secondary border border-border focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all text-foreground placeholder:text-muted-foreground resize-none"
+                    />
+                  </div>
+
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full bg-gradient-primary hover:opacity-90 transition-all py-6 text-lg font-semibold"
+                  >
+                    {isSubmitting ? (
+                      <span className="flex items-center gap-2">
+                        <motion.div
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                          className="w-5 h-5 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full"
+                        />
+                        Submitting...
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-2">
+                        Submit Enquiry
+                        <ArrowRight className="h-5 w-5" />
+                      </span>
+                    )}
+                  </Button>
+                </form>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </>
   );

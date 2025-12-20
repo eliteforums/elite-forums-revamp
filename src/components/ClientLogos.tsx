@@ -26,9 +26,6 @@ const clients = [
 ];
 
 const ClientLogos = () => {
-  // Triple the clients for seamless infinite scroll
-  const tripleClients = [...clients, ...clients, ...clients];
-
   return (
     <section className="py-20 bg-background relative overflow-hidden">
       {/* Background decoration */}
@@ -55,13 +52,29 @@ const ClientLogos = () => {
           
           {/* Scrolling logos with CSS animation */}
           <div className="overflow-hidden">
-            <div className="flex gap-8 md:gap-16 items-center animate-scroll">
-              {tripleClients.map((client, index) => (
+            <div className="logo-scroll-container">
+              {/* First set of logos */}
+              {clients.map((client, index) => (
                 <div
-                  key={`${client.name}-${index}`}
-                  className="flex-shrink-0 group"
+                  key={`first-${client.name}-${index}`}
+                  className="logo-item flex-shrink-0 group"
                 >
-                  <div className="w-32 h-20 md:w-40 md:h-24 flex items-center justify-center p-3 md:p-4 rounded-2xl bg-card border border-border hover:border-accent/30 transition-all duration-300 hover:shadow-lg">
+                  <div className="w-28 h-16 md:w-40 md:h-24 flex items-center justify-center p-2 md:p-4 rounded-2xl bg-card border border-border hover:border-accent/30 transition-all duration-300 hover:shadow-lg">
+                    <img
+                      src={client.logo}
+                      alt={client.name}
+                      className="max-w-full max-h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-300 opacity-70 group-hover:opacity-100"
+                    />
+                  </div>
+                </div>
+              ))}
+              {/* Duplicate set for seamless loop */}
+              {clients.map((client, index) => (
+                <div
+                  key={`second-${client.name}-${index}`}
+                  className="logo-item flex-shrink-0 group"
+                >
+                  <div className="w-28 h-16 md:w-40 md:h-24 flex items-center justify-center p-2 md:p-4 rounded-2xl bg-card border border-border hover:border-accent/30 transition-all duration-300 hover:shadow-lg">
                     <img
                       src={client.logo}
                       alt={client.name}
@@ -76,21 +89,30 @@ const ClientLogos = () => {
       </div>
 
       <style>{`
-        @keyframes scroll {
+        .logo-scroll-container {
+          display: flex;
+          gap: 1rem;
+          animation: scroll-logos 20s linear infinite;
+          width: max-content;
+        }
+        
+        @media (min-width: 768px) {
+          .logo-scroll-container {
+            gap: 2rem;
+            animation-duration: 30s;
+          }
+        }
+        
+        @keyframes scroll-logos {
           0% {
             transform: translateX(0);
           }
           100% {
-            transform: translateX(calc(-100% / 3));
+            transform: translateX(-50%);
           }
         }
         
-        .animate-scroll {
-          animation: scroll 25s linear infinite;
-          will-change: transform;
-        }
-        
-        .animate-scroll:hover {
+        .logo-scroll-container:hover {
           animation-play-state: paused;
         }
       `}</style>
