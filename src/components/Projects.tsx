@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { ExternalLink, ArrowUpRight, ChevronDown, ChevronUp } from "lucide-react";
+import { ExternalLink, ArrowUpRight, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { AnimatedSection, StaggerContainer, StaggerItem } from "./AnimatedSection";
+import { AnimatedSection } from "./AnimatedSection";
 import { Button } from "./ui/button";
 
 const projects = [
@@ -36,6 +36,22 @@ const projects = [
     link: "https://www.crystalinternational.in/",
     tags: ["Management", "Education", "Leadership"],
     gradient: "from-indigo-500 via-purple-500 to-violet-500",
+  },
+  {
+    title: "JumpStart24/7",
+    description:
+      "Professional roadside assistance service providing jumpstart and other emergency vehicle services 24/7.",
+    link: "https://jumpstart247.com/",
+    tags: ["Roadside Assistance", "Auto Services", "24/7"],
+    gradient: "from-yellow-500 via-amber-500 to-orange-500",
+  },
+  {
+    title: "Identity Space",
+    description:
+      "Innovative architecture firm creating stunning spaces with modern design principles and sustainable solutions.",
+    link: "https://identityspace.in",
+    tags: ["Architecture", "Design", "Interiors"],
+    gradient: "from-slate-500 via-gray-500 to-zinc-500",
   },
   {
     title: "SKP Films",
@@ -82,74 +98,68 @@ const Projects = () => {
           </p>
         </AnimatedSection>
 
-        <StaggerContainer className="grid md:grid-cols-2 gap-8" staggerDelay={0.15}>
+        <motion.div layout className="grid md:grid-cols-2 gap-8">
           <AnimatePresence mode="popLayout">
             {visibleProjects.map((project, index) => (
-              <StaggerItem key={project.title}>
-                <motion.a
-                  href={project.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ y: -10 }}
-                  transition={{ duration: 0.3 }}
-                  className="group block"
-                  layout
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                >
-                  <div className="bg-card rounded-3xl overflow-hidden border border-border hover:border-accent/30 transition-all duration-500 h-full hover:shadow-card-hover">
-                    {/* Project Preview */}
-                    <div className="h-56 relative overflow-hidden bg-muted">
-                      <iframe
-                        src={project.link}
-                        title={project.title}
-                        className="w-full h-[400px] scale-[0.5] origin-top-left pointer-events-none"
-                        style={{ width: '200%', height: '800px' }}
-                        loading="lazy"
-                      />
-                      <div className={`absolute inset-0 bg-gradient-to-t ${project.gradient} opacity-20`} />
-                      
-                      {/* Hover overlay */}
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center">
-                        <motion.div
-                          initial={{ opacity: 0, scale: 0.5 }}
-                          whileHover={{ opacity: 1, scale: 1 }}
-                          className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                        >
-                          <ExternalLink className="h-6 w-6 text-white" />
-                        </motion.div>
-                      </div>
-                    </div>
+              <motion.a
+                key={project.title}
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                layout
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+                whileHover={{ y: -10 }}
+                className="group block"
+              >
+                <div className="bg-card rounded-3xl overflow-hidden border border-border hover:border-accent/30 transition-all duration-500 h-full hover:shadow-card-hover">
+                  {/* Project Preview */}
+                  <div className="h-56 relative overflow-hidden bg-muted">
+                    <iframe
+                      src={project.link}
+                      title={project.title}
+                      className="w-full h-[400px] scale-[0.5] origin-top-left pointer-events-none"
+                      style={{ width: '200%', height: '800px' }}
+                      loading="lazy"
+                    />
+                    <div className={`absolute inset-0 bg-gradient-to-t ${project.gradient} opacity-20`} />
                     
-                    <div className="p-8">
-                      <div className="flex items-start justify-between mb-4">
-                        <h3 className="text-2xl font-bold text-foreground group-hover:text-accent transition-colors">
-                          {project.title}
-                        </h3>
-                        <ArrowUpRight className="h-6 w-6 text-muted-foreground group-hover:text-accent transition-all transform group-hover:-translate-y-1 group-hover:translate-x-1" />
-                      </div>
-                      <p className="text-muted-foreground mb-6 leading-relaxed text-lg">
-                        {project.description}
-                      </p>
-                      <div className="flex flex-wrap gap-2">
-                        {project.tags.map((tag, tagIndex) => (
-                          <motion.span
-                            key={tagIndex}
-                            whileHover={{ scale: 1.05 }}
-                            className="px-4 py-1.5 text-sm font-medium bg-secondary text-secondary-foreground rounded-full border border-border hover:border-accent/30 transition-colors"
-                          >
-                            {tag}
-                          </motion.span>
-                        ))}
+                    {/* Hover overlay */}
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center">
+                      <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <ExternalLink className="h-6 w-6 text-white" />
                       </div>
                     </div>
                   </div>
-                </motion.a>
-              </StaggerItem>
+                  
+                  <div className="p-8">
+                    <div className="flex items-start justify-between mb-4">
+                      <h3 className="text-2xl font-bold text-foreground group-hover:text-accent transition-colors">
+                        {project.title}
+                      </h3>
+                      <ArrowUpRight className="h-6 w-6 text-muted-foreground group-hover:text-accent transition-all transform group-hover:-translate-y-1 group-hover:translate-x-1" />
+                    </div>
+                    <p className="text-muted-foreground mb-6 leading-relaxed text-lg">
+                      {project.description}
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {project.tags.map((tag, tagIndex) => (
+                        <span
+                          key={tagIndex}
+                          className="px-4 py-1.5 text-sm font-medium bg-secondary text-secondary-foreground rounded-full border border-border hover:border-accent/30 transition-colors"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </motion.a>
             ))}
           </AnimatePresence>
-        </StaggerContainer>
+        </motion.div>
 
         {/* Show More/Less Button */}
         {hasMoreProjects && (
