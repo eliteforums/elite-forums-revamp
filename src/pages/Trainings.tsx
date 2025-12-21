@@ -107,6 +107,56 @@ const trainings = [
     modules: 16,
     color: "from-sky-600 to-blue-600",
   },
+  {
+    icon: TrendingUp,
+    title: "Digital Marketing",
+    description:
+      "Master SEO, SEM, social media marketing, and analytics to drive business growth online.",
+    duration: "8 Weeks",
+    level: "Beginner",
+    modules: 14,
+    color: "from-pink-600 to-fuchsia-600",
+  },
+  {
+    icon: Briefcase,
+    title: "DevOps & CI/CD",
+    description:
+      "Learn containerization, automation, and continuous integration practices for modern software delivery.",
+    duration: "10 Weeks",
+    level: "Advanced",
+    modules: 22,
+    color: "from-teal-600 to-cyan-600",
+  },
+  {
+    icon: Building2,
+    title: "Python Programming",
+    description:
+      "Comprehensive Python training from basics to advanced concepts including automation and scripting.",
+    duration: "8 Weeks",
+    level: "Beginner",
+    modules: 16,
+    color: "from-yellow-600 to-orange-600",
+  },
+  {
+    icon: Award,
+    title: "Cybersecurity",
+    description:
+      "Learn ethical hacking, network security, and cybersecurity best practices for enterprise protection.",
+    duration: "12 Weeks",
+    level: "Advanced",
+    modules: 28,
+    color: "from-red-600 to-rose-600",
+  },
+  {
+    icon: Users,
+    title: "UI/UX Design",
+    description:
+      "Master user interface design, user experience principles, and modern design tools like Figma.",
+    duration: "8 Weeks",
+    level: "Beginner",
+    modules: 18,
+    color: "from-violet-600 to-purple-600",
+  },
 ];
 
 const stats = [
@@ -224,14 +274,14 @@ const TrainingsPage = () => {
   return (
     <>
       <Helmet>
-        <title>Professional Training Programs | Elite Forums Campus</title>
+        <title>Best IT Training Institute in Vasai, Nallasopara, Virar & Mumbai | Elite Forums Campus</title>
         <meta
           name="description"
-          content="Join 3500+ professionals trained at Elite Forums. Expert-led courses in AI, Web Development, MERN Stack, Data Science, and Cloud Computing."
+          content="Join 3500+ professionals trained at Elite Forums - Best IT training institute in Vasai, Nallasopara, Virar, Mumbai & Maharashtra. Expert-led courses in AI, Web Development, MERN Stack, Data Science, Python, Cybersecurity, and Cloud Computing. 25+ job leads daily!"
         />
         <meta
           name="keywords"
-          content="Elite Forums training, AI courses Mumbai, web development course, MERN stack training, data science course, cloud computing certification"
+          content="IT training Vasai, IT training Nallasopara, IT training Virar, IT training Mumbai, IT courses Maharashtra, best IT training institute near me, AI courses Vasai, web development course Mumbai, MERN stack training Vasai, data science course Nallasopara, Python training Virar, cybersecurity course Mumbai, cloud computing certification Maharashtra, Elite Forums training, software training Vasai, programming courses Mumbai, coding bootcamp Maharashtra, tech training institute Palghar"
         />
         <link rel="canonical" href="https://eliteforums.in/trainings" />
       </Helmet>
