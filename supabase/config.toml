@@ -2,3 +2,9 @@ project_id = "oyiisjfrcvyuflrrmqhq"
 
 [functions.send-training-enquiry]
 verify_jwt = false
+
+[functions.generate-offer-letter]
+verify_jwt = false
+
+[functions.send-offer-letter]
+verify_jwt = false
