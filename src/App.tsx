@@ -8,6 +8,8 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 import { Analytics } from "@vercel/analytics/react";
 import Index from "./pages/Index";
 import TrainingsPage from "./pages/Trainings";
+import Auth from "./pages/Auth";
+import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 import { useLenis } from "@/hooks/useLenis";
 
@@ -31,6 +33,8 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/trainings" element={<TrainingsPage />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/admin" element={<Admin />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
