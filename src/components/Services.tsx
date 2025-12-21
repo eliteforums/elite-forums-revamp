@@ -97,6 +97,12 @@ const Services = () => {
               <motion.div
                 whileHover={{ y: -10, scale: 1.02 }}
                 transition={{ duration: 0.3 }}
+                onClick={() => {
+                  const contactSection = document.getElementById('contact');
+                  if (contactSection) {
+                    contactSection.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
                 className="group relative bg-card rounded-2xl p-8 h-full border border-border hover:border-accent/30 transition-all duration-300 cursor-pointer overflow-hidden"
               >
                 {/* Hover gradient overlay */}
@@ -117,6 +123,10 @@ const Services = () => {
                   <p className="text-muted-foreground leading-relaxed">
                     {service.description}
                   </p>
+                  
+                  <span className="inline-block mt-4 text-sm text-accent opacity-0 group-hover:opacity-100 transition-opacity">
+                    Get in touch →
+                  </span>
                 </div>
               </motion.div>
             </StaggerItem>
