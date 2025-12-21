@@ -111,8 +111,8 @@ const trainings = [
 
 const stats = [
   { icon: Users, value: 3500, suffix: "+", label: "Professionals Trained" },
-  { icon: Building2, value: 50, suffix: "+", label: "Corporate Partners" },
-  { icon: GraduationCap, value: 95, suffix: "%", label: "Placement Rate" },
+  { icon: Building2, value: 25, suffix: "+", label: "Corporate Partners" },
+  { icon: GraduationCap, value: 25, suffix: "+", label: "Job Leads Daily" },
   { icon: Award, value: 15, suffix: "+", label: "Industry Certifications" },
 ];
 
