@@ -1,5 +1,8 @@
 project_id = "oyiisjfrcvyuflrrmqhq"
 
+[functions.send-contact-email]
+verify_jwt = false
+
 [functions.send-training-enquiry]
 verify_jwt = false
 
