@@ -11,3 +11,6 @@ verify_jwt = false
 
 [functions.send-offer-letter]
 verify_jwt = false
+
+[functions.fetch-tech-news]
+verify_jwt = false
