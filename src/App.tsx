@@ -10,6 +10,7 @@ import Index from "./pages/Index";
 import TrainingsPage from "./pages/Trainings";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
+import Blog from "./pages/Blog";
 import NotFound from "./pages/NotFound";
 import { useLenis } from "@/hooks/useLenis";
 
@@ -33,6 +34,7 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/trainings" element={<TrainingsPage />} />
+              <Route path="/blog" element={<Blog />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="*" element={<NotFound />} />
