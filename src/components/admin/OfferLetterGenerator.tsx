@@ -23,30 +23,42 @@ import {
   Copy,
   Check,
   Download,
-  Eye
+  Eye,
+  Phone,
+  Home
 } from "lucide-react";
 
 interface OfferLetterData {
   candidateName: string;
   candidateEmail: string;
+  candidateAddress: string;
   position: string;
   department: string;
   salary: string;
   joiningDate: string;
   location: string;
   additionalDetails: string;
+  hrManagerName: string;
+  hrManagerEmail: string;
+  hrManagerPhone: string;
+  acceptanceDeadline: string;
 }
 
 const OfferLetterGenerator = () => {
   const [formData, setFormData] = useState<OfferLetterData>({
     candidateName: "",
     candidateEmail: "",
+    candidateAddress: "",
     position: "",
     department: "",
     salary: "",
     joiningDate: "",
     location: "Vasai, Maharashtra",
     additionalDetails: "",
+    hrManagerName: "Suchita Nigam",
+    hrManagerEmail: "suchita.nigam@eliteforums.in",
+    hrManagerPhone: "+91 9322510601",
+    acceptanceDeadline: "",
   });
   
   const [generatedLetter, setGeneratedLetter] = useState("");
@@ -61,7 +73,7 @@ const OfferLetterGenerator = () => {
   };
 
   const formatDate = (dateStr: string) => {
-    if (!dateStr) return 'To be confirmed';
+    if (!dateStr) return '';
     return new Date(dateStr).toLocaleDateString('en-IN', { 
       day: 'numeric', 
       month: 'long', 
@@ -83,7 +95,11 @@ const OfferLetterGenerator = () => {
 
     try {
       const { data, error } = await supabase.functions.invoke("generate-offer-letter", {
-        body: formData,
+        body: {
+          ...formData,
+          formattedJoiningDate: formatDate(formData.joiningDate),
+          formattedAcceptanceDeadline: formatDate(formData.acceptanceDeadline),
+        },
       });
 
       if (error) {
@@ -144,12 +160,17 @@ const OfferLetterGenerator = () => {
         body: {
           candidateName: formData.candidateName,
           candidateEmail: formData.candidateEmail,
+          candidateAddress: formData.candidateAddress,
           position: formData.position,
           department: formData.department,
           salary: formData.salary,
           joiningDate: formData.joiningDate,
           location: formData.location,
           offerLetter: generatedLetter,
+          hrManagerName: formData.hrManagerName,
+          hrManagerEmail: formData.hrManagerEmail,
+          hrManagerPhone: formData.hrManagerPhone,
+          acceptanceDeadline: formData.acceptanceDeadline,
         },
       });
 
@@ -171,12 +192,17 @@ const OfferLetterGenerator = () => {
       setFormData({
         candidateName: "",
         candidateEmail: "",
+        candidateAddress: "",
         position: "",
         department: "",
         salary: "",
         joiningDate: "",
         location: "Vasai, Maharashtra",
         additionalDetails: "",
+        hrManagerName: "Suchita Nigam",
+        hrManagerEmail: "suchita.nigam@eliteforums.in",
+        hrManagerPhone: "+91 9322510601",
+        acceptanceDeadline: "",
       });
       setGeneratedLetter("");
     } catch (error) {
@@ -247,11 +273,16 @@ const OfferLetterGenerator = () => {
             <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
               <div>
                 <p style="margin: 0; font-weight: 600; color: #1a1a2e;">For Elite Forums</p>
-                <p style="margin: 8px 0 0 0; color: #6b7280; font-size: 14px;">HR Department</p>
+                <p style="margin: 8px 0 0 0; color: #1a1a2e; font-weight: 500;">${formData.hrManagerName || 'HR Manager'}</p>
+                <p style="margin: 4px 0 0 0; color: #6b7280; font-size: 14px;">HR Manager</p>
+                <p style="margin: 4px 0 0 0; color: #6b7280; font-size: 14px;">${formData.hrManagerEmail}</p>
+                <p style="margin: 4px 0 0 0; color: #6b7280; font-size: 14px;">${formData.hrManagerPhone}</p>
               </div>
               <div style="text-align: right;">
                 <p style="margin: 0; font-weight: 600; color: #1a1a2e;">Candidate Acceptance</p>
                 <p style="margin: 8px 0 0 0; color: #6b7280; font-size: 14px;">Signature: _______________</p>
+                <p style="margin: 8px 0 0 0; color: #6b7280; font-size: 14px;">Name: ${formData.candidateName}</p>
+                <p style="margin: 4px 0 0 0; color: #6b7280; font-size: 14px;">Date: _______________</p>
               </div>
             </div>
           </div>
@@ -261,7 +292,7 @@ const OfferLetterGenerator = () => {
           <p style="margin: 5px 0;"><strong style="color: #1a1a2e;">Elite Forums</strong></p>
           <p style="margin: 5px 0;">Shop No. 7, Golden Park Rd, near D Mart, Evershine City</p>
           <p style="margin: 5px 0;">Vasai-Virar, Maharashtra 401208</p>
-          <p style="margin: 5px 0;">📞 +91-XXXXXXXXXX | 📧 hr@eliteforums.in</p>
+          <p style="margin: 5px 0;">📞 ${formData.hrManagerPhone} | 📧 ${formData.hrManagerEmail}</p>
           <p style="margin: 15px 0 0 0; padding-top: 15px; border-top: 1px solid #e5e7eb; color: #9ca3af;">
             "Empowering Businesses Through Technology & Training"
           </p>
@@ -287,128 +318,220 @@ const OfferLetterGenerator = () => {
           <CardHeader className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-t-lg">
             <CardTitle className="flex items-center gap-2">
               <FileText className="w-5 h-5 text-primary" />
-              Candidate Details
+              Candidate & HR Details
             </CardTitle>
             <CardDescription>
-              Fill in the candidate and position information
+              Fill in the candidate, position, and HR information
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4 pt-6">
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="candidateName" className="flex items-center gap-2 text-sm font-medium">
-                  <User className="w-4 h-4 text-primary" />
-                  Candidate Name *
-                </Label>
-                <Input
-                  id="candidateName"
-                  placeholder="John Doe"
-                  value={formData.candidateName}
-                  onChange={(e) => handleInputChange("candidateName", e.target.value)}
-                  className="border-border/50 focus:border-primary"
-                />
+          <CardContent className="space-y-4 pt-6 max-h-[70vh] overflow-y-auto">
+            {/* Candidate Section */}
+            <div className="space-y-3 p-4 bg-muted/30 rounded-lg">
+              <h4 className="font-semibold text-sm text-foreground flex items-center gap-2">
+                <User className="w-4 h-4 text-primary" />
+                Candidate Information
+              </h4>
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="candidateName" className="text-sm font-medium">
+                    Full Name *
+                  </Label>
+                  <Input
+                    id="candidateName"
+                    placeholder="John Doe"
+                    value={formData.candidateName}
+                    onChange={(e) => handleInputChange("candidateName", e.target.value)}
+                    className="border-border/50 focus:border-primary"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="candidateEmail" className="text-sm font-medium">
+                    Email Address *
+                  </Label>
+                  <Input
+                    id="candidateEmail"
+                    type="email"
+                    placeholder="john@example.com"
+                    value={formData.candidateEmail}
+                    onChange={(e) => handleInputChange("candidateEmail", e.target.value)}
+                    className="border-border/50 focus:border-primary"
+                  />
+                </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="candidateEmail" className="flex items-center gap-2 text-sm font-medium">
-                  <Mail className="w-4 h-4 text-primary" />
-                  Email Address *
+                <Label htmlFor="candidateAddress" className="flex items-center gap-2 text-sm font-medium">
+                  <Home className="w-4 h-4 text-primary" />
+                  Candidate Address
                 </Label>
-                <Input
-                  id="candidateEmail"
-                  type="email"
-                  placeholder="john@example.com"
-                  value={formData.candidateEmail}
-                  onChange={(e) => handleInputChange("candidateEmail", e.target.value)}
-                  className="border-border/50 focus:border-primary"
-                />
-              </div>
-            </div>
-
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="position" className="flex items-center gap-2 text-sm font-medium">
-                  <Briefcase className="w-4 h-4 text-primary" />
-                  Position *
-                </Label>
-                <Input
-                  id="position"
-                  placeholder="Software Developer"
-                  value={formData.position}
-                  onChange={(e) => handleInputChange("position", e.target.value)}
-                  className="border-border/50 focus:border-primary"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="department" className="flex items-center gap-2 text-sm font-medium">
-                  <Building className="w-4 h-4 text-primary" />
-                  Department
-                </Label>
-                <Input
-                  id="department"
-                  placeholder="Engineering"
-                  value={formData.department}
-                  onChange={(e) => handleInputChange("department", e.target.value)}
+                <Textarea
+                  id="candidateAddress"
+                  placeholder="Full postal address of the candidate"
+                  value={formData.candidateAddress}
+                  onChange={(e) => handleInputChange("candidateAddress", e.target.value)}
+                  rows={2}
                   className="border-border/50 focus:border-primary"
                 />
               </div>
             </div>
 
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="salary" className="flex items-center gap-2 text-sm font-medium">
-                  <IndianRupee className="w-4 h-4 text-primary" />
-                  Annual Salary (CTC) *
-                </Label>
-                <Input
-                  id="salary"
-                  placeholder="₹5,00,000"
-                  value={formData.salary}
-                  onChange={(e) => handleInputChange("salary", e.target.value)}
-                  className="border-border/50 focus:border-primary"
-                />
+            {/* Position Section */}
+            <div className="space-y-3 p-4 bg-muted/30 rounded-lg">
+              <h4 className="font-semibold text-sm text-foreground flex items-center gap-2">
+                <Briefcase className="w-4 h-4 text-primary" />
+                Position Details
+              </h4>
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="position" className="text-sm font-medium">
+                    Position *
+                  </Label>
+                  <Input
+                    id="position"
+                    placeholder="Software Developer"
+                    value={formData.position}
+                    onChange={(e) => handleInputChange("position", e.target.value)}
+                    className="border-border/50 focus:border-primary"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="department" className="text-sm font-medium">
+                    Department
+                  </Label>
+                  <Input
+                    id="department"
+                    placeholder="Engineering"
+                    value={formData.department}
+                    onChange={(e) => handleInputChange("department", e.target.value)}
+                    className="border-border/50 focus:border-primary"
+                  />
+                </div>
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="salary" className="flex items-center gap-2 text-sm font-medium">
+                    <IndianRupee className="w-4 h-4 text-primary" />
+                    Annual Salary (CTC) *
+                  </Label>
+                  <Input
+                    id="salary"
+                    placeholder="₹5,00,000"
+                    value={formData.salary}
+                    onChange={(e) => handleInputChange("salary", e.target.value)}
+                    className="border-border/50 focus:border-primary"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="joiningDate" className="flex items-center gap-2 text-sm font-medium">
+                    <Calendar className="w-4 h-4 text-primary" />
+                    Joining Date *
+                  </Label>
+                  <Input
+                    id="joiningDate"
+                    type="date"
+                    value={formData.joiningDate}
+                    onChange={(e) => handleInputChange("joiningDate", e.target.value)}
+                    className="border-border/50 focus:border-primary"
+                  />
+                </div>
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="location" className="flex items-center gap-2 text-sm font-medium">
+                    <MapPin className="w-4 h-4 text-primary" />
+                    Work Location
+                  </Label>
+                  <Input
+                    id="location"
+                    placeholder="Vasai, Maharashtra"
+                    value={formData.location}
+                    onChange={(e) => handleInputChange("location", e.target.value)}
+                    className="border-border/50 focus:border-primary"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="acceptanceDeadline" className="flex items-center gap-2 text-sm font-medium">
+                    <Calendar className="w-4 h-4 text-primary" />
+                    Acceptance Deadline
+                  </Label>
+                  <Input
+                    id="acceptanceDeadline"
+                    type="date"
+                    value={formData.acceptanceDeadline}
+                    onChange={(e) => handleInputChange("acceptanceDeadline", e.target.value)}
+                    className="border-border/50 focus:border-primary"
+                  />
+                </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="joiningDate" className="flex items-center gap-2 text-sm font-medium">
-                  <Calendar className="w-4 h-4 text-primary" />
-                  Joining Date *
-                </Label>
-                <Input
-                  id="joiningDate"
-                  type="date"
-                  value={formData.joiningDate}
-                  onChange={(e) => handleInputChange("joiningDate", e.target.value)}
+                <Label htmlFor="additionalDetails" className="text-sm font-medium">Additional Details</Label>
+                <Textarea
+                  id="additionalDetails"
+                  placeholder="Any specific terms, benefits, or conditions to include..."
+                  value={formData.additionalDetails}
+                  onChange={(e) => handleInputChange("additionalDetails", e.target.value)}
+                  rows={2}
                   className="border-border/50 focus:border-primary"
                 />
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="location" className="flex items-center gap-2 text-sm font-medium">
-                <MapPin className="w-4 h-4 text-primary" />
-                Work Location
-              </Label>
-              <Input
-                id="location"
-                placeholder="Vasai, Maharashtra"
-                value={formData.location}
-                onChange={(e) => handleInputChange("location", e.target.value)}
-                className="border-border/50 focus:border-primary"
-              />
-            </div>
+            {/* HR Section */}
+            <div className="space-y-3 p-4 bg-muted/30 rounded-lg">
+              <h4 className="font-semibold text-sm text-foreground flex items-center gap-2">
+                <Building className="w-4 h-4 text-primary" />
+                HR Manager Details
+              </h4>
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="hrManagerName" className="text-sm font-medium">
+                    HR Manager Name *
+                  </Label>
+                  <Input
+                    id="hrManagerName"
+                    placeholder="HR Manager Name"
+                    value={formData.hrManagerName}
+                    onChange={(e) => handleInputChange("hrManagerName", e.target.value)}
+                    className="border-border/50 focus:border-primary"
+                  />
+                </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="additionalDetails" className="text-sm font-medium">Additional Details</Label>
-              <Textarea
-                id="additionalDetails"
-                placeholder="Any specific terms, benefits, or conditions to include..."
-                value={formData.additionalDetails}
-                onChange={(e) => handleInputChange("additionalDetails", e.target.value)}
-                rows={3}
-                className="border-border/50 focus:border-primary"
-              />
+                <div className="space-y-2">
+                  <Label htmlFor="hrManagerEmail" className="flex items-center gap-2 text-sm font-medium">
+                    <Mail className="w-4 h-4 text-primary" />
+                    HR Email *
+                  </Label>
+                  <Input
+                    id="hrManagerEmail"
+                    type="email"
+                    placeholder="hr@eliteforums.in"
+                    value={formData.hrManagerEmail}
+                    onChange={(e) => handleInputChange("hrManagerEmail", e.target.value)}
+                    className="border-border/50 focus:border-primary"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="hrManagerPhone" className="flex items-center gap-2 text-sm font-medium">
+                  <Phone className="w-4 h-4 text-primary" />
+                  HR Phone Number
+                </Label>
+                <Input
+                  id="hrManagerPhone"
+                  placeholder="+91 9322510601"
+                  value={formData.hrManagerPhone}
+                  onChange={(e) => handleInputChange("hrManagerPhone", e.target.value)}
+                  className="border-border/50 focus:border-primary"
+                />
+              </div>
             </div>
 
             <Button 

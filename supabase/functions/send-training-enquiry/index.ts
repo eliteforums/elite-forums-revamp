@@ -59,10 +59,10 @@ const handler = async (req: Request): Promise<Response> => {
       </div>
     `;
 
-    // Send notification email to admin
+    // Send notification email to admin (educational enquiries go to admin@eliteforums.in)
     const adminEmailResponse = await resend.emails.send({
       from: "Elite Forums Campus <edu@eliteforums.in>",
-      to: ["edu@eliteforums.in"],
+      to: ["admin@eliteforums.in"],
       subject: `🎓 New Training Enquiry: ${trainingInterest}`,
       html: `
         <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; background: #f0f4f8; border-radius: 0; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.15);">
