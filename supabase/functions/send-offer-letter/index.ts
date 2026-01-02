@@ -9,12 +9,17 @@ const corsHeaders = {
 interface SendOfferLetterRequest {
   candidateName: string;
   candidateEmail: string;
+  candidateAddress: string;
   position: string;
   department: string;
   salary: string;
   joiningDate: string;
   location: string;
   offerLetter: string;
+  hrManagerName: string;
+  hrManagerEmail: string;
+  hrManagerPhone: string;
+  acceptanceDeadline: string;
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -37,13 +42,18 @@ const handler = async (req: Request): Promise<Response> => {
 
     const { 
       candidateName, 
-      candidateEmail, 
+      candidateEmail,
+      candidateAddress,
       position, 
       department,
       salary,
       joiningDate,
       location,
-      offerLetter 
+      offerLetter,
+      hrManagerName,
+      hrManagerEmail,
+      hrManagerPhone,
+      acceptanceDeadline
     }: SendOfferLetterRequest = await req.json();
 
     console.log("Processing offer letter for:", candidateName, "to:", candidateEmail);
@@ -65,6 +75,10 @@ const handler = async (req: Request): Promise<Response> => {
     const formattedDate = joiningDate 
       ? new Date(joiningDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })
       : 'To be confirmed';
+
+    const formattedAcceptance = acceptanceDeadline
+      ? new Date(acceptanceDeadline).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })
+      : '5 business days from the date of this letter';
 
     // Beautiful HTML email template with Elite Forums branding
     const emailHtml = `
@@ -108,6 +122,10 @@ const handler = async (req: Request): Promise<Response> => {
                 <td style="padding: 8px 0; color: #64748b; font-size: 14px;">📍 Location</td>
                 <td style="padding: 8px 0; color: #1a1a2e; font-weight: 600; text-align: right;">${location || 'Vasai, Maharashtra'}</td>
               </tr>
+              <tr>
+                <td style="padding: 8px 0; color: #64748b; font-size: 14px;">⏰ Accept By</td>
+                <td style="padding: 8px 0; color: #1a1a2e; font-weight: 600; text-align: right;">${formattedAcceptance}</td>
+              </tr>
             </table>
           </div>
 
@@ -121,12 +139,15 @@ const handler = async (req: Request): Promise<Response> => {
             <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
               <div style="margin-bottom: 20px;">
                 <p style="margin: 0; font-weight: 700; color: #1a1a2e; font-size: 14px;">For Elite Forums</p>
-                <p style="margin: 8px 0 0 0; color: #6b7280; font-size: 13px;">Authorized Signatory</p>
-                <p style="margin: 4px 0 0 0; color: #6b7280; font-size: 13px;">HR Department</p>
+                <p style="margin: 8px 0 0 0; color: #1a1a2e; font-weight: 600;">${hrManagerName || 'HR Manager'}</p>
+                <p style="margin: 4px 0 0 0; color: #6b7280; font-size: 13px;">HR Manager</p>
+                <p style="margin: 4px 0 0 0; color: #6b7280; font-size: 13px;">${hrManagerEmail}</p>
+                <p style="margin: 4px 0 0 0; color: #6b7280; font-size: 13px;">${hrManagerPhone}</p>
               </div>
               <div style="text-align: right;">
                 <p style="margin: 0; font-weight: 700; color: #1a1a2e; font-size: 14px;">Candidate Acceptance</p>
                 <p style="margin: 16px 0 0 0; color: #6b7280; font-size: 13px;">Signature: ___________________</p>
+                <p style="margin: 8px 0 0 0; color: #6b7280; font-size: 13px;">Name: ${candidateName}</p>
                 <p style="margin: 8px 0 0 0; color: #6b7280; font-size: 13px;">Date: ___________________</p>
               </div>
             </div>
@@ -136,7 +157,7 @@ const handler = async (req: Request): Promise<Response> => {
           <div style="margin-top: 30px; background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border-radius: 12px; padding: 20px; text-align: center; border: 1px solid #bbf7d0;">
             <p style="margin: 0; color: #166534; font-size: 15px;">
               <strong>Welcome to the Elite Forums family!</strong><br>
-              <span style="font-size: 13px;">Please reply to this email to confirm your acceptance.</span>
+              <span style="font-size: 13px;">Please reply to this email to confirm your acceptance by ${formattedAcceptance}.</span>
             </p>
           </div>
         </div>
@@ -146,7 +167,7 @@ const handler = async (req: Request): Promise<Response> => {
           <p style="margin: 8px 0;"><strong style="color: #1a1a2e; font-size: 14px;">Elite Forums</strong></p>
           <p style="margin: 4px 0;">Shop No. 7, Golden Park Rd, near D Mart, Evershine City</p>
           <p style="margin: 4px 0;">Vasai-Virar, Maharashtra 401208, India</p>
-          <p style="margin: 8px 0;">📞 +91-9372738439 &nbsp;|&nbsp; 📧 hr@eliteforums.in</p>
+          <p style="margin: 8px 0;">📞 ${hrManagerPhone} &nbsp;|&nbsp; 📧 ${hrManagerEmail}</p>
           <p style="margin: 16px 0 0 0; padding-top: 16px; border-top: 1px solid #e5e7eb; color: #9ca3af; font-style: italic;">
             "Empowering Businesses Through Technology & Training"
           </p>
@@ -175,11 +196,11 @@ const handler = async (req: Request): Promise<Response> => {
       throw new Error(`Failed to send to candidate: ${emailResponse.error.message}`);
     }
 
-    // Send copy to HR
+    // Send copy to HR (suchita.nigam@eliteforums.in)
     console.log("Sending copy to HR...");
     const hrEmailResponse = await resend.emails.send({
       from: "Elite Forums System <contact@eliteforums.in>",
-      to: ["hr@eliteforums.in"],
+      to: ["suchita.nigam@eliteforums.in"],
       subject: `[HR Copy] Offer Letter Sent - ${candidateName} for ${position}`,
       html: `
         <!DOCTYPE html>
@@ -198,11 +219,13 @@ const handler = async (req: Request): Promise<Response> => {
               <table style="width: 100%; border-collapse: collapse;">
                 <tr><td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #6b7280;">Candidate</td><td style="padding: 12px; border-bottom: 1px solid #e5e7eb; font-weight: 600;">${candidateName}</td></tr>
                 <tr><td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #6b7280;">Email</td><td style="padding: 12px; border-bottom: 1px solid #e5e7eb;"><a href="mailto:${candidateEmail}">${candidateEmail}</a></td></tr>
+                <tr><td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #6b7280;">Address</td><td style="padding: 12px; border-bottom: 1px solid #e5e7eb;">${candidateAddress || 'Not provided'}</td></tr>
                 <tr><td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #6b7280;">Position</td><td style="padding: 12px; border-bottom: 1px solid #e5e7eb; font-weight: 600;">${position}</td></tr>
                 <tr><td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #6b7280;">Department</td><td style="padding: 12px; border-bottom: 1px solid #e5e7eb;">${department || 'Not specified'}</td></tr>
                 <tr><td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #6b7280;">Salary</td><td style="padding: 12px; border-bottom: 1px solid #e5e7eb; font-weight: 600;">${salary}</td></tr>
                 <tr><td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #6b7280;">Joining Date</td><td style="padding: 12px; border-bottom: 1px solid #e5e7eb;">${formattedDate}</td></tr>
                 <tr><td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #6b7280;">Location</td><td style="padding: 12px; border-bottom: 1px solid #e5e7eb;">${location}</td></tr>
+                <tr><td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #6b7280;">Acceptance Deadline</td><td style="padding: 12px; border-bottom: 1px solid #e5e7eb;">${formattedAcceptance}</td></tr>
                 <tr><td style="padding: 12px; color: #6b7280;">Sent At</td><td style="padding: 12px;">${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}</td></tr>
               </table>
               

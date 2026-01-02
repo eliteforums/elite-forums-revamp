@@ -18,6 +18,7 @@ interface Article {
   imageUrl: string;
   imageKeyword: string;
   source: string;
+  sourceUrl?: string;
   publishedAt: string;
   readTime: string;
 }
@@ -80,6 +81,16 @@ const Blog = () => {
   const filteredArticles = selectedCategory === "All" 
     ? articles 
     : articles.filter(a => a.category === selectedCategory);
+
+  const handleReadMore = (article: Article) => {
+    if (article.sourceUrl) {
+      window.open(article.sourceUrl, '_blank', 'noopener,noreferrer');
+    } else {
+      // Search for the article on Google if no source URL
+      const searchQuery = encodeURIComponent(article.title);
+      window.open(`https://www.google.com/search?q=${searchQuery}`, '_blank', 'noopener,noreferrer');
+    }
+  };
 
   return (
     <>
@@ -246,7 +257,12 @@ const Blog = () => {
                             year: 'numeric'
                           })}
                         </span>
-                        <Button variant="ghost" size="sm" className="gap-1 text-primary hover:text-primary">
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="gap-1 text-primary hover:text-primary"
+                          onClick={() => handleReadMore(article)}
+                        >
                           Read More
                           <ExternalLink className="w-3 h-3" />
                         </Button>
