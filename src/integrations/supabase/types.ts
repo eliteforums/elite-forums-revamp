@@ -14,7 +14,162 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      bulk_mail_campaigns: {
+        Row: {
+          body: string
+          campaign_name: string
+          completed_at: string | null
+          created_at: string
+          created_by: string | null
+          failed_count: number | null
+          id: string
+          recipients: string[]
+          sent_count: number | null
+          status: string
+          subject: string
+        }
+        Insert: {
+          body: string
+          campaign_name: string
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          failed_count?: number | null
+          id?: string
+          recipients: string[]
+          sent_count?: number | null
+          status?: string
+          subject: string
+        }
+        Update: {
+          body?: string
+          campaign_name?: string
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          failed_count?: number | null
+          id?: string
+          recipients?: string[]
+          sent_count?: number | null
+          status?: string
+          subject?: string
+        }
+        Relationships: []
+      }
+      offer_letters: {
+        Row: {
+          acceptance_deadline: string | null
+          candidate_address: string | null
+          candidate_email: string
+          candidate_name: string
+          created_at: string
+          created_by: string | null
+          department: string | null
+          hr_manager_email: string | null
+          hr_manager_name: string | null
+          hr_manager_phone: string | null
+          id: string
+          joining_date: string
+          letter_content: string | null
+          location: string | null
+          position: string
+          salary: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          acceptance_deadline?: string | null
+          candidate_address?: string | null
+          candidate_email: string
+          candidate_name: string
+          created_at?: string
+          created_by?: string | null
+          department?: string | null
+          hr_manager_email?: string | null
+          hr_manager_name?: string | null
+          hr_manager_phone?: string | null
+          id?: string
+          joining_date: string
+          letter_content?: string | null
+          location?: string | null
+          position: string
+          salary: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          acceptance_deadline?: string | null
+          candidate_address?: string | null
+          candidate_email?: string
+          candidate_name?: string
+          created_at?: string
+          created_by?: string | null
+          department?: string | null
+          hr_manager_email?: string | null
+          hr_manager_name?: string | null
+          hr_manager_phone?: string | null
+          id?: string
+          joining_date?: string
+          letter_content?: string | null
+          location?: string | null
+          position?: string
+          salary?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      scheduled_tasks: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          email_body: string | null
+          email_recipients: string[] | null
+          email_subject: string | null
+          id: string
+          is_completed: boolean
+          reminder_before_minutes: number | null
+          reminder_sent: boolean
+          scheduled_at: string
+          task_type: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          email_body?: string | null
+          email_recipients?: string[] | null
+          email_subject?: string | null
+          id?: string
+          is_completed?: boolean
+          reminder_before_minutes?: number | null
+          reminder_sent?: boolean
+          scheduled_at: string
+          task_type: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          email_body?: string | null
+          email_recipients?: string[] | null
+          email_subject?: string | null
+          id?: string
+          is_completed?: boolean
+          reminder_before_minutes?: number | null
+          reminder_sent?: boolean
+          scheduled_at?: string
+          task_type?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
