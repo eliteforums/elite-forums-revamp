@@ -14,3 +14,9 @@ verify_jwt = false
 
 [functions.fetch-tech-news]
 verify_jwt = false
+
+[functions.send-bulk-mail]
+verify_jwt = false
+
+[functions.send-task-reminder]
+verify_jwt = false

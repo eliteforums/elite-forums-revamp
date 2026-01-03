@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { Resend } from "https://esm.sh/resend@2.0.0";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -243,6 +244,40 @@ const handler = async (req: Request): Promise<Response> => {
     });
 
     console.log("HR email response:", JSON.stringify(hrEmailResponse));
+
+    // Save to database
+    try {
+      const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+      const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+      const supabase = createClient(supabaseUrl, supabaseKey);
+
+      const { error: dbError } = await supabase
+        .from("offer_letters")
+        .insert({
+          candidate_name: candidateName,
+          candidate_email: candidateEmail,
+          candidate_address: candidateAddress || null,
+          position: position,
+          department: department || null,
+          salary: salary,
+          joining_date: joiningDate,
+          acceptance_deadline: acceptanceDeadline || null,
+          location: location || null,
+          hr_manager_name: hrManagerName || null,
+          hr_manager_email: hrManagerEmail || null,
+          hr_manager_phone: hrManagerPhone || null,
+          letter_content: offerLetter,
+          status: "sent",
+        });
+
+      if (dbError) {
+        console.error("Error saving to database:", dbError);
+      } else {
+        console.log("Offer letter saved to database");
+      }
+    } catch (dbErr) {
+      console.error("Database save error:", dbErr);
+    }
 
     return new Response(
       JSON.stringify({ 

@@ -4,8 +4,14 @@ import { supabase } from "@/integrations/supabase/client";
 import { User, Session } from "@supabase/supabase-js";
 import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
-import { LogOut, FileText } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { LogOut, FileText, Mail, Users, Calendar, Send } from "lucide-react";
 import OfferLetterGenerator from "@/components/admin/OfferLetterGenerator";
+import OfferLetterRecords from "@/components/admin/OfferLetterRecords";
+import BulkMailSystem from "@/components/admin/BulkMailSystem";
+import BulkOfferLetters from "@/components/admin/BulkOfferLetters";
+import TaskScheduler from "@/components/admin/TaskScheduler";
+import logoImg from "@/assets/logo.png";
 
 const Admin = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -69,9 +75,7 @@ const Admin = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                  <FileText className="w-5 h-5 text-primary" />
-                </div>
+                <img src={logoImg} alt="Elite Forums" className="h-10" />
                 <div>
                   <h1 className="text-lg font-semibold text-foreground">Admin Panel</h1>
                   <p className="text-xs text-muted-foreground">{user.email}</p>
@@ -87,8 +91,56 @@ const Admin = () => {
         </header>
 
         {/* Main Content */}
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <OfferLetterGenerator />
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <Tabs defaultValue="create-offer" className="w-full">
+            <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5 mb-6 h-auto gap-2 bg-muted/50 p-2">
+              <TabsTrigger value="create-offer" className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground py-3">
+                <FileText className="w-4 h-4" />
+                <span className="hidden sm:inline">Create Offer</span>
+                <span className="sm:hidden">Create</span>
+              </TabsTrigger>
+              <TabsTrigger value="records" className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground py-3">
+                <Users className="w-4 h-4" />
+                <span className="hidden sm:inline">Records</span>
+                <span className="sm:hidden">Records</span>
+              </TabsTrigger>
+              <TabsTrigger value="bulk-mail" className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground py-3">
+                <Mail className="w-4 h-4" />
+                <span className="hidden sm:inline">Bulk Mail</span>
+                <span className="sm:hidden">Mail</span>
+              </TabsTrigger>
+              <TabsTrigger value="bulk-offers" className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground py-3">
+                <Send className="w-4 h-4" />
+                <span className="hidden sm:inline">Bulk Offers</span>
+                <span className="sm:hidden">Offers</span>
+              </TabsTrigger>
+              <TabsTrigger value="scheduler" className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground py-3">
+                <Calendar className="w-4 h-4" />
+                <span className="hidden sm:inline">Scheduler</span>
+                <span className="sm:hidden">Tasks</span>
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="create-offer" className="mt-0">
+              <OfferLetterGenerator />
+            </TabsContent>
+
+            <TabsContent value="records" className="mt-0">
+              <OfferLetterRecords />
+            </TabsContent>
+
+            <TabsContent value="bulk-mail" className="mt-0">
+              <BulkMailSystem />
+            </TabsContent>
+
+            <TabsContent value="bulk-offers" className="mt-0">
+              <BulkOfferLetters />
+            </TabsContent>
+
+            <TabsContent value="scheduler" className="mt-0">
+              <TaskScheduler />
+            </TabsContent>
+          </Tabs>
         </main>
       </div>
     </>
