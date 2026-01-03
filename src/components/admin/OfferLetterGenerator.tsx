@@ -240,7 +240,15 @@ const OfferLetterGenerator = () => {
     const htmlContent = generatedLetter
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
       .replace(/\n/g, '<br>')
-      .replace(/#{1,3}\s*(.*?)(<br>|$)/g, '<h3 style="margin: 16px 0 8px 0; color: #1a1a2e; font-size: 16px;">$1</h3>');
+      .replace(/#{1,3}\s*(.*?)(<br>|$)/g, '<h3 style="margin: 20px 0 10px 0; color: #1a1a2e; font-size: 16px; font-weight: 700; border-bottom: 2px solid #e94560; padding-bottom: 6px;">$1</h3>');
+
+    const formattedDate = formData.joiningDate 
+      ? new Date(formData.joiningDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })
+      : 'To be confirmed';
+
+    const formattedAcceptance = formData.acceptanceDeadline
+      ? new Date(formData.acceptanceDeadline).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })
+      : '5 business days';
 
     return `
       <!DOCTYPE html>
@@ -249,53 +257,113 @@ const OfferLetterGenerator = () => {
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Offer Letter - Elite Forums</title>
+        <style>
+          @media print {
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+          }
+        </style>
       </head>
       <body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f8fafc;">
-        <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); padding: 30px; border-radius: 16px 16px 0 0;">
-          <div style="text-align: center;">
-            <img src="${window.location.origin}/logo.png" alt="Elite Forums Logo" style="height: 60px; margin-bottom: 16px;">
-            <h1 style="color: #ffffff; margin: 0; font-size: 28px; font-weight: 700; letter-spacing: 1px;">ELITE FORUMS</h1>
-            <p style="color: #94a3b8; margin: 8px 0 0 0; font-size: 14px; letter-spacing: 2px;">EXCELLENCE IN IT SOLUTIONS & TRAINING</p>
-          </div>
+        <!-- Header with gradient -->
+        <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); padding: 35px; border-radius: 16px 16px 0 0; text-align: center;">
+          <img src="${window.location.origin}/logo.png" alt="Elite Forums Logo" style="height: 60px; margin-bottom: 14px;">
+          <h1 style="color: #ffffff; margin: 0; font-size: 30px; font-weight: 800; letter-spacing: 2px; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">ELITE FORUMS</h1>
+          <p style="color: #94a3b8; margin: 10px 0 0 0; font-size: 13px; letter-spacing: 3px; text-transform: uppercase;">Excellence in IT Solutions & Training</p>
         </div>
         
-        <div style="background-color: #ffffff; padding: 40px; border-radius: 0 0 16px 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
-          <div style="background: linear-gradient(90deg, #e94560 0%, #f97316 100%); color: white; padding: 16px 24px; border-radius: 8px; margin-bottom: 30px;">
-            <h2 style="margin: 0; font-size: 20px;">OFFER LETTER</h2>
-            <p style="margin: 4px 0 0 0; opacity: 0.9; font-size: 14px;">Position: ${formData.position}</p>
-          </div>
+        <!-- Main Content -->
+        <div style="background-color: #ffffff; padding: 40px; border-radius: 0 0 16px 16px; box-shadow: 0 8px 30px rgba(0,0,0,0.12);">
           
-          <div style="font-size: 15px; line-height: 1.8; color: #374151;">
+          <!-- Offer Banner -->
+          <div style="background: linear-gradient(135deg, #e94560 0%, #f97316 100%); color: white; padding: 24px 28px; border-radius: 14px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+              <span style="font-size: 32px;">🎉</span>
+              <h2 style="margin: 0; font-size: 24px; font-weight: 800; letter-spacing: 1px;">OFFER LETTER</h2>
+            </div>
+            <p style="margin: 0; font-size: 17px;">Position: <strong style="font-size: 18px;">${formData.position}</strong></p>
+            ${formData.department ? `<p style="margin: 6px 0 0 0; opacity: 0.9; font-size: 14px;">Department: ${formData.department}</p>` : ''}
+          </div>
+
+          ${formData.candidateAddress ? `
+          <!-- Candidate Address -->
+          <div style="margin-bottom: 24px; padding: 16px; background: #fafafa; border-radius: 10px; border-left: 4px solid #1a1a2e;">
+            <p style="margin: 0; font-weight: 600; color: #1a1a2e; font-size: 15px;">To,</p>
+            <p style="margin: 6px 0 0 0; font-weight: 700; color: #1a1a2e; font-size: 17px;">${formData.candidateName}</p>
+            <p style="margin: 4px 0 0 0; color: #64748b; font-size: 14px; white-space: pre-line;">${formData.candidateAddress}</p>
+          </div>
+          ` : ''}
+          
+          <!-- Quick Info Box -->
+          <div style="background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%); border-radius: 14px; padding: 24px; margin-bottom: 30px; border: 1px solid #e2e8f0;">
+            <h4 style="margin: 0 0 16px 0; color: #1a1a2e; font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">📋 Key Details</h4>
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr>
+                <td style="padding: 12px 0; color: #64748b; font-size: 14px; border-bottom: 1px dashed #e2e8f0;">📅 Joining Date</td>
+                <td style="padding: 12px 0; color: #1a1a2e; font-weight: 700; text-align: right; border-bottom: 1px dashed #e2e8f0; font-size: 15px;">${formattedDate}</td>
+              </tr>
+              <tr>
+                <td style="padding: 12px 0; color: #64748b; font-size: 14px; border-bottom: 1px dashed #e2e8f0;">💰 Annual CTC</td>
+                <td style="padding: 12px 0; color: #059669; font-weight: 700; text-align: right; border-bottom: 1px dashed #e2e8f0; font-size: 16px;">${formData.salary || 'As discussed'}</td>
+              </tr>
+              <tr>
+                <td style="padding: 12px 0; color: #64748b; font-size: 14px; border-bottom: 1px dashed #e2e8f0;">📍 Work Location</td>
+                <td style="padding: 12px 0; color: #1a1a2e; font-weight: 600; text-align: right; border-bottom: 1px dashed #e2e8f0; font-size: 15px;">${formData.location || 'Vasai, Maharashtra'}</td>
+              </tr>
+              <tr>
+                <td style="padding: 12px 0; color: #64748b; font-size: 14px;">⏰ Accept By</td>
+                <td style="padding: 12px 0; color: #dc2626; font-weight: 700; text-align: right; font-size: 15px;">${formattedAcceptance}</td>
+              </tr>
+            </table>
+          </div>
+
+          <!-- Letter Content -->
+          <div style="font-size: 15px; line-height: 1.9; color: #374151; padding: 10px 0;">
             ${htmlContent}
           </div>
           
-          <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #e5e7eb;">
-            <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
-              <div>
-                <p style="margin: 0; font-weight: 600; color: #1a1a2e;">For Elite Forums</p>
-                <p style="margin: 8px 0 0 0; color: #1a1a2e; font-weight: 500;">${formData.hrManagerName || 'HR Manager'}</p>
-                <p style="margin: 4px 0 0 0; color: #6b7280; font-size: 14px;">HR Manager</p>
-                <p style="margin: 4px 0 0 0; color: #6b7280; font-size: 14px;">${formData.hrManagerEmail}</p>
-                <p style="margin: 4px 0 0 0; color: #6b7280; font-size: 14px;">${formData.hrManagerPhone}</p>
+          <!-- Signature Section -->
+          <div style="margin-top: 50px; padding-top: 30px; border-top: 3px solid #e5e7eb;">
+            <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 30px;">
+              <div style="flex: 1; min-width: 200px;">
+                <p style="margin: 0; font-weight: 800; color: #1a1a2e; font-size: 15px; text-transform: uppercase; letter-spacing: 1px;">For Elite Forums</p>
+                <div style="margin-top: 40px; border-bottom: 2px solid #1a1a2e; width: 150px;"></div>
+                <p style="margin: 12px 0 0 0; color: #1a1a2e; font-weight: 700; font-size: 16px;">${formData.hrManagerName || 'HR Manager'}</p>
+                <p style="margin: 4px 0 0 0; color: #6b7280; font-size: 13px;">HR Manager</p>
+                <p style="margin: 4px 0 0 0; color: #6b7280; font-size: 13px;">📧 ${formData.hrManagerEmail}</p>
+                <p style="margin: 4px 0 0 0; color: #6b7280; font-size: 13px;">📞 ${formData.hrManagerPhone}</p>
               </div>
-              <div style="text-align: right;">
-                <p style="margin: 0; font-weight: 600; color: #1a1a2e;">Candidate Acceptance</p>
-                <p style="margin: 8px 0 0 0; color: #6b7280; font-size: 14px;">Signature: _______________</p>
-                <p style="margin: 8px 0 0 0; color: #6b7280; font-size: 14px;">Name: ${formData.candidateName}</p>
-                <p style="margin: 4px 0 0 0; color: #6b7280; font-size: 14px;">Date: _______________</p>
+              <div style="flex: 1; min-width: 200px; text-align: right;">
+                <p style="margin: 0; font-weight: 800; color: #1a1a2e; font-size: 15px; text-transform: uppercase; letter-spacing: 1px;">Candidate Acceptance</p>
+                <div style="margin-top: 40px; margin-left: auto; border-bottom: 2px solid #1a1a2e; width: 150px;"></div>
+                <p style="margin: 12px 0 0 0; color: #6b7280; font-size: 13px;">Signature</p>
+                <p style="margin: 20px 0 0 0; color: #1a1a2e; font-weight: 600; font-size: 15px;">${formData.candidateName}</p>
+                <p style="margin: 4px 0 0 0; color: #6b7280; font-size: 13px;">Date: _______________</p>
               </div>
             </div>
           </div>
+
+          <!-- Welcome Message -->
+          <div style="margin-top: 35px; background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border-radius: 14px; padding: 24px; text-align: center; border: 2px solid #a7f3d0;">
+            <p style="margin: 0; color: #065f46; font-size: 16px; font-weight: 700;">
+              🌟 Welcome to the Elite Forums Family! 🌟
+            </p>
+            <p style="margin: 8px 0 0 0; color: #047857; font-size: 14px;">
+              Please reply to confirm your acceptance by <strong>${formattedAcceptance}</strong>
+            </p>
+          </div>
         </div>
         
-        <div style="text-align: center; padding: 24px; color: #6b7280; font-size: 12px;">
-          <p style="margin: 5px 0;"><strong style="color: #1a1a2e;">Elite Forums</strong></p>
-          <p style="margin: 5px 0;">Shop No. 7, Golden Park Rd, near D Mart, Evershine City</p>
-          <p style="margin: 5px 0;">Vasai-Virar, Maharashtra 401208</p>
-          <p style="margin: 5px 0;">📞 ${formData.hrManagerPhone} | 📧 ${formData.hrManagerEmail}</p>
-          <p style="margin: 15px 0 0 0; padding-top: 15px; border-top: 1px solid #e5e7eb; color: #9ca3af;">
-            "Empowering Businesses Through Technology & Training"
-          </p>
+        <!-- Footer -->
+        <div style="text-align: center; padding: 28px; color: #6b7280; font-size: 12px;">
+          <p style="margin: 6px 0;"><strong style="color: #1a1a2e; font-size: 15px;">Elite Forums</strong></p>
+          <p style="margin: 4px 0;">Shop No. 7, Golden Park Rd, near D Mart, Evershine City</p>
+          <p style="margin: 4px 0;">Vasai-Virar, Maharashtra 401208, India</p>
+          <p style="margin: 10px 0;">📞 ${formData.hrManagerPhone} &nbsp;|&nbsp; 📧 ${formData.hrManagerEmail}</p>
+          <div style="margin-top: 18px; padding-top: 18px; border-top: 1px solid #e5e7eb;">
+            <p style="margin: 0; color: #9ca3af; font-style: italic; font-size: 13px;">
+              "Empowering Businesses Through Technology & Training"
+            </p>
+          </div>
         </div>
       </body>
       </html>
