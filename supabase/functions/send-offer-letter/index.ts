@@ -184,7 +184,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send to candidate
     const emailResponse = await resend.emails.send({
-      from: "Elite Forums HR <contact@eliteforums.in>",
+      from: "Elite Forums HR <hr@eliteforums.in>",
       to: [candidateEmail],
       subject: `🎉 Offer Letter - ${position} Position at Elite Forums`,
       html: emailHtml,
@@ -200,7 +200,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Send copy to HR (suchita.nigam@eliteforums.in)
     console.log("Sending copy to HR...");
     const hrEmailResponse = await resend.emails.send({
-      from: "Elite Forums System <contact@eliteforums.in>",
+      from: "Elite Forums System <hr@eliteforums.in>",
       to: ["suchita.nigam@eliteforums.in"],
       subject: `[HR Copy] Offer Letter Sent - ${candidateName} for ${position}`,
       html: `

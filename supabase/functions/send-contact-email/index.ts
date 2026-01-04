@@ -49,7 +49,7 @@ const handler = async (req: Request): Promise<Response> => {
         </p>
         <div style="border-top: 1px solid #333; margin: 16px 0; padding-top: 16px;">
           <p style="color: #888; font-size: 12px; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-            📞 +91 9322510601 &nbsp;|&nbsp; 📧 admin@eliteforums.in
+            📞 +91 9322510601 &nbsp;|&nbsp; 📧 hello@eliteforums.in
           </p>
           <p style="color: #666; font-size: 11px; margin: 12px 0 0 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
             © ${new Date().getFullYear()} Elite Forums. All rights reserved.
@@ -60,7 +60,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send notification email to admin
     const adminEmailResponse = await resend.emails.send({
-      from: "Elite Forums <contact@eliteforums.in>",
+      from: "Elite Forums <hello@eliteforums.in>",
       to: ["admin@eliteforums.in"],
       subject: `🔔 New Inquiry: ${subject}`,
       html: `
@@ -115,7 +115,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send confirmation email to the customer
     const customerEmailResponse = await resend.emails.send({
-      from: "Elite Forums <contact@eliteforums.in>",
+      from: "Elite Forums <hello@eliteforums.in>",
       to: [email],
       subject: "✨ Thank you for reaching out to Elite Forums!",
       html: `

@@ -86,6 +86,7 @@ const handler = async (req: Request): Promise<Response> => {
         
         <div style="text-align: center; padding: 20px; color: #6b7280; font-size: 12px;">
           <p style="margin: 5px 0;"><strong style="color: #1a1a2e;">Elite Forums</strong></p>
+          <p style="margin: 5px 0;">📧 hello@eliteforums.in</p>
           <p style="margin: 15px 0 0 0; padding-top: 15px; border-top: 1px solid #e5e7eb; color: #9ca3af;">
             "Empowering Businesses Through Technology & Training"
           </p>
@@ -98,7 +99,7 @@ const handler = async (req: Request): Promise<Response> => {
     for (const recipient of recipients) {
       try {
         await resend.emails.send({
-          from: "Elite Forums <contact@eliteforums.in>",
+          from: "Elite Forums <hello@eliteforums.in>",
           to: [recipient],
           subject: subject || `Reminder: ${taskTitle}`,
           html: emailHtml,

@@ -14,6 +14,14 @@ const projects = [
     gradient: "from-orange-500 via-red-500 to-pink-500",
   },
   {
+    title: "Biz Millennium Event App",
+    description:
+      "Comprehensive event management and ticketing platform for seamless event organization and attendee experiences.",
+    link: "https://events.bizmillennium.com/",
+    tags: ["Event Management", "Ticketing", "Enterprise"],
+    gradient: "from-emerald-500 via-teal-500 to-cyan-500",
+  },
+  {
     title: "HelloDigiSir",
     description:
       "Comprehensive digital marketing and branding platform helping businesses establish strong online presence.",
