@@ -50,7 +50,7 @@ const handler = async (req: Request): Promise<Response> => {
         </p>
         <div style="border-top: 1px solid #1e3a5f; margin: 16px 0; padding-top: 16px;">
           <p style="color: #5a7a9a; font-size: 12px; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-            📞 +91 9322510601 &nbsp;|&nbsp; 📧 edu@eliteforums.in
+            📞 +91 9322510601 &nbsp;|&nbsp; 📧 hello@eliteforums.in
           </p>
           <p style="color: #3a5a7a; font-size: 11px; margin: 12px 0 0 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
             © ${new Date().getFullYear()} Elite Forums Campus. All rights reserved.
@@ -189,6 +189,7 @@ const handler = async (req: Request): Promise<Response> => {
                 Have questions? Reach out directly:
               </p>
               <p style="color: #475569; font-size: 14px; margin: 0;">
+                📧 hello@eliteforums.in &nbsp;|&nbsp; 📞 +91 9322510601
                 📧 edu@eliteforums.in &nbsp;|&nbsp; 📞 +91 9322510601
               </p>
             </div>

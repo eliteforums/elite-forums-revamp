@@ -51,31 +51,50 @@ const handler = async (req: Request): Promise<Response> => {
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
           </head>
-          <body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
-            <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); padding: 30px; border-radius: 12px 12px 0 0; text-align: center;">
-              <img src="https://eliteforums.in/logo.png" alt="Elite Forums" style="height: 50px; margin-bottom: 10px;">
-              <h1 style="color: #ffffff; margin: 0; font-size: 22px;">Elite Forums</h1>
+          <body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 650px; margin: 0 auto; padding: 0; background-color: #f8fafc;">
+            <!-- Header with gradient -->
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #6b5b95 100%); padding: 40px 30px; text-align: center;">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td align="center">
+                    <img src="https://oyiisjfrcvyuflrrmqhq.supabase.co/storage/v1/object/public/assets/logo.png" alt="Elite Forums" style="height: 55px; margin-bottom: 12px;" onerror="this.style.display='none'">
+                    <h1 style="color: #ffffff; margin: 0; font-size: 26px; font-weight: 700; letter-spacing: 0.5px;">Elite Forums</h1>
+                    <p style="color: rgba(255,255,255,0.85); margin: 8px 0 0 0; font-size: 13px; letter-spacing: 1px;">Empowering Excellence Through Innovation</p>
+                  </td>
+                </tr>
+              </table>
             </div>
             
-            <div style="background-color: #ffffff; padding: 30px; border-radius: 0 0 12px 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-              <div style="font-size: 15px; line-height: 1.8; color: #374151;">
+            <!-- Main Content -->
+            <div style="background-color: #ffffff; padding: 40px 35px;">
+              <div style="font-size: 15px; line-height: 1.9; color: #374151;">
                 ${htmlBody}
               </div>
             </div>
             
-            <div style="text-align: center; padding: 20px; color: #6b7280; font-size: 12px;">
-              <p style="margin: 5px 0;"><strong style="color: #1a1a2e;">Elite Forums</strong></p>
-              <p style="margin: 5px 0;">Vasai-Virar, Maharashtra 401208</p>
-              <p style="margin: 15px 0 0 0; padding-top: 15px; border-top: 1px solid #e5e7eb; color: #9ca3af;">
-                "Empowering Businesses Through Technology & Training"
-              </p>
+            <!-- Footer -->
+            <div style="background: #1a1a2e; padding: 30px; text-align: center;">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td align="center">
+                    <p style="color: #e2e8f0; font-size: 14px; font-weight: 600; margin: 0 0 8px 0;">Elite Forums</p>
+                    <p style="color: #94a3b8; font-size: 12px; margin: 0 0 16px 0;">Shop No. 7, Golden Park Rd, Evershine City<br>Vasai-Virar, Maharashtra 401208</p>
+                    <div style="border-top: 1px solid #334155; padding-top: 16px; margin-top: 8px;">
+                      <p style="color: #64748b; font-size: 12px; margin: 0;">📞 +91 9322510601 &nbsp;|&nbsp; 📧 hello@eliteforums.in</p>
+                    </div>
+                    <p style="color: #475569; font-size: 11px; margin: 16px 0 0 0; font-style: italic;">
+                      "Empowering Businesses Through Technology & Training"
+                    </p>
+                  </td>
+                </tr>
+              </table>
             </div>
           </body>
           </html>
         `;
 
         await resend.emails.send({
-          from: "Elite Forums <contact@eliteforums.in>",
+          from: "Elite Forums <hello@eliteforums.in>",
           to: [recipient],
           subject: subject,
           html: emailHtml,
