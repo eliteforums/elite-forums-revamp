@@ -56,6 +56,36 @@ export type Database = {
         }
         Relationships: []
       }
+      client_logos: {
+        Row: {
+          created_at: string
+          display_order: number
+          id: string
+          image_url: string
+          is_active: boolean
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          image_url: string
+          is_active?: boolean
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          image_url?: string
+          is_active?: boolean
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       offer_letters: {
         Row: {
           acceptance_deadline: string | null
@@ -119,6 +149,45 @@ export type Database = {
         }
         Relationships: []
       }
+      projects: {
+        Row: {
+          created_at: string
+          description: string
+          display_order: number
+          gradient: string
+          id: string
+          is_active: boolean
+          link: string
+          tags: string[]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          display_order?: number
+          gradient?: string
+          id?: string
+          is_active?: boolean
+          link: string
+          tags?: string[]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          display_order?: number
+          gradient?: string
+          id?: string
+          is_active?: boolean
+          link?: string
+          tags?: string[]
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       scheduled_tasks: {
         Row: {
           created_at: string
@@ -165,6 +234,87 @@ export type Database = {
           reminder_sent?: boolean
           scheduled_at?: string
           task_type?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      team_members: {
+        Row: {
+          created_at: string
+          display_order: number
+          id: string
+          image_url: string | null
+          is_active: boolean
+          name: string
+          quote: string | null
+          role: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          name: string
+          quote?: string | null
+          role: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          name?: string
+          quote?: string | null
+          role?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      training_programs: {
+        Row: {
+          category: string | null
+          created_at: string
+          description: string
+          display_order: number
+          duration: string
+          gradient: string
+          icon: string
+          id: string
+          is_active: boolean
+          level: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          description: string
+          display_order?: number
+          duration?: string
+          gradient?: string
+          icon?: string
+          id?: string
+          is_active?: boolean
+          level?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          description?: string
+          display_order?: number
+          duration?: string
+          gradient?: string
+          icon?: string
+          id?: string
+          is_active?: boolean
+          level?: string
           title?: string
           updated_at?: string
         }
