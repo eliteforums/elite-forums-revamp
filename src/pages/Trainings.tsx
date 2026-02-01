@@ -26,138 +26,58 @@ import {
   Building,
   User,
   MessageSquare,
+  Database,
+  Code,
+  Shield,
+  Palette,
+  Link,
+  Wifi,
+  BarChart,
+  Cpu,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { AnimatedSection, StaggerContainer, StaggerItem } from "@/components/AnimatedSection";
 import CountUp from "@/components/CountUp";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
-const trainings = [
-  {
-    icon: Sparkles,
-    title: "Generative AI",
-    description:
-      "Master the cutting-edge field of generative AI, including large language models and creative applications.",
-    duration: "12 Weeks",
-    level: "Advanced",
-    modules: 24,
-    color: "from-purple-600 to-pink-600",
-  },
-  {
-    icon: Globe,
-    title: "Web Development",
-    description:
-      "Build responsive, dynamic websites with modern frameworks and tools for professional applications.",
-    duration: "10 Weeks",
-    level: "Beginner",
-    modules: 18,
-    color: "from-blue-600 to-cyan-600",
-  },
-  {
-    icon: Layers,
-    title: "MERN Stack",
-    description:
-      "Become proficient in MongoDB, Express.js, React.js, and Node.js for full-stack development.",
-    duration: "14 Weeks",
-    level: "Intermediate",
-    modules: 32,
-    color: "from-green-600 to-emerald-600",
-  },
-  {
-    icon: BarChart3,
-    title: "Data Science",
-    description:
-      "Transform raw data into valuable insights through statistical analysis and predictive modeling.",
-    duration: "12 Weeks",
-    level: "Intermediate",
-    modules: 26,
-    color: "from-orange-600 to-amber-600",
-  },
-  {
-    icon: Brain,
-    title: "AI/ML",
-    description:
-      "Develop expertise in artificial intelligence, machine learning algorithms, and neural networks.",
-    duration: "16 Weeks",
-    level: "Advanced",
-    modules: 36,
-    color: "from-indigo-600 to-violet-600",
-  },
-  {
-    icon: Smartphone,
-    title: "App Development",
-    description:
-      "Create native and cross-platform mobile applications using modern frameworks.",
-    duration: "10 Weeks",
-    level: "Intermediate",
-    modules: 20,
-    color: "from-rose-600 to-red-600",
-  },
-  {
-    icon: Cloud,
-    title: "Cloud Computing",
-    description:
-      "Gain hands-on experience with AWS, Azure, and cloud architecture best practices.",
-    duration: "8 Weeks",
-    level: "Intermediate",
-    modules: 16,
-    color: "from-sky-600 to-blue-600",
-  },
-  {
-    icon: TrendingUp,
-    title: "Digital Marketing",
-    description:
-      "Master SEO, SEM, social media marketing, and analytics to drive business growth online.",
-    duration: "8 Weeks",
-    level: "Beginner",
-    modules: 14,
-    color: "from-pink-600 to-fuchsia-600",
-  },
-  {
-    icon: Briefcase,
-    title: "DevOps & CI/CD",
-    description:
-      "Learn containerization, automation, and continuous integration practices for modern software delivery.",
-    duration: "10 Weeks",
-    level: "Advanced",
-    modules: 22,
-    color: "from-teal-600 to-cyan-600",
-  },
-  {
-    icon: Building2,
-    title: "Python Programming",
-    description:
-      "Comprehensive Python training from basics to advanced concepts including automation and scripting.",
-    duration: "8 Weeks",
-    level: "Beginner",
-    modules: 16,
-    color: "from-yellow-600 to-orange-600",
-  },
-  {
-    icon: Award,
-    title: "Cybersecurity",
-    description:
-      "Learn ethical hacking, network security, and cybersecurity best practices for enterprise protection.",
-    duration: "12 Weeks",
-    level: "Advanced",
-    modules: 28,
-    color: "from-red-600 to-rose-600",
-  },
-  {
-    icon: Users,
-    title: "UI/UX Design",
-    description:
-      "Master user interface design, user experience principles, and modern design tools like Figma.",
-    duration: "8 Weeks",
-    level: "Beginner",
-    modules: 18,
-    color: "from-violet-600 to-purple-600",
-  },
-];
+interface TrainingProgram {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  gradient: string;
+  duration: string;
+  level: string;
+  category: string | null;
+}
+
+const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+  Sparkles,
+  Globe,
+  Layers,
+  BarChart3,
+  Brain,
+  Smartphone,
+  Cloud,
+  TrendingUp,
+  Briefcase,
+  Building2,
+  Award,
+  Users,
+  Database,
+  Code,
+  Shield,
+  Palette,
+  Link,
+  Wifi,
+  BarChart,
+  CheckCircle,
+  Cpu,
+};
 
 const stats = [
   { icon: Users, value: 3500, suffix: "+", label: "Professionals Trained" },
@@ -212,9 +132,12 @@ const trainingOptions = [
   "Custom Program",
 ];
 
+
 const TrainingsPage = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [trainings, setTrainings] = useState<TrainingProgram[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -223,6 +146,23 @@ const TrainingsPage = () => {
     trainingInterest: "",
     message: "",
   });
+
+  useEffect(() => {
+    const fetchTrainings = async () => {
+      const { data, error } = await supabase
+        .from("training_programs")
+        .select("*")
+        .eq("is_active", true)
+        .order("display_order", { ascending: true });
+
+      if (!error && data) {
+        setTrainings(data);
+      }
+      setIsLoading(false);
+    };
+
+    fetchTrainings();
+  }, []);
 
   const scrollToPrograms = () => {
     const element = document.getElementById("industry-programs");
@@ -419,58 +359,69 @@ const TrainingsPage = () => {
                 </p>
               </AnimatedSection>
 
-              <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16" staggerDelay={0.08}>
-                {trainings.map((training, index) => (
-                  <StaggerItem key={index}>
-                    <motion.div
-                      whileHover={{ y: -8 }}
-                      transition={{ duration: 0.3 }}
-                      className="group relative bg-card rounded-2xl overflow-hidden h-full border border-border hover:border-accent/30 transition-all"
-                    >
-                      {/* Gradient Header */}
-                      <div className={`h-2 bg-gradient-to-r ${training.color}`} />
-                      
-                      <div className="p-8">
-                        <div className="flex items-start justify-between mb-6">
-                          <motion.div
-                            whileHover={{ rotate: 10, scale: 1.1 }}
-                            className={`w-14 h-14 rounded-xl bg-gradient-to-r ${training.color} flex items-center justify-center`}
-                          >
-                            <training.icon className="h-7 w-7 text-white" />
-                          </motion.div>
-                          <span className={`px-3 py-1 text-xs font-medium rounded-full ${
-                            training.level === 'Advanced' 
-                              ? 'bg-purple-500/10 text-purple-400' 
-                              : training.level === 'Intermediate'
-                              ? 'bg-blue-500/10 text-blue-400'
-                              : 'bg-green-500/10 text-green-400'
-                          }`}>
-                            {training.level}
-                          </span>
-                        </div>
-                        
-                        <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-accent transition-colors">
-                          {training.title}
-                        </h3>
-                        <p className="text-muted-foreground leading-relaxed mb-6">
-                          {training.description}
-                        </p>
-                        
-                        <div className="flex items-center gap-4 pt-4 border-t border-border">
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <Clock className="h-4 w-4" />
-                            {training.duration}
+              {isLoading ? (
+                <div className="flex justify-center py-12">
+                  <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full" />
+                </div>
+              ) : (
+                <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16" staggerDelay={0.08}>
+                  {trainings.map((training, index) => {
+                    const IconComponent = iconMap[training.icon] || Code;
+                    return (
+                      <StaggerItem key={training.id}>
+                        <motion.div
+                          whileHover={{ y: -8 }}
+                          transition={{ duration: 0.3 }}
+                          className="group relative bg-card rounded-2xl overflow-hidden h-full border border-border hover:border-accent/30 transition-all"
+                        >
+                          {/* Gradient Header */}
+                          <div className={`h-2 bg-gradient-to-r ${training.gradient}`} />
+                          
+                          <div className="p-8">
+                            <div className="flex items-start justify-between mb-6">
+                              <motion.div
+                                whileHover={{ rotate: 10, scale: 1.1 }}
+                                className={`w-14 h-14 rounded-xl bg-gradient-to-r ${training.gradient} flex items-center justify-center`}
+                              >
+                                <IconComponent className="h-7 w-7 text-white" />
+                              </motion.div>
+                              <span className={`px-3 py-1 text-xs font-medium rounded-full ${
+                                training.level.includes('Advanced') 
+                                  ? 'bg-purple-500/10 text-purple-400' 
+                                  : training.level.includes('Intermediate')
+                                  ? 'bg-blue-500/10 text-blue-400'
+                                  : 'bg-green-500/10 text-green-400'
+                              }`}>
+                                {training.level}
+                              </span>
+                            </div>
+                            
+                            <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-accent transition-colors">
+                              {training.title}
+                            </h3>
+                            <p className="text-muted-foreground leading-relaxed mb-6">
+                              {training.description}
+                            </p>
+                            
+                            <div className="flex items-center gap-4 pt-4 border-t border-border">
+                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                <Clock className="h-4 w-4" />
+                                {training.duration}
+                              </div>
+                              {training.category && (
+                                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                  <BookOpen className="h-4 w-4" />
+                                  {training.category}
+                                </div>
+                              )}
+                            </div>
                           </div>
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <BookOpen className="h-4 w-4" />
-                            {training.modules} Modules
-                          </div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  </StaggerItem>
-                ))}
-              </StaggerContainer>
+                        </motion.div>
+                      </StaggerItem>
+                    );
+                  })}
+                </StaggerContainer>
+              )}
 
               <AnimatedSection delay={0.3} className="text-center">
                 <Button
@@ -553,7 +504,7 @@ const TrainingsPage = () => {
                     Get in touch to learn more about our corporate training solutions.
                   </p>
                   <div className="flex flex-wrap justify-center gap-4">
-                    <Link to="/#contact">
+                    <RouterLink to="/#contact">
                       <Button
                         size="lg"
                         className="bg-gradient-primary hover:opacity-90 transition-all group px-10 py-7 text-lg"
@@ -561,7 +512,7 @@ const TrainingsPage = () => {
                         Contact Us Today
                         <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                       </Button>
-                    </Link>
+                    </RouterLink>
                   </div>
                 </div>
               </AnimatedSection>

@@ -1,31 +1,38 @@
+import { useState, useEffect } from "react";
 import { AnimatedSection } from "./AnimatedSection";
+import { supabase } from "@/integrations/supabase/client";
 
-// Import client logos
-import averanceLogo from "@/assets/clients/averance.png";
-import bizMilleniumLogo from "@/assets/clients/biz-millenium.jpg";
-import identitySpaceLogo from "@/assets/clients/identity-space.png";
-import jumpstartLogo from "@/assets/clients/jumpstart.png";
-import crystaLogo from "@/assets/clients/crysta-international.png";
-import prepaiLogo from "@/assets/clients/prepai.png";
-import helloDigiSirLogo from "@/assets/clients/hello-digi-sir.jpeg";
-import noshItLogo from "@/assets/clients/nosh-it.jpg";
-import identityBrandLogo from "@/assets/clients/identity-brand.png";
-import skpFilmsLogo from "@/assets/clients/skp-films.jpg";
-
-const clients = [
-  { name: "Averance Media", logo: averanceLogo },
-  { name: "Biz Millenium", logo: bizMilleniumLogo },
-  { name: "Identity Space", logo: identitySpaceLogo },
-  { name: "Jumpstart", logo: jumpstartLogo },
-  { name: "Crysta International", logo: crystaLogo },
-  { name: "PrepAI", logo: prepaiLogo },
-  { name: "Hello Digi Sir", logo: helloDigiSirLogo },
-  { name: "NOSH IT", logo: noshItLogo },
-  { name: "Identity Brand", logo: identityBrandLogo },
-  { name: "SKP Films", logo: skpFilmsLogo },
-];
+interface ClientLogo {
+  id: string;
+  name: string;
+  image_url: string;
+}
 
 const ClientLogos = () => {
+  const [clients, setClients] = useState<ClientLogo[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLogos = async () => {
+      const { data, error } = await supabase
+        .from("client_logos")
+        .select("*")
+        .eq("is_active", true)
+        .order("display_order", { ascending: true });
+
+      if (!error && data) {
+        setClients(data);
+      }
+      setIsLoading(false);
+    };
+
+    fetchLogos();
+  }, []);
+
+  if (isLoading || clients.length === 0) {
+    return null;
+  }
+
   return (
     <section className="py-20 bg-background relative overflow-hidden">
       {/* Background decoration */}
@@ -56,12 +63,12 @@ const ClientLogos = () => {
               {/* First set of logos */}
               {clients.map((client, index) => (
                 <div
-                  key={`first-${client.name}-${index}`}
+                  key={`first-${client.id}-${index}`}
                   className="logo-item flex-shrink-0 group"
                 >
                   <div className="w-28 h-16 md:w-40 md:h-24 flex items-center justify-center p-2 md:p-4 rounded-2xl bg-card border border-border hover:border-accent/30 transition-all duration-300 hover:shadow-lg">
                     <img
-                      src={client.logo}
+                      src={client.image_url}
                       alt={client.name}
                       className="max-w-full max-h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-300 opacity-70 group-hover:opacity-100"
                     />
@@ -71,12 +78,12 @@ const ClientLogos = () => {
               {/* Duplicate set for seamless loop */}
               {clients.map((client, index) => (
                 <div
-                  key={`second-${client.name}-${index}`}
+                  key={`second-${client.id}-${index}`}
                   className="logo-item flex-shrink-0 group"
                 >
                   <div className="w-28 h-16 md:w-40 md:h-24 flex items-center justify-center p-2 md:p-4 rounded-2xl bg-card border border-border hover:border-accent/30 transition-all duration-300 hover:shadow-lg">
                     <img
-                      src={client.logo}
+                      src={client.image_url}
                       alt={client.name}
                       className="max-w-full max-h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-300 opacity-70 group-hover:opacity-100"
                     />
