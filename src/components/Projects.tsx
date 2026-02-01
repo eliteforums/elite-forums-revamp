@@ -1,91 +1,56 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ExternalLink, ArrowUpRight, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AnimatedSection } from "./AnimatedSection";
 import { Button } from "./ui/button";
+import { supabase } from "@/integrations/supabase/client";
 
-const projects = [
-  {
-    title: "NOSH IT",
-    description:
-      "Digital QR-based restaurant menu & ordering solution that streamlines dining experiences with contactless technology.",
-    link: "https://noshit.in",
-    tags: ["Restaurant Tech", "QR Ordering", "Digital Menu"],
-    gradient: "from-orange-500 via-red-500 to-pink-500",
-  },
-  {
-    title: "Biz Millennium Event App",
-    description:
-      "Comprehensive event management and ticketing platform for seamless event organization and attendee experiences.",
-    link: "https://events.bizmillennium.com/",
-    tags: ["Event Management", "Ticketing", "Enterprise"],
-    gradient: "from-emerald-500 via-teal-500 to-cyan-500",
-  },
-  {
-    title: "HelloDigiSir",
-    description:
-      "Comprehensive digital marketing and branding platform helping businesses establish strong online presence.",
-    link: "https://hellodigisir.in",
-    tags: ["Digital Marketing", "Branding", "Growth"],
-    gradient: "from-blue-500 via-purple-500 to-pink-500",
-  },
-  {
-    title: "PrepAI",
-    description:
-      "AI-powered interview preparation and learning platform that helps candidates practice and improve their skills.",
-    link: "https://theprepai.com",
-    tags: ["AI/ML", "EdTech", "Interview Prep"],
-    gradient: "from-green-500 via-teal-500 to-cyan-500",
-  },
-  {
-    title: "Crysta International",
-    description:
-      "Premier management institute offering professional development and leadership training programs.",
-    link: "https://www.crystalinternational.in/",
-    tags: ["Management", "Education", "Leadership"],
-    gradient: "from-indigo-500 via-purple-500 to-violet-500",
-  },
-  {
-    title: "JumpStart24/7",
-    description:
-      "Professional roadside assistance service providing jumpstart and other emergency vehicle services 24/7.",
-    link: "https://jumpstart247.com/",
-    tags: ["Roadside Assistance", "Auto Services", "24/7"],
-    gradient: "from-yellow-500 via-amber-500 to-orange-500",
-  },
-  {
-    title: "Identity Space",
-    description:
-      "Innovative architecture firm creating stunning spaces with modern design principles and sustainable solutions.",
-    link: "https://identityspace.in",
-    tags: ["Architecture", "Design", "Interiors"],
-    gradient: "from-slate-500 via-gray-500 to-zinc-500",
-  },
-  {
-    title: "SKP Films",
-    description:
-      "Professional production house creating compelling visual content, films, and video productions.",
-    link: "https://skpfilms.com",
-    tags: ["Production House", "Films", "Video"],
-    gradient: "from-amber-500 via-orange-500 to-red-500",
-  },
-  {
-    title: "Identity Brand",
-    description:
-      "Creative branding and marketing agency specializing in video production, brand identity, and visual storytelling.",
-    link: "https://identitybrand.in",
-    tags: ["Branding", "Marketing", "Video Production"],
-    gradient: "from-cyan-500 via-blue-500 to-indigo-500",
-  },
-];
+interface Project {
+  id: string;
+  title: string;
+  description: string;
+  link: string;
+  tags: string[];
+  gradient: string;
+  display_order: number;
+}
 
 const INITIAL_PROJECTS_COUNT = 4;
 
 const Projects = () => {
   const [showAll, setShowAll] = useState(false);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      const { data, error } = await supabase
+        .from("projects")
+        .select("*")
+        .eq("is_active", true)
+        .order("display_order", { ascending: true });
+
+      if (!error && data) {
+        setProjects(data);
+      }
+      setIsLoading(false);
+    };
+
+    fetchProjects();
+  }, []);
   
   const visibleProjects = showAll ? projects : projects.slice(0, INITIAL_PROJECTS_COUNT);
   const hasMoreProjects = projects.length > INITIAL_PROJECTS_COUNT;
+
+  if (isLoading) {
+    return (
+      <section id="projects" className="py-20 bg-secondary/30 relative overflow-hidden">
+        <div className="container flex justify-center">
+          <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full" />
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="projects" className="py-20 bg-secondary/30 relative overflow-hidden">
@@ -110,7 +75,7 @@ const Projects = () => {
           <AnimatePresence mode="popLayout">
             {visibleProjects.map((project, index) => (
               <motion.a
-                key={project.title}
+                key={project.id}
                 href={project.link}
                 target="_blank"
                 rel="noopener noreferrer"
