@@ -1,21 +1,30 @@
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import logo from "@/assets/logo.png";
 
 const navLinks = [
   { name: "Home", href: "#home", isPage: false },
-  { name: "About", href: "#about", isPage: false },
+  {
+    name: "About",
+    href: "#about",
+    isPage: false,
+    children: [
+      { name: "About Us", href: "#about", isPage: false },
+      { name: "Trainings", href: "/trainings", isPage: true },
+      { name: "Projects", href: "/projects", isPage: true },
+      { name: "Products", href: "/products", isPage: true },
+    ],
+  },
   { name: "Services", href: "#services", isPage: false },
-  { name: "Trainings", href: "/trainings", isPage: true },
-  { name: "Projects", href: "#projects", isPage: false },
   { name: "Contact", href: "#contact", isPage: false },
 ];
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -29,7 +38,8 @@ const Header = () => {
 
   const handleNavClick = (href: string, isPage: boolean) => {
     setIsMobileMenuOpen(false);
-    
+    setOpenDropdown(null);
+
     if (isPage) {
       navigate(href);
       return;
@@ -58,6 +68,10 @@ const Header = () => {
     }
   };
 
+  const toggleDropdown = (name: string) => {
+    setOpenDropdown(openDropdown === name ? null : name);
+  };
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -75,14 +89,50 @@ const Header = () => {
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center gap-8">
           {navLinks.map((link) => (
-            <button
-              key={link.name}
-              onClick={() => handleNavClick(link.href, link.isPage)}
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors relative group"
-            >
-              {link.name}
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full" />
-            </button>
+            <div key={link.name} className="relative">
+              {link.children ? (
+                <div
+                  className="relative"
+                  onMouseEnter={() => setOpenDropdown(link.name)}
+                  onMouseLeave={() => setOpenDropdown(null)}
+                >
+                  <button
+                    className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1 group"
+                  >
+                    {link.name}
+                    <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${openDropdown === link.name ? 'rotate-180' : ''}`} />
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full" />
+                  </button>
+                  
+                  {/* Dropdown Menu */}
+                  <div
+                    className={`absolute top-full left-0 mt-2 w-48 bg-background/98 backdrop-blur-md border border-border rounded-xl shadow-lg overflow-hidden transition-all duration-200 ${
+                      openDropdown === link.name
+                        ? 'opacity-100 visible translate-y-0'
+                        : 'opacity-0 invisible -translate-y-2'
+                    }`}
+                  >
+                    {link.children.map((child) => (
+                      <button
+                        key={child.name}
+                        onClick={() => handleNavClick(child.href, child.isPage)}
+                        className="w-full text-left px-4 py-3 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent/10 transition-colors"
+                      >
+                        {child.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <button
+                  onClick={() => handleNavClick(link.href, link.isPage)}
+                  className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors relative group"
+                >
+                  {link.name}
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full" />
+                </button>
+              )}
+            </div>
           ))}
         </nav>
 
@@ -112,15 +162,41 @@ const Header = () => {
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="lg:hidden absolute top-full left-0 right-0 bg-background/98 backdrop-blur-md border-b shadow-lg animate-fade-in">
-          <nav className="container py-6 flex flex-col gap-4">
+          <nav className="container py-6 flex flex-col gap-2">
             {navLinks.map((link) => (
-              <button
-                key={link.name}
-                onClick={() => handleNavClick(link.href, link.isPage)}
-                className="text-lg font-medium text-foreground py-2 text-left hover:text-accent transition-colors"
-              >
-                {link.name}
-              </button>
+              <div key={link.name}>
+                {link.children ? (
+                  <div>
+                    <button
+                      onClick={() => toggleDropdown(link.name)}
+                      className="w-full flex items-center justify-between text-lg font-medium text-foreground py-2 hover:text-accent transition-colors"
+                    >
+                      {link.name}
+                      <ChevronDown className={`h-5 w-5 transition-transform duration-200 ${openDropdown === link.name ? 'rotate-180' : ''}`} />
+                    </button>
+                    {openDropdown === link.name && (
+                      <div className="pl-4 border-l-2 border-accent/30 ml-2 mt-1 space-y-1">
+                        {link.children.map((child) => (
+                          <button
+                            key={child.name}
+                            onClick={() => handleNavClick(child.href, child.isPage)}
+                            className="block w-full text-left text-base font-medium text-muted-foreground py-2 hover:text-accent transition-colors"
+                          >
+                            {child.name}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => handleNavClick(link.href, link.isPage)}
+                    className="text-lg font-medium text-foreground py-2 text-left hover:text-accent transition-colors"
+                  >
+                    {link.name}
+                  </button>
+                )}
+              </div>
             ))}
             <Button
               onClick={() => handleNavClick("#contact", false)}
