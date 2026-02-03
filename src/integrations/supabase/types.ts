@@ -149,6 +149,45 @@ export type Database = {
         }
         Relationships: []
       }
+      products: {
+        Row: {
+          created_at: string
+          description: string
+          display_order: number
+          gradient: string
+          id: string
+          is_active: boolean
+          link: string
+          tags: string[]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          display_order?: number
+          gradient?: string
+          id?: string
+          is_active?: boolean
+          link: string
+          tags?: string[]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          display_order?: number
+          gradient?: string
+          id?: string
+          is_active?: boolean
+          link?: string
+          tags?: string[]
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       projects: {
         Row: {
           created_at: string
