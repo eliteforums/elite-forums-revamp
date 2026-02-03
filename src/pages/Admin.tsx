@@ -5,7 +5,7 @@ import { User, Session } from "@supabase/supabase-js";
 import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LogOut, FileText, Mail, Users, Calendar, Send, FolderKanban, Image, GraduationCap, Package } from "lucide-react";
+import { LogOut, FileText, Mail, Users, Calendar, Send, FolderKanban, Image, GraduationCap, Package, Briefcase } from "lucide-react";
 import OfferLetterGenerator from "@/components/admin/OfferLetterGenerator";
 import OfferLetterRecords from "@/components/admin/OfferLetterRecords";
 import BulkMailSystem from "@/components/admin/BulkMailSystem";
@@ -16,6 +16,7 @@ import ProductsManager from "@/components/admin/ProductsManager";
 import ClientLogosManager from "@/components/admin/ClientLogosManager";
 import TeamManager from "@/components/admin/TeamManager";
 import TrainingProgramsManager from "@/components/admin/TrainingProgramsManager";
+import CareersManager from "@/components/admin/CareersManager";
 import logoImg from "@/assets/logo.png";
 
 const Admin = () => {
@@ -98,7 +99,7 @@ const Admin = () => {
         {/* Main Content */}
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <Tabs defaultValue="create-offer" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 lg:grid-cols-10 mb-6 h-auto gap-2 bg-muted/50 p-2">
+            <TabsList className="grid w-full grid-cols-3 lg:grid-cols-11 mb-6 h-auto gap-2 bg-muted/50 p-2">
               <TabsTrigger value="create-offer" className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground py-3">
                 <FileText className="w-4 h-4" />
                 <span className="hidden sm:inline">Create Offer</span>
@@ -149,6 +150,11 @@ const Admin = () => {
                 <span className="hidden sm:inline">Trainings</span>
                 <span className="sm:hidden">Train</span>
               </TabsTrigger>
+              <TabsTrigger value="careers" className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground py-3">
+                <Briefcase className="w-4 h-4" />
+                <span className="hidden sm:inline">Careers</span>
+                <span className="sm:hidden">Jobs</span>
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="create-offer" className="mt-0">
@@ -189,6 +195,10 @@ const Admin = () => {
 
             <TabsContent value="trainings" className="mt-0">
               <TrainingProgramsManager />
+            </TabsContent>
+
+            <TabsContent value="careers" className="mt-0">
+              <CareersManager />
             </TabsContent>
           </Tabs>
         </main>
