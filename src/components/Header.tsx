@@ -14,10 +14,10 @@ const navLinks = [
       { name: "About Us", href: "#about", isPage: false },
       { name: "Trainings", href: "/trainings", isPage: true },
       { name: "Projects", href: "/projects", isPage: true },
-      { name: "Products", href: "/products", isPage: true },
     ],
   },
   { name: "Services", href: "#services", isPage: false },
+  { name: "Products", href: "#products", isPage: false },
   { name: "Contact", href: "#contact", isPage: false },
 ];
 
