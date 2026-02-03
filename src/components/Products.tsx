@@ -52,10 +52,6 @@ const Products = () => {
     );
   }
 
-  if (products.length === 0) {
-    return null;
-  }
-
   return (
     <section id="products" className="py-20 bg-secondary/30 relative overflow-hidden">
       {/* Background decoration */}
@@ -74,94 +70,102 @@ const Products = () => {
           </p>
         </AnimatedSection>
 
-        <motion.div layout className="grid md:grid-cols-2 gap-8">
-          <AnimatePresence mode="popLayout">
-            {visibleProducts.map((product, index) => (
-              <motion.a
-                key={product.id}
-                href={product.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                layout
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                whileHover={{ y: -10 }}
-                className="group block"
-              >
-                <div className="bg-card rounded-3xl overflow-hidden border border-border hover:border-accent/30 transition-all duration-500 h-full hover:shadow-card-hover">
-                  {/* Product Preview */}
-                  <div className="h-56 relative overflow-hidden bg-muted">
-                    <iframe
-                      src={product.link}
-                      title={product.title}
-                      className="w-full h-[400px] scale-[0.5] origin-top-left pointer-events-none"
-                      style={{ width: '200%', height: '800px' }}
-                      loading="lazy"
-                    />
-                    <div className={`absolute inset-0 bg-gradient-to-t ${product.gradient} opacity-20`} />
-                    
-                    {/* Hover overlay */}
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center">
-                      <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <ExternalLink className="h-6 w-6 text-white" />
+        {products.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground text-lg">Coming soon! We're working on exciting new products.</p>
+          </div>
+        ) : (
+          <>
+            <motion.div layout className="grid md:grid-cols-2 gap-8">
+              <AnimatePresence mode="popLayout">
+                {visibleProducts.map((product, index) => (
+                  <motion.a
+                    key={product.id}
+                    href={product.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    layout
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.4, delay: index * 0.1 }}
+                    whileHover={{ y: -10 }}
+                    className="group block"
+                  >
+                    <div className="bg-card rounded-3xl overflow-hidden border border-border hover:border-accent/30 transition-all duration-500 h-full hover:shadow-card-hover">
+                      {/* Product Preview */}
+                      <div className="h-56 relative overflow-hidden bg-muted">
+                        <iframe
+                          src={product.link}
+                          title={product.title}
+                          className="w-full h-[400px] scale-[0.5] origin-top-left pointer-events-none"
+                          style={{ width: '200%', height: '800px' }}
+                          loading="lazy"
+                        />
+                        <div className={`absolute inset-0 bg-gradient-to-t ${product.gradient} opacity-20`} />
+                        
+                        {/* Hover overlay */}
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center">
+                          <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <ExternalLink className="h-6 w-6 text-white" />
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="p-8">
+                        <div className="flex items-start justify-between mb-4">
+                          <h3 className="text-2xl font-bold text-foreground group-hover:text-accent transition-colors">
+                            {product.title}
+                          </h3>
+                          <ArrowUpRight className="h-6 w-6 text-muted-foreground group-hover:text-accent transition-all transform group-hover:-translate-y-1 group-hover:translate-x-1" />
+                        </div>
+                        <p className="text-muted-foreground mb-6 leading-relaxed text-lg">
+                          {product.description}
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {product.tags.map((tag, tagIndex) => (
+                            <span
+                              key={tagIndex}
+                              className="px-4 py-1.5 text-sm font-medium bg-secondary text-secondary-foreground rounded-full border border-border hover:border-accent/30 transition-colors"
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  
-                  <div className="p-8">
-                    <div className="flex items-start justify-between mb-4">
-                      <h3 className="text-2xl font-bold text-foreground group-hover:text-accent transition-colors">
-                        {product.title}
-                      </h3>
-                      <ArrowUpRight className="h-6 w-6 text-muted-foreground group-hover:text-accent transition-all transform group-hover:-translate-y-1 group-hover:translate-x-1" />
-                    </div>
-                    <p className="text-muted-foreground mb-6 leading-relaxed text-lg">
-                      {product.description}
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {product.tags.map((tag, tagIndex) => (
-                        <span
-                          key={tagIndex}
-                          className="px-4 py-1.5 text-sm font-medium bg-secondary text-secondary-foreground rounded-full border border-border hover:border-accent/30 transition-colors"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </motion.a>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+                  </motion.a>
+                ))}
+              </AnimatePresence>
+            </motion.div>
 
-        {/* Show More/Less Button */}
-        {hasMoreProducts && (
-          <motion.div 
-            className="flex justify-center mt-12"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-          >
-            <Button
-              onClick={() => setShowAll(!showAll)}
-              variant="outline"
-              size="lg"
-              className="group px-8 py-6 text-lg font-semibold rounded-full border-2 border-accent/30 hover:border-accent hover:bg-accent/10 transition-all duration-300"
-            >
-              <span className="mr-2">
-                {showAll ? "Show Less" : `Show More (${products.length - INITIAL_PRODUCTS_COUNT} more)`}
-              </span>
-              <motion.div
-                animate={{ rotate: showAll ? 180 : 0 }}
-                transition={{ duration: 0.3 }}
+            {/* Show More/Less Button */}
+            {hasMoreProducts && (
+              <motion.div 
+                className="flex justify-center mt-12"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
               >
-                <ChevronDown className="h-5 w-5" />
+                <Button
+                  onClick={() => setShowAll(!showAll)}
+                  variant="outline"
+                  size="lg"
+                  className="group px-8 py-6 text-lg font-semibold rounded-full border-2 border-accent/30 hover:border-accent hover:bg-accent/10 transition-all duration-300"
+                >
+                  <span className="mr-2">
+                    {showAll ? "Show Less" : `Show More (${products.length - INITIAL_PRODUCTS_COUNT} more)`}
+                  </span>
+                  <motion.div
+                    animate={{ rotate: showAll ? 180 : 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <ChevronDown className="h-5 w-5" />
+                  </motion.div>
+                </Button>
               </motion.div>
-            </Button>
-          </motion.div>
+            )}
+          </>
         )}
       </div>
     </section>
