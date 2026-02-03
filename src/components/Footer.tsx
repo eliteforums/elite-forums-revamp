@@ -5,10 +5,10 @@ import { Link, useNavigate } from "react-router-dom";
 
 const footerLinks = {
   services: [
-    { name: "Web Development", href: "#services" },
-    { name: "App Development", href: "#services" },
-    { name: "AI Automation", href: "#services" },
-    { name: "Cloud Computing", href: "#services" },
+    { name: "Web Development", href: "/#services" },
+    { name: "App Development", href: "/#services" },
+    { name: "AI Automation", href: "/#services" },
+    { name: "Cloud Computing", href: "/#services" },
   ],
   trainings: [
     { name: "Generative AI", href: "/trainings" },
@@ -17,9 +17,10 @@ const footerLinks = {
     { name: "Cloud Computing", href: "/trainings" },
   ],
   company: [
-    { name: "About Us", href: "#about" },
-    { name: "Projects", href: "#projects" },
-    { name: "Contact", href: "#contact" },
+    { name: "About Us", href: "/#about" },
+    { name: "Projects", href: "/projects" },
+    { name: "Careers", href: "/careers" },
+    { name: "Contact", href: "/#contact" },
   ],
 };
 
@@ -32,7 +33,24 @@ const Footer = () => {
   const navigate = useNavigate();
   
   const handleClick = (href: string) => {
-    if (href.startsWith("/")) {
+    if (href.startsWith("/#")) {
+      // Hash link with path - navigate to home and scroll to section
+      const hash = href.substring(1); // Remove leading /
+      if (window.location.pathname !== "/") {
+        navigate("/");
+        setTimeout(() => {
+          const element = document.querySelector(hash);
+          if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+          }
+        }, 100);
+      } else {
+        const element = document.querySelector(hash.substring(1));
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+    } else if (href.startsWith("/")) {
       navigate(href);
     } else {
       const element = document.querySelector(href);
