@@ -4,8 +4,25 @@ import { supabase } from "@/integrations/supabase/client";
 import { User, Session } from "@supabase/supabase-js";
 import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LogOut, FileText, Mail, Users, Calendar, Send, FolderKanban, Image, GraduationCap, Package, Briefcase } from "lucide-react";
+import { 
+  LogOut, FileText, Mail, Users, Calendar, Send, 
+  FolderKanban, Image, GraduationCap, Package, Briefcase, Home 
+} from "lucide-react";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+  SidebarTrigger,
+  SidebarInset,
+  SidebarFooter,
+} from "@/components/ui/sidebar";
 import OfferLetterGenerator from "@/components/admin/OfferLetterGenerator";
 import OfferLetterRecords from "@/components/admin/OfferLetterRecords";
 import BulkMailSystem from "@/components/admin/BulkMailSystem";
@@ -19,10 +36,41 @@ import TrainingProgramsManager from "@/components/admin/TrainingProgramsManager"
 import CareersManager from "@/components/admin/CareersManager";
 import logoImg from "@/assets/logo.png";
 
+type AdminSection = 
+  | "create-offer" 
+  | "records" 
+  | "bulk-mail" 
+  | "bulk-offers" 
+  | "scheduler" 
+  | "projects" 
+  | "products" 
+  | "clients" 
+  | "team" 
+  | "trainings" 
+  | "careers";
+
+const hrMenuItems = [
+  { id: "create-offer" as const, title: "Create Offer", icon: FileText },
+  { id: "records" as const, title: "Records", icon: Users },
+  { id: "bulk-mail" as const, title: "Bulk Mail", icon: Mail },
+  { id: "bulk-offers" as const, title: "Bulk Offers", icon: Send },
+  { id: "scheduler" as const, title: "Scheduler", icon: Calendar },
+];
+
+const cmsMenuItems = [
+  { id: "projects" as const, title: "Projects", icon: FolderKanban },
+  { id: "products" as const, title: "Products", icon: Package },
+  { id: "clients" as const, title: "Clients", icon: Image },
+  { id: "team" as const, title: "Team", icon: Users },
+  { id: "trainings" as const, title: "Trainings", icon: GraduationCap },
+  { id: "careers" as const, title: "Careers", icon: Briefcase },
+];
+
 const Admin = () => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [activeSection, setActiveSection] = useState<AdminSection>("create-offer");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -56,6 +104,40 @@ const Admin = () => {
     navigate("/auth");
   };
 
+  const renderContent = () => {
+    switch (activeSection) {
+      case "create-offer":
+        return <OfferLetterGenerator />;
+      case "records":
+        return <OfferLetterRecords />;
+      case "bulk-mail":
+        return <BulkMailSystem />;
+      case "bulk-offers":
+        return <BulkOfferLetters />;
+      case "scheduler":
+        return <TaskScheduler />;
+      case "projects":
+        return <ProjectsManager />;
+      case "products":
+        return <ProductsManager />;
+      case "clients":
+        return <ClientLogosManager />;
+      case "team":
+        return <TeamManager />;
+      case "trainings":
+        return <TrainingProgramsManager />;
+      case "careers":
+        return <CareersManager />;
+      default:
+        return <OfferLetterGenerator />;
+    }
+  };
+
+  const getSectionTitle = () => {
+    const allItems = [...hrMenuItems, ...cmsMenuItems];
+    return allItems.find(item => item.id === activeSection)?.title || "Dashboard";
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -75,134 +157,106 @@ const Admin = () => {
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
-      <div className="min-h-screen bg-background">
-        {/* Header */}
-        <header className="bg-card border-b border-border sticky top-0 z-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16">
+      <SidebarProvider>
+        <div className="min-h-screen flex w-full bg-background">
+          <Sidebar className="border-r border-border">
+            <SidebarHeader className="border-b border-border p-4">
               <div className="flex items-center gap-3">
-                <img src={logoImg} alt="Elite Forums" className="h-10" />
-                <div>
-                  <h1 className="text-lg font-semibold text-foreground">Admin Panel</h1>
-                  <p className="text-xs text-muted-foreground">{user.email}</p>
+                <img src={logoImg} alt="Elite Forums" className="h-8" />
+                <div className="flex flex-col">
+                  <span className="font-semibold text-sm text-foreground">Elite Forums</span>
+                  <span className="text-xs text-muted-foreground">Admin Panel</span>
                 </div>
               </div>
-              
-              <Button variant="outline" size="sm" onClick={handleLogout}>
-                <LogOut className="w-4 h-4 mr-2" />
-                Logout
-              </Button>
-            </div>
-          </div>
-        </header>
+            </SidebarHeader>
 
-        {/* Main Content */}
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <Tabs defaultValue="create-offer" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 lg:grid-cols-11 mb-6 h-auto gap-2 bg-muted/50 p-2">
-              <TabsTrigger value="create-offer" className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground py-3">
-                <FileText className="w-4 h-4" />
-                <span className="hidden sm:inline">Create Offer</span>
-                <span className="sm:hidden">Create</span>
-              </TabsTrigger>
-              <TabsTrigger value="records" className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground py-3">
-                <Users className="w-4 h-4" />
-                <span className="hidden sm:inline">Records</span>
-                <span className="sm:hidden">Records</span>
-              </TabsTrigger>
-              <TabsTrigger value="bulk-mail" className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground py-3">
-                <Mail className="w-4 h-4" />
-                <span className="hidden sm:inline">Bulk Mail</span>
-                <span className="sm:hidden">Mail</span>
-              </TabsTrigger>
-              <TabsTrigger value="bulk-offers" className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground py-3">
-                <Send className="w-4 h-4" />
-                <span className="hidden sm:inline">Bulk Offers</span>
-                <span className="sm:hidden">Offers</span>
-              </TabsTrigger>
-              <TabsTrigger value="scheduler" className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground py-3">
-                <Calendar className="w-4 h-4" />
-                <span className="hidden sm:inline">Scheduler</span>
-                <span className="sm:hidden">Tasks</span>
-              </TabsTrigger>
-              <TabsTrigger value="projects" className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground py-3">
-                <FolderKanban className="w-4 h-4" />
-                <span className="hidden sm:inline">Projects</span>
-                <span className="sm:hidden">Projects</span>
-              </TabsTrigger>
-              <TabsTrigger value="products" className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground py-3">
-                <Package className="w-4 h-4" />
-                <span className="hidden sm:inline">Products</span>
-                <span className="sm:hidden">Products</span>
-              </TabsTrigger>
-              <TabsTrigger value="clients" className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground py-3">
-                <Image className="w-4 h-4" />
-                <span className="hidden sm:inline">Clients</span>
-                <span className="sm:hidden">Clients</span>
-              </TabsTrigger>
-              <TabsTrigger value="team" className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground py-3">
-                <Users className="w-4 h-4" />
-                <span className="hidden sm:inline">Team</span>
-                <span className="sm:hidden">Team</span>
-              </TabsTrigger>
-              <TabsTrigger value="trainings" className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground py-3">
-                <GraduationCap className="w-4 h-4" />
-                <span className="hidden sm:inline">Trainings</span>
-                <span className="sm:hidden">Train</span>
-              </TabsTrigger>
-              <TabsTrigger value="careers" className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground py-3">
-                <Briefcase className="w-4 h-4" />
-                <span className="hidden sm:inline">Careers</span>
-                <span className="sm:hidden">Jobs</span>
-              </TabsTrigger>
-            </TabsList>
+            <SidebarContent>
+              {/* HR & Operations */}
+              <SidebarGroup>
+                <SidebarGroupLabel>HR & Operations</SidebarGroupLabel>
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {hrMenuItems.map((item) => (
+                      <SidebarMenuItem key={item.id}>
+                        <SidebarMenuButton 
+                          isActive={activeSection === item.id}
+                          onClick={() => setActiveSection(item.id)}
+                          className="cursor-pointer"
+                        >
+                          <item.icon className="h-4 w-4" />
+                          <span>{item.title}</span>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </SidebarGroup>
 
-            <TabsContent value="create-offer" className="mt-0">
-              <OfferLetterGenerator />
-            </TabsContent>
+              {/* Content Management */}
+              <SidebarGroup>
+                <SidebarGroupLabel>Content Management</SidebarGroupLabel>
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {cmsMenuItems.map((item) => (
+                      <SidebarMenuItem key={item.id}>
+                        <SidebarMenuButton 
+                          isActive={activeSection === item.id}
+                          onClick={() => setActiveSection(item.id)}
+                          className="cursor-pointer"
+                        >
+                          <item.icon className="h-4 w-4" />
+                          <span>{item.title}</span>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </SidebarGroup>
+            </SidebarContent>
 
-            <TabsContent value="records" className="mt-0">
-              <OfferLetterRecords />
-            </TabsContent>
+            <SidebarFooter className="border-t border-border p-4">
+              <div className="flex flex-col gap-3">
+                <div className="text-xs text-muted-foreground truncate">
+                  {user.email}
+                </div>
+                <div className="flex gap-2">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="flex-1"
+                    onClick={() => navigate("/")}
+                  >
+                    <Home className="w-4 h-4 mr-2" />
+                    Home
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={handleLogout}
+                  >
+                    <LogOut className="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>
+            </SidebarFooter>
+          </Sidebar>
 
-            <TabsContent value="bulk-mail" className="mt-0">
-              <BulkMailSystem />
-            </TabsContent>
+          <SidebarInset className="flex-1">
+            {/* Top Header */}
+            <header className="sticky top-0 z-10 flex h-14 items-center gap-4 border-b border-border bg-background px-4">
+              <SidebarTrigger className="-ml-1" />
+              <div className="flex-1">
+                <h1 className="text-lg font-semibold text-foreground">{getSectionTitle()}</h1>
+              </div>
+            </header>
 
-            <TabsContent value="bulk-offers" className="mt-0">
-              <BulkOfferLetters />
-            </TabsContent>
-
-            <TabsContent value="scheduler" className="mt-0">
-              <TaskScheduler />
-            </TabsContent>
-
-            <TabsContent value="projects" className="mt-0">
-              <ProjectsManager />
-            </TabsContent>
-
-            <TabsContent value="products" className="mt-0">
-              <ProductsManager />
-            </TabsContent>
-
-            <TabsContent value="clients" className="mt-0">
-              <ClientLogosManager />
-            </TabsContent>
-
-            <TabsContent value="team" className="mt-0">
-              <TeamManager />
-            </TabsContent>
-
-            <TabsContent value="trainings" className="mt-0">
-              <TrainingProgramsManager />
-            </TabsContent>
-
-            <TabsContent value="careers" className="mt-0">
-              <CareersManager />
-            </TabsContent>
-          </Tabs>
-        </main>
-      </div>
+            {/* Main Content */}
+            <main className="flex-1 p-6">
+              {renderContent()}
+            </main>
+          </SidebarInset>
+        </div>
+      </SidebarProvider>
     </>
   );
 };
