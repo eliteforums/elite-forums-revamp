@@ -6,7 +6,7 @@ import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
 import { 
   LogOut, FileText, Mail, Users, Calendar, Send, 
-  FolderKanban, Image, GraduationCap, Package, Briefcase, Home 
+  FolderKanban, Image, GraduationCap, Package, Briefcase, Home, MessageSquare 
 } from "lucide-react";
 import {
   Sidebar,
@@ -34,6 +34,7 @@ import ClientLogosManager from "@/components/admin/ClientLogosManager";
 import TeamManager from "@/components/admin/TeamManager";
 import TrainingProgramsManager from "@/components/admin/TrainingProgramsManager";
 import CareersManager from "@/components/admin/CareersManager";
+import ReviewsManager from "@/components/admin/ReviewsManager";
 import logoImg from "@/assets/logo.png";
 
 type AdminSection = 
@@ -47,7 +48,8 @@ type AdminSection =
   | "clients" 
   | "team" 
   | "trainings" 
-  | "careers";
+  | "careers"
+  | "reviews";
 
 const hrMenuItems = [
   { id: "create-offer" as const, title: "Create Offer", icon: FileText },
@@ -64,6 +66,7 @@ const cmsMenuItems = [
   { id: "team" as const, title: "Team", icon: Users },
   { id: "trainings" as const, title: "Trainings", icon: GraduationCap },
   { id: "careers" as const, title: "Careers", icon: Briefcase },
+  { id: "reviews" as const, title: "Reviews", icon: MessageSquare },
 ];
 
 const Admin = () => {
@@ -128,6 +131,8 @@ const Admin = () => {
         return <TrainingProgramsManager />;
       case "careers":
         return <CareersManager />;
+      case "reviews":
+        return <ReviewsManager />;
       default:
         return <OfferLetterGenerator />;
     }

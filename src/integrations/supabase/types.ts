@@ -320,6 +320,33 @@ export type Database = {
         }
         Relationships: []
       }
+      student_reviews: {
+        Row: {
+          college: string
+          created_at: string
+          id: string
+          is_approved: boolean
+          name: string
+          review: string
+        }
+        Insert: {
+          college: string
+          created_at?: string
+          id?: string
+          is_approved?: boolean
+          name: string
+          review: string
+        }
+        Update: {
+          college?: string
+          created_at?: string
+          id?: string
+          is_approved?: boolean
+          name?: string
+          review?: string
+        }
+        Relationships: []
+      }
       team_members: {
         Row: {
           created_at: string
