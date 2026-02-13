@@ -324,6 +324,97 @@ const TrainingsPage = () => {
             </div>
           </section>
 
+          {/* Student Reviews Carousel */}
+          {reviews.length > 0 && (
+            <section className="py-20 bg-background relative overflow-hidden">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/5 rounded-full blur-[200px] pointer-events-none" />
+              
+              <div className="container relative">
+                <AnimatedSection className="text-center mb-16">
+                  <span className="inline-block px-4 py-2 rounded-full bg-accent/10 text-accent text-sm font-medium mb-6">
+                    Student Testimonials
+                  </span>
+                  <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6">
+                    What Our Students Say
+                  </h2>
+                  <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                    Hear from professionals who transformed their careers with our training programs
+                  </p>
+                </AnimatedSection>
+
+                <div className="relative">
+                  <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+                  <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+                  
+                  <div className="overflow-hidden">
+                    <div className="review-scroll-container">
+                      {reviews.map((review) => (
+                        <div key={`first-${review.id}`} className="review-card-item flex-shrink-0">
+                          <div className="w-[320px] md:w-[380px] bg-card rounded-2xl p-6 border border-border hover:border-accent/30 transition-all h-full">
+                            <p className="text-foreground/80 italic leading-relaxed mb-5 text-sm line-clamp-4">
+                              "{review.review}"
+                            </p>
+                            <div className="flex items-center gap-3 pt-4 border-t border-border">
+                              <div className="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center text-primary-foreground font-bold text-sm">
+                                {review.name.charAt(0)}
+                              </div>
+                              <div>
+                                <div className="font-semibold text-foreground text-sm">{review.name}</div>
+                                <div className="text-xs text-muted-foreground">{review.college}</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                      {reviews.map((review) => (
+                        <div key={`second-${review.id}`} className="review-card-item flex-shrink-0">
+                          <div className="w-[320px] md:w-[380px] bg-card rounded-2xl p-6 border border-border hover:border-accent/30 transition-all h-full">
+                            <p className="text-foreground/80 italic leading-relaxed mb-5 text-sm line-clamp-4">
+                              "{review.review}"
+                            </p>
+                            <div className="flex items-center gap-3 pt-4 border-t border-border">
+                              <div className="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center text-primary-foreground font-bold text-sm">
+                                {review.name.charAt(0)}
+                              </div>
+                              <div>
+                                <div className="font-semibold text-foreground text-sm">{review.name}</div>
+                                <div className="text-xs text-muted-foreground">{review.college}</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <style>{`
+                .review-scroll-container {
+                  display: flex;
+                  gap: 1.5rem;
+                  animation: scroll-reviews 25s linear infinite;
+                  width: max-content;
+                }
+                
+                @media (min-width: 768px) {
+                  .review-scroll-container {
+                    animation-duration: 35s;
+                  }
+                }
+                
+                @keyframes scroll-reviews {
+                  0% { transform: translateX(0); }
+                  100% { transform: translateX(-50%); }
+                }
+                
+                .review-scroll-container:hover {
+                  animation-play-state: paused;
+                }
+              `}</style>
+            </section>
+          )}
+
           {/* Features Section - EdTech Style */}
           <section className="py-20 bg-secondary/30 relative">
             <div className="container">
@@ -507,49 +598,6 @@ const TrainingsPage = () => {
             </div>
           </section>
 
-          {/* Student Reviews Section */}
-          {reviews.length > 0 && (
-            <section className="py-24 bg-secondary/30 relative">
-              <div className="container">
-                <AnimatedSection className="text-center mb-16">
-                  <span className="inline-block px-4 py-2 rounded-full bg-accent/10 text-accent text-sm font-medium mb-6">
-                    Student Testimonials
-                  </span>
-                  <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6">
-                    What Our Students Say
-                  </h2>
-                  <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                    Hear from professionals who transformed their careers with our training programs
-                  </p>
-                </AnimatedSection>
-
-                <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-6" staggerDelay={0.08}>
-                  {reviews.map((review, index) => (
-                    <StaggerItem key={review.id}>
-                      <motion.div whileHover={{ y: -5 }}>
-                        <Card className="h-full border-border hover:border-accent/30 transition-all">
-                          <CardContent className="p-8">
-                            <p className="text-foreground/80 italic leading-relaxed mb-6">
-                              "{review.review}"
-                            </p>
-                            <div className="flex items-center gap-3 pt-4 border-t border-border">
-                              <div className="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center text-primary-foreground font-bold">
-                                {review.name.charAt(0)}
-                              </div>
-                              <div>
-                                <div className="font-semibold text-foreground text-sm">{review.name}</div>
-                                <div className="text-xs text-muted-foreground">{review.college}</div>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      </motion.div>
-                    </StaggerItem>
-                  ))}
-                </StaggerContainer>
-              </div>
-            </section>
-          )}
 
           {/* CTA Section */}
           <section className="py-24 bg-background">
