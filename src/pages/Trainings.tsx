@@ -36,6 +36,7 @@ import {
   Cpu,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { motion, AnimatePresence } from "framer-motion";
 import { AnimatedSection, StaggerContainer, StaggerItem } from "@/components/AnimatedSection";
 import CountUp from "@/components/CountUp";
@@ -53,6 +54,14 @@ interface TrainingProgram {
   duration: string;
   level: string;
   category: string | null;
+}
+
+interface StudentReview {
+  id: string;
+  name: string;
+  college: string;
+  review: string;
+  created_at: string;
 }
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -137,6 +146,7 @@ const TrainingsPage = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [trainings, setTrainings] = useState<TrainingProgram[]>([]);
+  const [reviews, setReviews] = useState<StudentReview[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [formData, setFormData] = useState({
     name: "",
@@ -148,20 +158,26 @@ const TrainingsPage = () => {
   });
 
   useEffect(() => {
-    const fetchTrainings = async () => {
-      const { data, error } = await supabase
-        .from("training_programs")
-        .select("*")
-        .eq("is_active", true)
-        .order("display_order", { ascending: true });
+    const fetchData = async () => {
+      const [trainingsRes, reviewsRes] = await Promise.all([
+        supabase
+          .from("training_programs")
+          .select("*")
+          .eq("is_active", true)
+          .order("display_order", { ascending: true }),
+        supabase
+          .from("student_reviews")
+          .select("*")
+          .eq("is_approved", true)
+          .order("created_at", { ascending: false }),
+      ]);
 
-      if (!error && data) {
-        setTrainings(data);
-      }
+      if (!trainingsRes.error && trainingsRes.data) setTrainings(trainingsRes.data);
+      if (!reviewsRes.error && reviewsRes.data) setReviews(reviewsRes.data);
       setIsLoading(false);
     };
 
-    fetchTrainings();
+    fetchData();
   }, []);
 
   const scrollToPrograms = () => {
@@ -490,6 +506,50 @@ const TrainingsPage = () => {
               </div>
             </div>
           </section>
+
+          {/* Student Reviews Section */}
+          {reviews.length > 0 && (
+            <section className="py-24 bg-secondary/30 relative">
+              <div className="container">
+                <AnimatedSection className="text-center mb-16">
+                  <span className="inline-block px-4 py-2 rounded-full bg-accent/10 text-accent text-sm font-medium mb-6">
+                    Student Testimonials
+                  </span>
+                  <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6">
+                    What Our Students Say
+                  </h2>
+                  <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                    Hear from professionals who transformed their careers with our training programs
+                  </p>
+                </AnimatedSection>
+
+                <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-6" staggerDelay={0.08}>
+                  {reviews.map((review, index) => (
+                    <StaggerItem key={review.id}>
+                      <motion.div whileHover={{ y: -5 }}>
+                        <Card className="h-full border-border hover:border-accent/30 transition-all">
+                          <CardContent className="p-8">
+                            <p className="text-foreground/80 italic leading-relaxed mb-6">
+                              "{review.review}"
+                            </p>
+                            <div className="flex items-center gap-3 pt-4 border-t border-border">
+                              <div className="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center text-primary-foreground font-bold">
+                                {review.name.charAt(0)}
+                              </div>
+                              <div>
+                                <div className="font-semibold text-foreground text-sm">{review.name}</div>
+                                <div className="text-xs text-muted-foreground">{review.college}</div>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </motion.div>
+                    </StaggerItem>
+                  ))}
+                </StaggerContainer>
+              </div>
+            </section>
+          )}
 
           {/* CTA Section */}
           <section className="py-24 bg-background">
