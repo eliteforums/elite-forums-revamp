@@ -347,7 +347,7 @@ const TrainingsPage = () => {
                   <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
                   <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
                   
-                  <div className="overflow-hidden">
+                  <div className="review-scroll-wrapper">
                     <div className="review-scroll-container">
                       {reviews.map((review) => (
                         <div key={`first-${review.id}`} className="review-card-item flex-shrink-0 cursor-pointer" onClick={() => setSelectedReview(review)}>
@@ -391,16 +391,32 @@ const TrainingsPage = () => {
               </div>
 
               <style>{`
+                .review-scroll-wrapper {
+                  overflow-x: auto;
+                  -webkit-overflow-scrolling: touch;
+                  scrollbar-width: thin;
+                  scrollbar-color: hsl(var(--muted-foreground) / 0.3) transparent;
+                }
+                .review-scroll-wrapper::-webkit-scrollbar {
+                  height: 6px;
+                }
+                .review-scroll-wrapper::-webkit-scrollbar-track {
+                  background: transparent;
+                }
+                .review-scroll-wrapper::-webkit-scrollbar-thumb {
+                  background: hsl(var(--muted-foreground) / 0.3);
+                  border-radius: 3px;
+                }
                 .review-scroll-container {
                   display: flex;
                   gap: 1.5rem;
-                  animation: scroll-reviews 25s linear infinite;
+                  animation: scroll-reviews 45s linear infinite;
                   width: max-content;
                 }
                 
                 @media (min-width: 768px) {
                   .review-scroll-container {
-                    animation-duration: 35s;
+                    animation-duration: 60s;
                   }
                 }
                 
