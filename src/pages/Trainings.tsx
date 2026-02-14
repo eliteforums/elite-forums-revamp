@@ -147,6 +147,7 @@ const TrainingsPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [trainings, setTrainings] = useState<TrainingProgram[]>([]);
   const [reviews, setReviews] = useState<StudentReview[]>([]);
+  const [selectedReview, setSelectedReview] = useState<StudentReview | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [formData, setFormData] = useState({
     name: "",
@@ -349,7 +350,7 @@ const TrainingsPage = () => {
                   <div className="overflow-hidden">
                     <div className="review-scroll-container">
                       {reviews.map((review) => (
-                        <div key={`first-${review.id}`} className="review-card-item flex-shrink-0">
+                        <div key={`first-${review.id}`} className="review-card-item flex-shrink-0 cursor-pointer" onClick={() => setSelectedReview(review)}>
                           <div className="w-[320px] md:w-[380px] bg-card rounded-2xl p-6 border border-border hover:border-accent/30 transition-all h-full">
                             <p className="text-foreground/80 italic leading-relaxed mb-5 text-sm line-clamp-4">
                               "{review.review}"
@@ -367,7 +368,7 @@ const TrainingsPage = () => {
                         </div>
                       ))}
                       {reviews.map((review) => (
-                        <div key={`second-${review.id}`} className="review-card-item flex-shrink-0">
+                        <div key={`second-${review.id}`} className="review-card-item flex-shrink-0 cursor-pointer" onClick={() => setSelectedReview(review)}>
                           <div className="w-[320px] md:w-[380px] bg-card rounded-2xl p-6 border border-border hover:border-accent/30 transition-all h-full">
                             <p className="text-foreground/80 italic leading-relaxed mb-5 text-sm line-clamp-4">
                               "{review.review}"
@@ -414,6 +415,47 @@ const TrainingsPage = () => {
               `}</style>
             </section>
           )}
+
+          {/* Review Popup */}
+          <AnimatePresence>
+            {selectedReview && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
+                onClick={() => setSelectedReview(null)}
+              >
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                  transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                  className="bg-card rounded-2xl p-8 border border-border max-w-lg w-full relative shadow-2xl"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <button
+                    onClick={() => setSelectedReview(null)}
+                    className="absolute right-4 top-4 rounded-sm opacity-70 hover:opacity-100 transition-opacity"
+                  >
+                    <X className="h-5 w-5 text-foreground" />
+                  </button>
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-14 h-14 rounded-full bg-gradient-primary flex items-center justify-center text-primary-foreground font-bold text-xl">
+                      {selectedReview.name.charAt(0)}
+                    </div>
+                    <div>
+                      <div className="font-semibold text-foreground text-lg">{selectedReview.name}</div>
+                      <div className="text-sm text-muted-foreground">{selectedReview.college}</div>
+                    </div>
+                  </div>
+                  <p className="text-foreground/80 italic leading-relaxed text-base">
+                    "{selectedReview.review}"
+                  </p>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Features Section - EdTech Style */}
           <section className="py-20 bg-secondary/30 relative">
