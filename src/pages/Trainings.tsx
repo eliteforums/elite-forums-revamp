@@ -34,6 +34,7 @@ import {
   Wifi,
   BarChart,
   Cpu,
+  GitBranch,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -86,6 +87,7 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   BarChart,
   CheckCircle,
   Cpu,
+  GitBranch,
 };
 
 const stats = [
