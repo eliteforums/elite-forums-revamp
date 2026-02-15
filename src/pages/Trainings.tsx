@@ -65,29 +65,24 @@ interface StudentReview {
   created_at: string;
 }
 
-const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-  Sparkles,
-  Globe,
-  Layers,
-  BarChart3,
-  Brain,
-  Smartphone,
-  Cloud,
-  TrendingUp,
-  Briefcase,
-  Building2,
-  Award,
-  Users,
-  Database,
-  Code,
-  Shield,
-  Palette,
-  Link: LinkIcon,
-  Wifi,
-  BarChart,
-  CheckCircle,
-  Cpu,
-  GitBranch,
+const iconByTitle: Record<string, React.ComponentType<{ className?: string }>> = {
+  "Generative AI": Brain,
+  "Web Development": Globe,
+  "MERN Stack": Layers,
+  "Data Science": Database,
+  "AI & Machine Learning": Cpu,
+  "App Development": Smartphone,
+  "Cloud Computing": Cloud,
+  "Digital Marketing": TrendingUp,
+  "DevOps": GitBranch,
+  "Python Programming": Code,
+  "Cybersecurity": Shield,
+  "UI/UX Design": Palette,
+  "Blockchain": LinkIcon,
+  "IoT Development": Wifi,
+  "Data Analytics": BarChart,
+  "Software Testing": CheckCircle,
+  "Business Analytics": Briefcase,
 };
 
 const stats = [
@@ -533,7 +528,7 @@ const TrainingsPage = () => {
               ) : (
                 <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16" staggerDelay={0.08}>
                   {trainings.map((training, index) => {
-                    const IconComponent = iconMap[training.icon] || Code;
+                    const IconComponent = iconByTitle[training.title] || Code;
                     return (
                       <StaggerItem key={training.id}>
                         <motion.div
