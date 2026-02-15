@@ -46,11 +46,10 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
-interface TrainingProgram {
-  id: string;
+interface HardcodedTraining {
   title: string;
   description: string;
-  icon: string;
+  icon: React.ComponentType<{ className?: string }>;
   gradient: string;
   duration: string;
   level: string;
@@ -65,25 +64,25 @@ interface StudentReview {
   created_at: string;
 }
 
-const iconByTitle: Record<string, React.ComponentType<{ className?: string }>> = {
-  "Generative AI": Brain,
-  "Web Development": Globe,
-  "MERN Stack": Layers,
-  "Data Science": Database,
-  "AI & Machine Learning": Cpu,
-  "App Development": Smartphone,
-  "Cloud Computing": Cloud,
-  "Digital Marketing": TrendingUp,
-  "DevOps": GitBranch,
-  "Python Programming": Code,
-  "Cybersecurity": Shield,
-  "UI/UX Design": Palette,
-  "Blockchain": LinkIcon,
-  "IoT Development": Wifi,
-  "Data Analytics": BarChart,
-  "Software Testing": CheckCircle,
-  "Business Analytics": Briefcase,
-};
+const hardcodedTrainings: HardcodedTraining[] = [
+  { title: "Generative AI", description: "Master generative AI tools, prompt engineering, and large language models for real-world applications.", icon: Brain, gradient: "from-purple-500 to-pink-500", duration: "10-14 weeks", level: "Intermediate to Advanced", category: "AI" },
+  { title: "Web Development", description: "Build modern, responsive websites using HTML, CSS, JavaScript, and popular frameworks.", icon: Globe, gradient: "from-blue-500 to-cyan-500", duration: "10-14 weeks", level: "Beginner to Intermediate", category: "Development" },
+  { title: "MERN Stack", description: "Full-stack development with MongoDB, Express.js, React, and Node.js for scalable web apps.", icon: Layers, gradient: "from-green-500 to-teal-500", duration: "12-16 weeks", level: "Intermediate", category: "Development" },
+  { title: "Data Science", description: "Learn data analysis, visualization, and statistical modeling with Python and R.", icon: Database, gradient: "from-orange-500 to-amber-500", duration: "10-14 weeks", level: "Beginner to Intermediate", category: "Data" },
+  { title: "AI & Machine Learning", description: "Explore machine learning algorithms, neural networks, and deep learning frameworks.", icon: Cpu, gradient: "from-violet-500 to-purple-500", duration: "12-16 weeks", level: "Intermediate to Advanced", category: "AI & ML" },
+  { title: "App Development", description: "Create cross-platform mobile applications for iOS and Android using modern frameworks.", icon: Smartphone, gradient: "from-pink-500 to-rose-500", duration: "10-14 weeks", level: "Beginner to Intermediate", category: "Development" },
+  { title: "Cloud Computing", description: "Master cloud platforms like AWS, Azure, and Google Cloud for scalable applications.", icon: Cloud, gradient: "from-cyan-500 to-blue-500", duration: "8-12 weeks", level: "Intermediate", category: "Infrastructure" },
+  { title: "Digital Marketing", description: "Learn SEO, social media marketing, content marketing, and paid advertising strategies.", icon: TrendingUp, gradient: "from-amber-500 to-orange-500", duration: "6-8 weeks", level: "Beginner to Intermediate", category: "Marketing" },
+  { title: "DevOps", description: "Master CI/CD, containerization, and infrastructure automation for efficient software delivery.", icon: GitBranch, gradient: "from-indigo-500 to-blue-500", duration: "10-12 weeks", level: "Intermediate to Advanced", category: "Infrastructure" },
+  { title: "Python Programming", description: "Learn Python from basics to advanced concepts including OOP and data structures.", icon: Code, gradient: "from-yellow-500 to-green-500", duration: "8-10 weeks", level: "Beginner to Intermediate", category: "Development" },
+  { title: "Cybersecurity", description: "Learn to protect systems and networks from cyber threats and vulnerabilities.", icon: Shield, gradient: "from-red-500 to-orange-500", duration: "10-14 weeks", level: "Intermediate to Advanced", category: "Security" },
+  { title: "UI/UX Design", description: "Master user interface and user experience design principles and tools.", icon: Palette, gradient: "from-pink-500 to-purple-500", duration: "8-10 weeks", level: "Beginner to Intermediate", category: "Design" },
+  { title: "Blockchain", description: "Understand blockchain technology, smart contracts, and decentralized applications.", icon: LinkIcon, gradient: "from-emerald-500 to-teal-500", duration: "10-12 weeks", level: "Intermediate to Advanced", category: "Technology" },
+  { title: "IoT Development", description: "Build Internet of Things solutions connecting hardware and software systems.", icon: Wifi, gradient: "from-sky-500 to-indigo-500", duration: "10-12 weeks", level: "Intermediate", category: "Technology" },
+  { title: "Data Analytics", description: "Learn to analyze and visualize data using tools like Excel, Tableau, and Power BI.", icon: BarChart, gradient: "from-orange-400 to-yellow-500", duration: "6-8 weeks", level: "Beginner to Intermediate", category: "Data" },
+  { title: "Software Testing", description: "Master manual and automated testing methodologies for quality assurance.", icon: CheckCircle, gradient: "from-green-500 to-emerald-500", duration: "8-10 weeks", level: "Beginner to Intermediate", category: "Quality" },
+  { title: "Business Analytics", description: "Apply analytical methods to business problems for data-driven decision making.", icon: Briefcase, gradient: "from-slate-500 to-gray-600", duration: "8-10 weeks", level: "Intermediate", category: "Business" },
+];
 
 const stats = [
   { icon: Users, value: 3500, suffix: "+", label: "Professionals Trained" },
@@ -142,7 +141,7 @@ const trainingOptions = [
 const TrainingsPage = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [trainings, setTrainings] = useState<TrainingProgram[]>([]);
+  
   const [reviews, setReviews] = useState<StudentReview[]>([]);
   const [selectedReview, setSelectedReview] = useState<StudentReview | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -156,26 +155,18 @@ const TrainingsPage = () => {
   });
 
   useEffect(() => {
-    const fetchData = async () => {
-      const [trainingsRes, reviewsRes] = await Promise.all([
-        supabase
-          .from("training_programs")
-          .select("*")
-          .eq("is_active", true)
-          .order("display_order", { ascending: true }),
-        supabase
-          .from("student_reviews")
-          .select("*")
-          .eq("is_approved", true)
-          .order("created_at", { ascending: false }),
-      ]);
+    const fetchReviews = async () => {
+      const { data, error } = await supabase
+        .from("student_reviews")
+        .select("*")
+        .eq("is_approved", true)
+        .order("created_at", { ascending: false });
 
-      if (!trainingsRes.error && trainingsRes.data) setTrainings(trainingsRes.data);
-      if (!reviewsRes.error && reviewsRes.data) setReviews(reviewsRes.data);
+      if (!error && data) setReviews(data);
       setIsLoading(false);
     };
 
-    fetchData();
+    fetchReviews();
   }, []);
 
   const scrollToPrograms = () => {
@@ -527,10 +518,10 @@ const TrainingsPage = () => {
                 </div>
               ) : (
                 <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16" staggerDelay={0.08}>
-                  {trainings.map((training, index) => {
-                    const IconComponent = iconByTitle[training.title] || Code;
+                  {hardcodedTrainings.map((training, index) => {
+                    const IconComponent = training.icon;
                     return (
-                      <StaggerItem key={training.id}>
+                      <StaggerItem key={index}>
                         <motion.div
                           whileHover={{ y: -8 }}
                           transition={{ duration: 0.3 }}
