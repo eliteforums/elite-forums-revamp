@@ -25,7 +25,6 @@ const LenisWrapper = ({ children }: { children: React.ReactNode }) => {
   useLenis();
   return <>{children}</>;
 };
-};
 
 const App = () => (
   <HelmetProvider>
