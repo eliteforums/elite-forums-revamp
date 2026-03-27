@@ -1,3 +1,4 @@
+import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -21,8 +22,9 @@ import { useLenis } from "@/hooks/useLenis";
 const queryClient = new QueryClient();
 
 const LenisWrapper = ({ children }: { children: React.ReactNode }) => {
-  useLenis();
-  return <>{children}</>;
+  const wrapperRef = React.useRef<HTMLDivElement>(null);
+  useLenis(wrapperRef);
+  return <div ref={wrapperRef}>{children}</div>;
 };
 
 const App = () => (

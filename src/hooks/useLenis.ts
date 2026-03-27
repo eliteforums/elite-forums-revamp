@@ -1,7 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Lenis from 'lenis';
 
-export const useLenis = () => {
+export const useLenis = (wrapperRef?: React.RefObject<HTMLDivElement>) => {
+  const lenisRef = useRef<Lenis | null>(null);
+
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,
@@ -9,7 +11,11 @@ export const useLenis = () => {
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
+      wrapper: wrapperRef?.current || undefined,
+      content: wrapperRef?.current || undefined,
     });
+
+    lenisRef.current = lenis;
 
     function raf(time: number) {
       lenis.raf(time);
@@ -39,6 +45,7 @@ export const useLenis = () => {
 
     return () => {
       lenis.destroy();
+      lenisRef.current = null;
       document.removeEventListener('click', handleAnchorClick);
     };
   }, []);
