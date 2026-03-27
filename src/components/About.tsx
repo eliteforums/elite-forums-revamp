@@ -3,6 +3,7 @@ import { Quote, Users, Target, Lightbulb, Award, ArrowRight, Star } from "lucide
 import { motion } from "framer-motion";
 import { AnimatedSection, StaggerContainer, StaggerItem } from "./AnimatedSection";
 import { supabase } from "@/integrations/supabase/client";
+import BookingModal from "./BookingModal";
 
 import averanceLogo from "@/assets/clients/averance.png";
 import jumpstartLogo from "@/assets/clients/jumpstart.png";
@@ -56,6 +57,7 @@ const clientLogos = [
 
 const About = () => {
   const [teamQuotes, setTeamQuotes] = useState<TeamMember[]>([]);
+  const [bookingOpen, setBookingOpen] = useState(false);
 
   useEffect(() => {
     const fetchTeam = async () => {
@@ -180,12 +182,13 @@ const About = () => {
               </p>
             </div>
             <button
-              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => setBookingOpen(true)}
               className="inline-flex items-center gap-2 self-start md:self-auto px-6 py-3 rounded-full bg-accent text-accent-foreground text-sm font-semibold hover:bg-accent/90 transition-colors whitespace-nowrap"
             >
               Request Meeting 👋
               <ArrowRight className="h-3.5 w-3.5" />
             </button>
+            <BookingModal open={bookingOpen} onOpenChange={setBookingOpen} />
           </AnimatedSection>
 
           {/* Value cards */}
