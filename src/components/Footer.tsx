@@ -3,6 +3,16 @@ import { motion } from "framer-motion";
 import { Mail, Phone, MapPin, ArrowUpRight, Linkedin, Instagram, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
+import averanceLogo from "@/assets/clients/averance.png";
+import bizMilleniumLogo from "@/assets/clients/biz-millenium.jpg";
+import identitySpaceLogo from "@/assets/clients/identity-space.png";
+import jumpstartLogo from "@/assets/clients/jumpstart.png";
+import crystaInternationalLogo from "@/assets/clients/crysta-international.png";
+import prepaiLogo from "@/assets/clients/prepai.png";
+import helloDigiSirLogo from "@/assets/clients/hello-digi-sir.jpeg";
+import noshItLogo from "@/assets/clients/nosh-it.jpg";
+import identityBrandLogo from "@/assets/clients/identity-brand.png";
+
 const footerLinks = {
   services: [
     { name: "Web Development", href: "/#services" },
@@ -27,6 +37,18 @@ const footerLinks = {
 const socialLinks = [
   { icon: Linkedin, href: "https://in.linkedin.com/company/eliteforums", label: "LinkedIn" },
   { icon: Instagram, href: "https://www.instagram.com/eliteforums/", label: "Instagram" },
+];
+
+const clientLogos = [
+  { name: "Averance", image: averanceLogo },
+  { name: "Biz Millenium", image: bizMilleniumLogo },
+  { name: "Identity Space", image: identitySpaceLogo },
+  { name: "Jumpstart", image: jumpstartLogo },
+  { name: "Crysta International", image: crystaInternationalLogo },
+  { name: "PrepAI", image: prepaiLogo },
+  { name: "Hello Digi Sir", image: helloDigiSirLogo },
+  { name: "Nosh IT", image: noshItLogo },
+  { name: "Identity Brand", image: identityBrandLogo },
 ];
 
 const Footer = () => {
@@ -67,19 +89,27 @@ const Footer = () => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-12"
         >
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 leading-tight">
-            Need Help With<br />
-            <span className="text-accent">Large Platform?</span>
+            Have 🥳 Great Idea?<br />
+            <span className="text-accent">Tell Us About It.</span>
           </h2>
-          <button
-            onClick={() => handleClick("/#contact")}
-            className="inline-flex items-center gap-3 bg-accent text-accent-foreground px-8 py-4 rounded-full text-lg font-semibold hover:bg-accent/90 transition-colors"
-          >
-            Request Meeting 👋
-            <ArrowRight className="h-5 w-5" />
-          </button>
+          <div className="flex flex-wrap justify-center gap-4">
+            <button
+              onClick={() => handleClick("/#about")}
+              className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-7 py-3.5 rounded-full font-semibold hover:bg-accent/90 transition-colors"
+            >
+              About Us
+              <ArrowRight className="h-4 w-4" />
+            </button>
+            <button
+              onClick={() => handleClick("/#contact")}
+              className="inline-flex items-center gap-2 border-2 border-background/20 text-background px-7 py-3.5 rounded-full font-semibold hover:bg-background hover:text-foreground transition-colors"
+            >
+              Company Details
+            </button>
+          </div>
         </motion.div>
       </div>
 
@@ -199,12 +229,32 @@ const Footer = () => {
           </div>
         </div>
 
+        {/* Client logos strip */}
+        <div className="border-t border-background/10 mt-16 pt-8">
+          <div className="flex flex-wrap items-center justify-center gap-0 mb-8">
+            {clientLogos.map((client, index) => (
+              <div key={client.name} className="flex items-center">
+                <div className="px-4 py-2">
+                  <img
+                    src={client.image}
+                    alt={client.name}
+                    className="h-8 w-auto object-contain opacity-40 hover:opacity-70 transition-opacity invert"
+                  />
+                </div>
+                {index < clientLogos.length - 1 && (
+                  <div className="w-px h-6 bg-background/10 hidden md:block" />
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Bottom Bar */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="border-t border-background/10 mt-16 pt-8"
+          className="border-t border-background/10 pt-8"
         >
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-sm text-background/50">

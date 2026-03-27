@@ -1,5 +1,12 @@
-import { ArrowRight, CheckCircle } from "lucide-react";
+import { ArrowRight, CheckCircle, Globe, Users } from "lucide-react";
 import { motion } from "framer-motion";
+
+const capsules = [
+  { label: "Web Development", color: "bg-purple-400", rotate: "-rotate-6", delay: 0.5 },
+  { label: "AI Automation", color: "bg-rose-400", rotate: "rotate-3", delay: 0.6 },
+  { label: "App Development", color: "bg-orange-400", rotate: "-rotate-3", delay: 0.7 },
+  { label: "Digital Strategy", color: "bg-yellow-400", rotate: "rotate-6", delay: 0.8 },
+];
 
 const Hero = () => {
   const handleScroll = (href: string) => {
@@ -53,95 +60,82 @@ const Hero = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
+              className="flex flex-wrap items-center gap-4"
             >
               <button
-                onClick={() => handleScroll("#products")}
-                className="inline-flex items-center gap-3 bg-foreground text-background px-8 py-4 rounded-full text-base font-semibold hover:bg-foreground/90 transition-colors group"
+                onClick={() => handleScroll("#services")}
+                className="inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-accent-foreground px-7 py-3.5 rounded-full text-sm font-semibold transition-colors"
               >
-                Works
-                <span className="w-10 h-10 rounded-full bg-accent flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <ArrowRight className="h-5 w-5 text-accent-foreground" />
-                </span>
+                <Globe className="h-4 w-4" />
+                View Services
+                <ArrowRight className="h-4 w-4" />
+              </button>
+              <button
+                onClick={() => handleScroll("#contact")}
+                className="inline-flex items-center gap-2 border-2 border-foreground/20 text-foreground px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-foreground hover:text-background transition-colors"
+              >
+                <div className="w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center">
+                  <Users className="h-3 w-3 text-accent" />
+                </div>
+                Request Meeting
               </button>
             </motion.div>
           </div>
 
-          {/* Right - Phone Mockup */}
+          {/* Right - Capsule Shapes */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.5 }}
-            className="hidden lg:flex items-center justify-center relative"
+            className="hidden lg:flex items-end justify-center relative h-[480px]"
           >
-            <div className="relative">
-              {/* Phone frame */}
-              <div className="w-[300px] h-[600px] bg-foreground rounded-[3rem] p-3 shadow-2xl relative">
-                {/* Notch */}
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-7 bg-foreground rounded-b-2xl z-20" />
-                {/* Screen */}
-                <div className="w-full h-full bg-background rounded-[2.4rem] overflow-hidden relative">
-                  {/* Screen content */}
-                  <div className="p-6 pt-12 h-full flex flex-col">
-                    {/* Top bar */}
-                    <div className="flex items-center justify-between mb-8">
-                      <div className="w-8 h-8 rounded-full bg-accent/20" />
-                      <div className="flex gap-1">
-                        <div className="w-2 h-2 rounded-full bg-foreground/30" />
-                        <div className="w-2 h-2 rounded-full bg-foreground/30" />
-                        <div className="w-2 h-2 rounded-full bg-foreground/30" />
-                      </div>
-                    </div>
+            <div className="flex items-end gap-4">
+              {capsules.map((capsule, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 60 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: capsule.delay }}
+                  className={`relative ${capsule.rotate} hover:rotate-0 transition-transform duration-500`}
+                  style={{ height: index % 2 === 0 ? "320px" : "280px" }}
+                >
+                  <div
+                    className={`${capsule.color} rounded-full w-[80px] h-full flex items-center justify-center relative overflow-hidden shadow-lg`}
+                  >
+                    {/* Decorative circles */}
+                    <div className="absolute top-6 left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-white/20" />
+                    <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-white/15" />
                     
-                    {/* Card */}
-                    <div className="bg-accent/10 rounded-3xl p-6 mb-4">
-                      <div className="w-16 h-16 rounded-2xl bg-accent mb-4 flex items-center justify-center">
-                        <span className="text-accent-foreground font-bold text-xl">EF</span>
-                      </div>
-                      <h3 className="text-foreground font-bold text-xl mb-1">UI UX Design</h3>
-                      <p className="text-muted-foreground text-sm">Premium digital experiences</p>
-                    </div>
-
-                    {/* Stats row */}
-                    <div className="grid grid-cols-2 gap-3 mb-4">
-                      <div className="bg-secondary/60 rounded-2xl p-4 text-center">
-                        <div className="text-2xl font-bold text-foreground">50+</div>
-                        <div className="text-xs text-muted-foreground">Projects</div>
-                      </div>
-                      <div className="bg-secondary/60 rounded-2xl p-4 text-center">
-                        <div className="text-2xl font-bold text-foreground">100+</div>
-                        <div className="text-xs text-muted-foreground">Clients</div>
-                      </div>
-                    </div>
-
-                    {/* Bottom button */}
-                    <div className="mt-auto">
-                      <div className="bg-accent rounded-2xl p-4 text-center">
-                        <span className="text-accent-foreground font-semibold">Get Started</span>
-                      </div>
-                    </div>
+                    {/* Vertical text */}
+                    <span
+                      className="text-white font-semibold text-sm tracking-wider whitespace-nowrap"
+                      style={{ writingMode: "vertical-rl", textOrientation: "mixed" }}
+                    >
+                      {capsule.label}
+                    </span>
                   </div>
-                </div>
-              </div>
-
-              {/* Floating elements around phone */}
-              <motion.div
-                animate={{ y: [-8, 8, -8] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-4 -right-12 bg-card rounded-2xl p-4 shadow-lg border border-border"
-              >
-                <div className="text-2xl font-bold text-foreground">8+</div>
-                <div className="text-sm text-muted-foreground">Services</div>
-              </motion.div>
-
-              <motion.div
-                animate={{ y: [8, -8, 8] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -bottom-4 -left-16 bg-card rounded-2xl p-4 shadow-lg border border-border"
-              >
-                <div className="text-2xl font-bold text-accent">7+</div>
-                <div className="text-sm text-muted-foreground">Training Programs</div>
-              </motion.div>
+                </motion.div>
+              ))}
             </div>
+
+            {/* Floating badge */}
+            <motion.div
+              animate={{ y: [-6, 6, -6] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute top-8 right-4 bg-card rounded-2xl px-5 py-3 shadow-lg border border-border"
+            >
+              <div className="text-xl font-bold text-foreground">50+</div>
+              <div className="text-xs text-muted-foreground">Projects</div>
+            </motion.div>
+
+            <motion.div
+              animate={{ y: [6, -6, 6] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute bottom-16 left-0 bg-card rounded-2xl px-5 py-3 shadow-lg border border-border"
+            >
+              <div className="text-xl font-bold text-accent">100+</div>
+              <div className="text-xs text-muted-foreground">Clients</div>
+            </motion.div>
           </motion.div>
         </div>
       </div>
