@@ -97,17 +97,11 @@ const Footer = () => {
           </h2>
           <div className="flex flex-wrap justify-center gap-3">
             <button
-              onClick={() => handleClick("/#about")}
+              onClick={() => handleClick("/#contact")}
               className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-6 py-3 rounded-full text-sm font-semibold hover:bg-accent/90 transition-colors"
             >
-              About Us
+              Contact Us
               <ArrowRight className="h-3.5 w-3.5" />
-            </button>
-            <button
-              onClick={() => handleClick("/#contact")}
-              className="inline-flex items-center gap-2 border-2 border-background/15 text-background px-6 py-3 rounded-full text-sm font-semibold hover:bg-background hover:text-foreground transition-colors"
-            >
-              Company Details
             </button>
           </div>
         </motion.div>
