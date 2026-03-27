@@ -18,72 +18,77 @@ const services = [
     title: "Web Development",
     description:
       "Premium responsive websites with cutting-edge technologies, optimized for performance and user experience.",
-    color: "from-blue-500 to-cyan-500",
+    bg: "bg-orange-50",
+    iconBg: "bg-accent",
   },
   {
     icon: Smartphone,
     title: "App Development",
     description:
       "Sophisticated mobile applications with intuitive interfaces for iOS and Android platforms.",
-    color: "from-purple-500 to-pink-500",
+    bg: "bg-purple-50",
+    iconBg: "bg-purple-500",
   },
   {
     icon: Bot,
     title: "AI Automation",
     description:
       "Advanced AI-driven solutions that streamline business processes and provide actionable insights.",
-    color: "from-orange-500 to-red-500",
+    bg: "bg-rose-50",
+    iconBg: "bg-rose-500",
   },
   {
     icon: Code2,
     title: "Custom Software",
     description:
       "Bespoke software solutions tailored to your unique business needs and requirements.",
-    color: "from-green-500 to-emerald-500",
+    bg: "bg-emerald-50",
+    iconBg: "bg-emerald-500",
   },
   {
     icon: Workflow,
     title: "Digital Transformation",
     description:
       "Modernize your business with comprehensive digital strategies and emerging technologies.",
-    color: "from-indigo-500 to-violet-500",
+    bg: "bg-indigo-50",
+    iconBg: "bg-indigo-500",
   },
   {
     icon: MessageSquare,
     title: "Custom Chatbots",
     description:
       "Intelligent conversational interfaces that enhance customer engagement.",
-    color: "from-pink-500 to-rose-500",
+    bg: "bg-pink-50",
+    iconBg: "bg-pink-500",
   },
   {
     icon: Cloud,
     title: "Cloud Computing",
     description:
       "Expert cloud infrastructure setup, migration, and management for optimal scalability.",
-    color: "from-cyan-500 to-blue-500",
+    bg: "bg-sky-50",
+    iconBg: "bg-sky-500",
   },
   {
     icon: TrendingUp,
     title: "SEO & Marketing",
     description:
       "Data-driven SEO and digital marketing strategies to grow your online visibility.",
-    color: "from-amber-500 to-orange-500",
+    bg: "bg-amber-50",
+    iconBg: "bg-amber-500",
   },
 ];
 
 const Services = () => {
   return (
-    <section id="services" className="py-20 bg-secondary/30 relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-accent/5 rounded-full blur-[150px] pointer-events-none" />
-      
+    <section id="services" className="py-24 bg-background relative overflow-hidden">
       <div className="container relative">
         <AnimatedSection className="text-center mb-16">
-          <span className="inline-block px-4 py-2 rounded-full bg-accent/10 text-accent text-sm font-medium mb-6">
+          <span className="inline-block px-5 py-2 rounded-full bg-accent/10 text-accent text-sm font-semibold mb-6">
             What We Offer
           </span>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6">
-            Our Services
+            Our <span className="text-gradient">Services</span>
           </h2>
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
             Comprehensive technology solutions designed to drive your business
@@ -91,11 +96,11 @@ const Services = () => {
           </p>
         </AnimatedSection>
 
-        <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6" staggerDelay={0.08}>
+        <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" staggerDelay={0.08}>
           {services.map((service, index) => (
             <StaggerItem key={index}>
               <motion.div
-                whileHover={{ y: -10, scale: 1.02 }}
+                whileHover={{ y: -8 }}
                 transition={{ duration: 0.3 }}
                 onClick={() => {
                   const contactSection = document.getElementById('contact');
@@ -103,30 +108,23 @@ const Services = () => {
                     contactSection.scrollIntoView({ behavior: 'smooth' });
                   }
                 }}
-                className="group relative bg-card rounded-2xl p-8 h-full border border-border hover:border-accent/30 transition-all duration-300 cursor-pointer overflow-hidden"
+                className={`group relative ${service.bg} rounded-3xl p-8 h-full border border-transparent hover:border-accent/20 transition-all duration-300 cursor-pointer hover:shadow-card-hover`}
               >
-                {/* Hover gradient overlay */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} />
-                
                 <div className="relative z-10">
-                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${service.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                    <service.icon className="h-8 w-8 text-white" />
+                  <div className={`w-14 h-14 rounded-2xl ${service.iconBg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                    <service.icon className="h-7 w-7 text-white" />
                   </div>
                   
-                  <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-start justify-between mb-3">
                     <h3 className="text-xl font-semibold text-foreground group-hover:text-accent transition-colors">
                       {service.title}
                     </h3>
                     <ArrowUpRight className="h-5 w-5 text-muted-foreground opacity-0 group-hover:opacity-100 group-hover:text-accent transition-all transform translate-y-2 group-hover:translate-y-0" />
                   </div>
                   
-                  <p className="text-muted-foreground leading-relaxed">
+                  <p className="text-muted-foreground leading-relaxed text-sm">
                     {service.description}
                   </p>
-                  
-                  <span className="inline-block mt-4 text-sm text-accent opacity-0 group-hover:opacity-100 transition-opacity">
-                    Get in touch →
-                  </span>
                 </div>
               </motion.div>
             </StaggerItem>

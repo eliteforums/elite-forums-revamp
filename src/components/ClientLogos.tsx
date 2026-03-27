@@ -26,39 +26,31 @@ const clients = [
 
 const ClientLogos = () => {
   return (
-    <section className="py-20 bg-background relative overflow-hidden">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/5 rounded-full blur-[200px] pointer-events-none" />
-      
+    <section className="py-12 bg-secondary/30 relative overflow-hidden">
       <div className="container relative">
-        <AnimatedSection className="text-center mb-16">
-          <span className="inline-block px-4 py-2 rounded-full bg-accent/10 text-accent text-sm font-medium mb-6">
-            Trusted Partners
-          </span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6">
-            Our Clients
-          </h2>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-            We've had the privilege of working with amazing brands and businesses
+        <AnimatedSection className="text-center mb-8">
+          <p className="text-sm font-semibold text-muted-foreground uppercase tracking-widest">
+            Trusted by Leading Brands
           </p>
         </AnimatedSection>
 
         <div className="relative">
-          <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+          <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-secondary/30 to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-secondary/30 to-transparent z-10 pointer-events-none" />
           
           <div className="overflow-hidden">
             <div className="logo-scroll-container">
               {clients.map((client, index) => (
                 <div key={`first-${index}`} className="logo-item flex-shrink-0 group">
-                  <div className="w-28 h-16 md:w-40 md:h-24 flex items-center justify-center p-2 md:p-4 rounded-2xl bg-card border border-border hover:border-accent/30 transition-all duration-300 hover:shadow-lg">
-                    <img src={client.image} alt={client.name} className="max-w-full max-h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-300 opacity-70 group-hover:opacity-100" />
+                  <div className="w-32 h-16 md:w-44 md:h-20 flex items-center justify-center p-3 md:p-4 rounded-2xl bg-card border border-border/50 hover:border-accent/30 transition-all duration-300 hover:shadow-md">
+                    <img src={client.image} alt={client.name} className="max-w-full max-h-full object-contain opacity-80 group-hover:opacity-100 transition-all duration-300" />
                   </div>
                 </div>
               ))}
               {clients.map((client, index) => (
                 <div key={`second-${index}`} className="logo-item flex-shrink-0 group">
-                  <div className="w-28 h-16 md:w-40 md:h-24 flex items-center justify-center p-2 md:p-4 rounded-2xl bg-card border border-border hover:border-accent/30 transition-all duration-300 hover:shadow-lg">
-                    <img src={client.image} alt={client.name} className="max-w-full max-h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-300 opacity-70 group-hover:opacity-100" />
+                  <div className="w-32 h-16 md:w-44 md:h-20 flex items-center justify-center p-3 md:p-4 rounded-2xl bg-card border border-border/50 hover:border-accent/30 transition-all duration-300 hover:shadow-md">
+                    <img src={client.image} alt={client.name} className="max-w-full max-h-full object-contain opacity-80 group-hover:opacity-100 transition-all duration-300" />
                   </div>
                 </div>
               ))}
@@ -71,13 +63,13 @@ const ClientLogos = () => {
         .logo-scroll-container {
           display: flex;
           gap: 1rem;
-          animation: scroll-logos 20s linear infinite;
+          animation: scroll-logos 25s linear infinite;
           width: max-content;
         }
         @media (min-width: 768px) {
           .logo-scroll-container {
-            gap: 2rem;
-            animation-duration: 30s;
+            gap: 1.5rem;
+            animation-duration: 35s;
           }
         }
         @keyframes scroll-logos {

@@ -44,26 +44,23 @@ const Projects = () => {
 
   if (isLoading) {
     return (
-      <section id="projects" className="py-20 bg-secondary/30 relative overflow-hidden">
+      <section id="projects" className="py-24 bg-secondary/30 relative overflow-hidden">
         <div className="container flex justify-center">
-          <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full" />
+          <div className="animate-spin w-8 h-8 border-4 border-accent border-t-transparent rounded-full" />
         </div>
       </section>
     );
   }
 
   return (
-    <section id="projects" className="py-20 bg-secondary/30 relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute top-0 left-1/3 w-96 h-96 bg-accent/5 rounded-full blur-[150px] pointer-events-none" />
-      
+    <section id="projects" className="py-24 bg-secondary/30 relative overflow-hidden">
       <div className="container relative">
         <AnimatedSection className="text-center mb-16">
-          <span className="inline-block px-4 py-2 rounded-full bg-accent/10 text-accent text-sm font-medium mb-6">
+          <span className="inline-block px-5 py-2 rounded-full bg-accent/10 text-accent text-sm font-semibold mb-6">
             Portfolio
           </span>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6">
-            Our Projects
+            Our <span className="text-gradient">Projects</span>
           </h2>
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
             Showcasing our portfolio of successful digital solutions delivered
@@ -84,12 +81,11 @@ const Projects = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
-                whileHover={{ y: -10 }}
+                whileHover={{ y: -8 }}
                 className="group block"
               >
                 <div className="bg-card rounded-3xl overflow-hidden border border-border hover:border-accent/30 transition-all duration-500 h-full hover:shadow-card-hover">
-                  {/* Project Preview */}
-                  <div className="h-56 relative overflow-hidden bg-muted">
+                  <div className="h-56 relative overflow-hidden bg-secondary/30">
                     <iframe
                       src={project.link}
                       title={project.title}
@@ -97,11 +93,8 @@ const Projects = () => {
                       style={{ width: '200%', height: '800px' }}
                       loading="lazy"
                     />
-                    <div className={`absolute inset-0 bg-gradient-to-t ${project.gradient} opacity-20`} />
-                    
-                    {/* Hover overlay */}
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center">
-                      <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                         <ExternalLink className="h-6 w-6 text-white" />
                       </div>
                     </div>
@@ -121,7 +114,7 @@ const Projects = () => {
                       {project.tags.map((tag, tagIndex) => (
                         <span
                           key={tagIndex}
-                          className="px-4 py-1.5 text-sm font-medium bg-secondary text-secondary-foreground rounded-full border border-border hover:border-accent/30 transition-colors"
+                          className="px-4 py-1.5 text-sm font-medium bg-accent/10 text-accent rounded-full"
                         >
                           {tag}
                         </span>
@@ -134,7 +127,6 @@ const Projects = () => {
           </AnimatePresence>
         </motion.div>
 
-        {/* Show More/Less Button */}
         {hasMoreProjects && (
           <motion.div 
             className="flex justify-center mt-12"

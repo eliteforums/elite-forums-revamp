@@ -45,7 +45,6 @@ const Header = () => {
       return;
     }
 
-    // If we're not on the home page, navigate there first
     if (location.pathname !== "/") {
       navigate("/" + href);
       return;
@@ -87,59 +86,58 @@ const Header = () => {
         </button>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <div key={link.name} className="relative">
-              {link.children ? (
-                <div
-                  className="relative"
-                  onMouseEnter={() => setOpenDropdown(link.name)}
-                  onMouseLeave={() => setOpenDropdown(null)}
-                >
+        <nav className="hidden lg:flex items-center">
+          <div className="flex items-center gap-1 bg-secondary/60 rounded-full px-2 py-1.5 backdrop-blur-sm">
+            {navLinks.map((link) => (
+              <div key={link.name} className="relative">
+                {link.children ? (
+                  <div
+                    className="relative"
+                    onMouseEnter={() => setOpenDropdown(link.name)}
+                    onMouseLeave={() => setOpenDropdown(null)}
+                  >
+                    <button
+                      className="text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-background/80 transition-all px-4 py-2 rounded-full flex items-center gap-1"
+                    >
+                      {link.name}
+                      <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-200 ${openDropdown === link.name ? 'rotate-180' : ''}`} />
+                    </button>
+                    
+                    <div
+                      className={`absolute top-full left-0 mt-2 w-48 bg-background border border-border rounded-2xl shadow-lg overflow-hidden transition-all duration-200 ${
+                        openDropdown === link.name
+                          ? 'opacity-100 visible translate-y-0'
+                          : 'opacity-0 invisible -translate-y-2'
+                      }`}
+                    >
+                      {link.children.map((child) => (
+                        <button
+                          key={child.name}
+                          onClick={() => handleNavClick(child.href, child.isPage)}
+                          className="w-full text-left px-4 py-3 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-colors"
+                        >
+                          {child.name}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
                   <button
-                    className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1 group"
+                    onClick={() => handleNavClick(link.href, link.isPage)}
+                    className="text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-background/80 transition-all px-4 py-2 rounded-full"
                   >
                     {link.name}
-                    <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${openDropdown === link.name ? 'rotate-180' : ''}`} />
-                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full" />
                   </button>
-                  
-                  {/* Dropdown Menu */}
-                  <div
-                    className={`absolute top-full left-0 mt-2 w-48 bg-background/98 backdrop-blur-md border border-border rounded-xl shadow-lg overflow-hidden transition-all duration-200 ${
-                      openDropdown === link.name
-                        ? 'opacity-100 visible translate-y-0'
-                        : 'opacity-0 invisible -translate-y-2'
-                    }`}
-                  >
-                    {link.children.map((child) => (
-                      <button
-                        key={child.name}
-                        onClick={() => handleNavClick(child.href, child.isPage)}
-                        className="w-full text-left px-4 py-3 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent/10 transition-colors"
-                      >
-                        {child.name}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              ) : (
-                <button
-                  onClick={() => handleNavClick(link.href, link.isPage)}
-                  className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors relative group"
-                >
-                  {link.name}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full" />
-                </button>
-              )}
-            </div>
-          ))}
+                )}
+              </div>
+            ))}
+          </div>
         </nav>
 
         <div className="hidden lg:block">
           <Button
             onClick={() => handleNavClick("#contact", false)}
-            className="bg-gradient-primary hover:opacity-90 transition-opacity"
+            className="bg-accent hover:bg-accent/90 text-accent-foreground rounded-full px-6"
           >
             Get Started
           </Button>
@@ -200,7 +198,7 @@ const Header = () => {
             ))}
             <Button
               onClick={() => handleNavClick("#contact", false)}
-              className="mt-4 bg-gradient-primary hover:opacity-90 transition-opacity w-full"
+              className="mt-4 bg-accent hover:bg-accent/90 text-accent-foreground rounded-full w-full"
             >
               Get Started
             </Button>
