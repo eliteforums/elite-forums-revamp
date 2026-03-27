@@ -47,7 +47,7 @@ const Hero = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-[2.75rem] md:text-[3.25rem] lg:text-[3.75rem] xl:text-[4.25rem] font-bold text-foreground leading-[1.08] mb-6 tracking-tight"
             >
-              Your Business 🌿 Our{" "}
+              Your Business <br /> Our{" "}
               <span className="text-gradient">Digital Strategy</span>
             </motion.h1>
 
