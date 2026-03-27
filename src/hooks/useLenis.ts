@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import Lenis from 'lenis';
 
-export const useLenis = (wrapperRef?: React.RefObject<HTMLDivElement>) => {
+export const useLenis = () => {
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
@@ -11,8 +11,6 @@ export const useLenis = (wrapperRef?: React.RefObject<HTMLDivElement>) => {
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      wrapper: wrapperRef?.current || undefined,
-      content: wrapperRef?.current || undefined,
     });
 
     lenisRef.current = lenis;
