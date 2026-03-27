@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { ArrowRight, CheckCircle, Globe, Users } from "lucide-react";
+import BookingModal from "./BookingModal";
 import { motion } from "framer-motion";
 
 const capsules = [
