@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { AnimatedSection } from "./AnimatedSection";
 import { ArrowRight, Users } from "lucide-react";
+import BookingModal from "./BookingModal";
 
 import averanceLogo from "@/assets/clients/averance.png";
 import bizMilleniumLogo from "@/assets/clients/biz-millenium.jpg";
