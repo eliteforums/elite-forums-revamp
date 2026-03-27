@@ -35,9 +35,9 @@ import {
   BarChart,
   Cpu,
   GitBranch,
+  Star,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { motion, AnimatePresence } from "framer-motion";
 import { AnimatedSection, StaggerContainer, StaggerItem } from "@/components/AnimatedSection";
 import CountUp from "@/components/CountUp";
@@ -234,58 +234,55 @@ const TrainingsPage = () => {
       <div className="min-h-screen bg-background">
         <Header />
         <main>
-          {/* Hero Section - Corporate Style */}
-          <section className="pt-32 pb-24 relative overflow-hidden">
-            {/* Background Elements */}
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5" />
-            <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-accent/10 rounded-full blur-[200px] pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary/10 rounded-full blur-[150px] pointer-events-none" />
+          {/* Hero Section */}
+          <section className="pt-28 pb-20 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-accent/3 via-background to-background" />
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent/8 rounded-full blur-[180px] pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-[350px] h-[350px] bg-accent/5 rounded-full blur-[120px] pointer-events-none" />
             
-            {/* Grid Pattern */}
             <div className="absolute inset-0 opacity-[0.02]" style={{
-              backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-              backgroundSize: '60px 60px'
+              backgroundImage: `radial-gradient(circle, hsl(var(--foreground)) 1px, transparent 1px)`,
+              backgroundSize: '40px 40px'
             }} />
             
             <div className="container relative">
-              <div className="grid lg:grid-cols-2 gap-16 items-center">
+              <div className="grid lg:grid-cols-2 gap-12 items-center">
                 <AnimatedSection>
-                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20 text-accent text-sm font-medium mb-8">
-                    <GraduationCap className="h-4 w-4" />
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent/10 border border-accent/15 text-accent text-xs font-semibold mb-6 tracking-wide">
+                    <GraduationCap className="h-3.5 w-3.5" />
                     Elite Forums Campus
                   </div>
-                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight">
+                  <h1 className="text-3xl md:text-4xl lg:text-[3.25rem] font-bold text-foreground mb-5 leading-[1.1]">
                     Upskill Your <br />
-                    <span className="bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">
+                    <span className="text-gradient">
                       Workforce Today
                     </span>
                   </h1>
-                  <p className="text-lg md:text-xl text-muted-foreground max-w-xl mb-10 leading-relaxed">
+                  <p className="text-base md:text-lg text-muted-foreground max-w-[480px] mb-8 leading-relaxed">
                     Enterprise-grade training programs designed to transform professionals 
                     into industry-ready experts with cutting-edge skills.
                   </p>
-                  <div className="flex flex-wrap gap-4">
-                    <Button
-                      size="lg"
+                  <div className="flex flex-wrap gap-3">
+                    <button
                       onClick={scrollToPrograms}
-                      className="bg-gradient-primary hover:opacity-90 transition-all group px-8 py-7 text-lg"
+                      className="inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-accent-foreground pl-5 pr-4 py-3 rounded-full text-sm font-semibold transition-colors"
                     >
                       Explore Programs
-                      <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                    <Button
-                      size="lg"
-                      variant="outline"
+                      <span className="ml-1 w-7 h-7 rounded-full bg-accent-foreground/20 flex items-center justify-center">
+                        <ArrowRight className="h-3.5 w-3.5" />
+                      </span>
+                    </button>
+                    <button
                       onClick={() => setIsFormOpen(true)}
-                      className="px-8 py-7 text-lg border-2 border-accent/30 hover:border-accent hover:bg-accent/5"
+                      className="inline-flex items-center gap-2 border-2 border-foreground/15 text-foreground px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-foreground hover:text-background transition-colors"
                     >
-                      <Play className="mr-2 h-5 w-5" />
+                      <Play className="h-3.5 w-3.5" />
                       Enquire Now
-                    </Button>
+                    </button>
                   </div>
                 </AnimatedSection>
 
-                {/* Stats Cards - Corporate Style */}
+                {/* Stats Cards */}
                 <AnimatedSection delay={0.2} className="hidden lg:block">
                   <div className="grid grid-cols-2 gap-4">
                     {stats.map((stat, index) => (
@@ -295,16 +292,17 @@ const TrainingsPage = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: index * 0.1 }}
-                        whileHover={{ y: -5, scale: 1.02 }}
-                        className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 border border-border hover:border-accent/30 transition-all"
+                        whileHover={{ y: -4 }}
+                        className="bg-card/80 backdrop-blur-sm rounded-[1.25rem] p-5 border border-border/60 hover:border-accent/20 transition-all"
+                        style={{ boxShadow: '0 2px 12px -4px rgba(0,0,0,0.04)' }}
                       >
-                        <div className="w-12 h-12 rounded-xl bg-gradient-primary flex items-center justify-center mb-4">
-                          <stat.icon className="h-6 w-6 text-primary-foreground" />
+                        <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center mb-3">
+                          <stat.icon className="h-5 w-5 text-accent-foreground" />
                         </div>
-                        <div className="text-3xl font-bold text-foreground mb-1">
+                        <div className="text-2xl font-bold text-foreground mb-0.5">
                           <CountUp end={stat.value} suffix={stat.suffix} />
                         </div>
-                        <div className="text-muted-foreground text-sm">{stat.label}</div>
+                        <div className="text-muted-foreground text-xs">{stat.label}</div>
                       </motion.div>
                     ))}
                   </div>
@@ -313,43 +311,48 @@ const TrainingsPage = () => {
             </div>
           </section>
 
-          {/* Student Reviews Carousel */}
+          {/* Student Reviews */}
           {reviews.length > 0 && (
-            <section className="py-20 bg-background relative overflow-hidden">
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/5 rounded-full blur-[200px] pointer-events-none" />
-              
+            <section className="py-16 bg-secondary/20 relative overflow-hidden">
               <div className="container relative">
-                <AnimatedSection className="text-center mb-16">
-                  <span className="inline-block px-4 py-2 rounded-full bg-accent/10 text-accent text-sm font-medium mb-6">
+                <AnimatedSection className="text-center mb-12">
+                  <span className="inline-block px-4 py-1.5 rounded-full bg-accent/10 text-accent text-xs font-semibold mb-5 tracking-wide">
                     Student Testimonials
                   </span>
-                  <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6">
+                  <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
                     What Our Students Say
                   </h2>
-                  <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                  <p className="text-base text-muted-foreground max-w-lg mx-auto">
                     Hear from professionals who transformed their careers with our training programs
                   </p>
                 </AnimatedSection>
 
                 <div className="relative">
-                  <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-                  <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+                  <div className="absolute left-0 top-0 bottom-0 w-12 md:w-24 bg-gradient-to-r from-secondary/20 to-transparent z-10 pointer-events-none" />
+                  <div className="absolute right-0 top-0 bottom-0 w-12 md:w-24 bg-gradient-to-l from-secondary/20 to-transparent z-10 pointer-events-none" />
                   
                   <div className="review-scroll-wrapper">
                     <div className="review-scroll-container">
                       {reviews.map((review) => (
                         <div key={`first-${review.id}`} className="review-card-item flex-shrink-0 cursor-pointer" onClick={() => setSelectedReview(review)}>
-                          <div className="w-[320px] md:w-[380px] bg-card rounded-2xl p-6 border border-border hover:border-accent/30 transition-all h-full">
-                            <p className="text-foreground/80 italic leading-relaxed mb-5 text-sm line-clamp-4">
+                          <div className="w-[300px] md:w-[340px] bg-card rounded-[1.25rem] p-5 border border-border/60 hover:border-accent/20 transition-all h-full"
+                            style={{ boxShadow: '0 2px 12px -4px rgba(0,0,0,0.04)' }}
+                          >
+                            <div className="flex items-center gap-0.5 mb-3">
+                              {[...Array(5)].map((_, i) => (
+                                <Star key={i} className="h-3.5 w-3.5 text-accent fill-accent" />
+                              ))}
+                            </div>
+                            <p className="text-foreground/75 italic leading-relaxed mb-4 text-[13px] line-clamp-4">
                               "{review.review}"
                             </p>
-                            <div className="flex items-center gap-3 pt-4 border-t border-border">
-                              <div className="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center text-primary-foreground font-bold text-sm">
+                            <div className="flex items-center gap-2.5 pt-3.5 border-t border-border/40">
+                              <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-accent-foreground font-bold text-xs">
                                 {review.name.charAt(0)}
                               </div>
                               <div>
-                                <div className="font-semibold text-foreground text-sm">{review.name}</div>
-                                <div className="text-xs text-muted-foreground">{review.college}</div>
+                                <div className="font-semibold text-foreground text-xs">{review.name}</div>
+                                <div className="text-[11px] text-muted-foreground">{review.college}</div>
                               </div>
                             </div>
                           </div>
@@ -357,17 +360,24 @@ const TrainingsPage = () => {
                       ))}
                       {reviews.map((review) => (
                         <div key={`second-${review.id}`} className="review-card-item flex-shrink-0 cursor-pointer" onClick={() => setSelectedReview(review)}>
-                          <div className="w-[320px] md:w-[380px] bg-card rounded-2xl p-6 border border-border hover:border-accent/30 transition-all h-full">
-                            <p className="text-foreground/80 italic leading-relaxed mb-5 text-sm line-clamp-4">
+                          <div className="w-[300px] md:w-[340px] bg-card rounded-[1.25rem] p-5 border border-border/60 hover:border-accent/20 transition-all h-full"
+                            style={{ boxShadow: '0 2px 12px -4px rgba(0,0,0,0.04)' }}
+                          >
+                            <div className="flex items-center gap-0.5 mb-3">
+                              {[...Array(5)].map((_, i) => (
+                                <Star key={i} className="h-3.5 w-3.5 text-accent fill-accent" />
+                              ))}
+                            </div>
+                            <p className="text-foreground/75 italic leading-relaxed mb-4 text-[13px] line-clamp-4">
                               "{review.review}"
                             </p>
-                            <div className="flex items-center gap-3 pt-4 border-t border-border">
-                              <div className="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center text-primary-foreground font-bold text-sm">
+                            <div className="flex items-center gap-2.5 pt-3.5 border-t border-border/40">
+                              <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-accent-foreground font-bold text-xs">
                                 {review.name.charAt(0)}
                               </div>
                               <div>
-                                <div className="font-semibold text-foreground text-sm">{review.name}</div>
-                                <div className="text-xs text-muted-foreground">{review.college}</div>
+                                <div className="font-semibold text-foreground text-xs">{review.name}</div>
+                                <div className="text-[11px] text-muted-foreground">{review.college}</div>
                               </div>
                             </div>
                           </div>
@@ -383,36 +393,33 @@ const TrainingsPage = () => {
                   overflow-x: auto;
                   -webkit-overflow-scrolling: touch;
                   scrollbar-width: thin;
-                  scrollbar-color: hsl(var(--muted-foreground) / 0.3) transparent;
+                  scrollbar-color: hsl(var(--muted-foreground) / 0.2) transparent;
                 }
                 .review-scroll-wrapper::-webkit-scrollbar {
-                  height: 6px;
+                  height: 4px;
                 }
                 .review-scroll-wrapper::-webkit-scrollbar-track {
                   background: transparent;
                 }
                 .review-scroll-wrapper::-webkit-scrollbar-thumb {
-                  background: hsl(var(--muted-foreground) / 0.3);
-                  border-radius: 3px;
+                  background: hsl(var(--muted-foreground) / 0.2);
+                  border-radius: 2px;
                 }
                 .review-scroll-container {
                   display: flex;
-                  gap: 1.5rem;
+                  gap: 1.25rem;
                   animation: scroll-reviews 45s linear infinite;
                   width: max-content;
                 }
-                
                 @media (min-width: 768px) {
                   .review-scroll-container {
                     animation-duration: 60s;
                   }
                 }
-                
                 @keyframes scroll-reviews {
                   0% { transform: translateX(0); }
                   100% { transform: translateX(-50%); }
                 }
-                
                 .review-scroll-container:hover {
                   animation-play-state: paused;
                 }
@@ -427,33 +434,39 @@ const TrainingsPage = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
+                className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-foreground/60 backdrop-blur-sm"
                 onClick={() => setSelectedReview(null)}
               >
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                  initial={{ opacity: 0, scale: 0.95, y: 20 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                  exit={{ opacity: 0, scale: 0.95, y: 20 }}
                   transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                  className="bg-card rounded-2xl p-8 border border-border max-w-lg w-full relative shadow-2xl"
+                  className="bg-card rounded-[1.25rem] p-7 border border-border/60 max-w-lg w-full relative"
+                  style={{ boxShadow: '0 20px 60px -15px rgba(0,0,0,0.2)' }}
                   onClick={(e) => e.stopPropagation()}
                 >
                   <button
                     onClick={() => setSelectedReview(null)}
-                    className="absolute right-4 top-4 rounded-sm opacity-70 hover:opacity-100 transition-opacity"
+                    className="absolute right-4 top-4 w-8 h-8 rounded-full bg-secondary flex items-center justify-center hover:bg-secondary/80 transition-colors"
                   >
-                    <X className="h-5 w-5 text-foreground" />
+                    <X className="h-4 w-4 text-foreground" />
                   </button>
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-14 h-14 rounded-full bg-gradient-primary flex items-center justify-center text-primary-foreground font-bold text-xl">
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="w-11 h-11 rounded-full bg-accent flex items-center justify-center text-accent-foreground font-bold text-lg">
                       {selectedReview.name.charAt(0)}
                     </div>
                     <div>
-                      <div className="font-semibold text-foreground text-lg">{selectedReview.name}</div>
-                      <div className="text-sm text-muted-foreground">{selectedReview.college}</div>
+                      <div className="font-semibold text-foreground">{selectedReview.name}</div>
+                      <div className="text-xs text-muted-foreground">{selectedReview.college}</div>
                     </div>
                   </div>
-                  <p className="text-foreground/80 italic leading-relaxed text-base">
+                  <div className="flex items-center gap-0.5 mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="h-4 w-4 text-accent fill-accent" />
+                    ))}
+                  </div>
+                  <p className="text-foreground/80 italic leading-relaxed text-sm">
                     "{selectedReview.review}"
                   </p>
                 </motion.div>
@@ -461,33 +474,34 @@ const TrainingsPage = () => {
             )}
           </AnimatePresence>
 
-          {/* Features Section - EdTech Style */}
-          <section className="py-20 bg-secondary/30 relative">
+          {/* Features Section */}
+          <section className="py-16 bg-background relative">
             <div className="container">
-              <AnimatedSection className="text-center mb-16">
-                <span className="inline-block px-4 py-2 rounded-full bg-accent/10 text-accent text-sm font-medium mb-6">
+              <AnimatedSection className="text-center mb-12">
+                <span className="inline-block px-4 py-1.5 rounded-full bg-accent/10 text-accent text-xs font-semibold mb-5 tracking-wide">
                   Why Choose Us
                 </span>
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6">
+                <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
                   Enterprise Learning Solutions
                 </h2>
-                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                <p className="text-base text-muted-foreground max-w-lg mx-auto">
                   Designed for ambitious professionals and forward-thinking organizations
                 </p>
               </AnimatedSection>
 
-              <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-4 gap-6" staggerDelay={0.1}>
+              <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-4 gap-5" staggerDelay={0.08}>
                 {features.map((feature, index) => (
                   <StaggerItem key={index}>
                     <motion.div
-                      whileHover={{ y: -8 }}
-                      className="bg-card rounded-2xl p-8 h-full border border-border hover:border-accent/30 transition-all group"
+                      whileHover={{ y: -6 }}
+                      className="bg-card rounded-[1.25rem] p-6 h-full border border-border/60 hover:border-accent/20 transition-all group"
+                      style={{ boxShadow: '0 2px 12px -4px rgba(0,0,0,0.04)' }}
                     >
-                      <div className="w-14 h-14 rounded-xl bg-accent/10 flex items-center justify-center mb-6 group-hover:bg-gradient-primary transition-all">
-                        <feature.icon className="h-7 w-7 text-accent group-hover:text-primary-foreground transition-colors" />
+                      <div className="w-11 h-11 rounded-xl bg-accent/10 flex items-center justify-center mb-5 group-hover:bg-accent group-hover:text-accent-foreground transition-all">
+                        <feature.icon className="h-5 w-5 text-accent group-hover:text-accent-foreground transition-colors" />
                       </div>
-                      <h3 className="text-xl font-semibold text-foreground mb-3">{feature.title}</h3>
-                      <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
+                      <h3 className="text-base font-semibold text-foreground mb-2">{feature.title}</h3>
+                      <p className="text-muted-foreground leading-relaxed text-[13px]">{feature.description}</p>
                     </motion.div>
                   </StaggerItem>
                 ))}
@@ -495,75 +509,77 @@ const TrainingsPage = () => {
             </div>
           </section>
 
-          {/* Courses Section - Professional Grid */}
-          <section id="industry-programs" className="py-24 bg-background relative overflow-hidden scroll-mt-24">
-            <div className="absolute top-1/2 right-0 w-96 h-96 bg-accent/5 rounded-full blur-[150px] pointer-events-none" />
+          {/* Courses Section */}
+          <section id="industry-programs" className="py-20 bg-secondary/20 relative overflow-hidden scroll-mt-20">
+            <div className="absolute top-1/2 right-0 w-72 h-72 bg-accent/5 rounded-full blur-[120px] pointer-events-none" />
             
             <div className="container relative">
-              <AnimatedSection className="text-center mb-16">
-                <span className="inline-block px-4 py-2 rounded-full bg-accent/10 text-accent text-sm font-medium mb-6">
+              <AnimatedSection className="text-center mb-14">
+                <span className="inline-block px-4 py-1.5 rounded-full bg-accent/10 text-accent text-xs font-semibold mb-5 tracking-wide">
                   Our Curriculum
                 </span>
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6">
+                <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
                   Industry-Ready Programs
                 </h2>
-                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                <p className="text-base text-muted-foreground max-w-lg mx-auto">
                   Comprehensive courses designed in collaboration with industry leaders
                 </p>
               </AnimatedSection>
 
               {isLoading ? (
                 <div className="flex justify-center py-12">
-                  <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full" />
+                  <div className="animate-spin w-8 h-8 border-4 border-accent border-t-transparent rounded-full" />
                 </div>
               ) : (
-                <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16" staggerDelay={0.08}>
+                <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mb-12" staggerDelay={0.06}>
                   {hardcodedTrainings.map((training, index) => {
                     const IconComponent = training.icon;
                     return (
                       <StaggerItem key={index}>
                         <motion.div
-                          whileHover={{ y: -8 }}
+                          whileHover={{ y: -6 }}
                           transition={{ duration: 0.3 }}
-                          className="group relative bg-card rounded-2xl overflow-hidden h-full border border-border hover:border-accent/30 transition-all"
+                          className="group relative bg-card rounded-[1.25rem] overflow-hidden h-full border border-border/60 hover:border-accent/20 transition-all"
+                          style={{ boxShadow: '0 2px 12px -4px rgba(0,0,0,0.04)' }}
                         >
-                          {/* Gradient Header */}
-                          <div className={`h-2 bg-gradient-to-r ${training.gradient}`} />
+                          {/* Gradient accent line */}
+                          <div className={`h-1.5 bg-gradient-to-r ${training.gradient}`} />
                           
-                          <div className="p-8">
-                            <div className="flex items-start justify-between mb-6">
+                          <div className="p-6">
+                            <div className="flex items-start justify-between mb-5">
                               <motion.div
-                                whileHover={{ rotate: 10, scale: 1.1 }}
-                                className={`w-14 h-14 rounded-xl bg-gradient-to-r ${training.gradient} flex items-center justify-center`}
+                                whileHover={{ rotate: 8, scale: 1.08 }}
+                                className={`w-11 h-11 rounded-xl bg-gradient-to-r ${training.gradient} flex items-center justify-center`}
+                                style={{ boxShadow: '0 4px 12px -2px rgba(0,0,0,0.12)' }}
                               >
-                                <IconComponent className="h-7 w-7 text-white" />
+                                <IconComponent className="h-5 w-5 text-white" />
                               </motion.div>
-                              <span className={`px-3 py-1 text-xs font-medium rounded-full ${
+                              <span className={`px-2.5 py-1 text-[10px] font-semibold rounded-full tracking-wide ${
                                 training.level.includes('Advanced') 
-                                  ? 'bg-purple-500/10 text-purple-400' 
+                                  ? 'bg-purple-500/10 text-purple-500' 
                                   : training.level.includes('Intermediate')
-                                  ? 'bg-blue-500/10 text-blue-400'
-                                  : 'bg-green-500/10 text-green-400'
+                                  ? 'bg-blue-500/10 text-blue-500'
+                                  : 'bg-emerald-500/10 text-emerald-500'
                               }`}>
                                 {training.level}
                               </span>
                             </div>
                             
-                            <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-accent transition-colors">
+                            <h3 className="text-base font-bold text-foreground mb-2 group-hover:text-accent transition-colors">
                               {training.title}
                             </h3>
-                            <p className="text-muted-foreground leading-relaxed mb-6">
+                            <p className="text-muted-foreground leading-relaxed text-[13px] mb-5">
                               {training.description}
                             </p>
                             
-                            <div className="flex items-center gap-4 pt-4 border-t border-border">
-                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                <Clock className="h-4 w-4" />
+                            <div className="flex items-center gap-3 pt-4 border-t border-border/40">
+                              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                                <Clock className="h-3.5 w-3.5" />
                                 {training.duration}
                               </div>
                               {training.category && (
-                                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                  <BookOpen className="h-4 w-4" />
+                                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                                  <BookOpen className="h-3.5 w-3.5" />
                                   {training.category}
                                 </div>
                               )}
@@ -577,65 +593,63 @@ const TrainingsPage = () => {
               )}
 
               <AnimatedSection delay={0.3} className="text-center">
-                <Button
-                  size="lg"
+                <button
                   onClick={() => setIsFormOpen(true)}
-                  className="bg-gradient-primary hover:opacity-90 transition-all group px-10 py-7 text-lg"
+                  className="inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-accent-foreground pl-6 pr-5 py-3 rounded-full text-sm font-semibold transition-colors"
                 >
                   Enquire About Training
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
+                  <span className="ml-1 w-7 h-7 rounded-full bg-accent-foreground/20 flex items-center justify-center">
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </span>
+                </button>
               </AnimatedSection>
             </div>
           </section>
 
-          {/* Benefits Section - Checklist Style */}
-          <section className="py-24 bg-primary relative overflow-hidden">
-            {/* Background Pattern */}
-            <div className="absolute inset-0 opacity-10">
-              <div className="absolute top-10 left-10 w-32 h-32 border border-primary-foreground/20 rounded-full" />
-              <div className="absolute bottom-10 right-10 w-48 h-48 border border-primary-foreground/20 rounded-full" />
-              <div className="absolute top-1/2 left-1/3 w-24 h-24 border border-primary-foreground/20 rounded-full" />
+          {/* Benefits Section */}
+          <section className="py-20 bg-foreground relative overflow-hidden">
+            <div className="absolute inset-0 opacity-[0.05]">
+              <div className="absolute top-8 left-8 w-24 h-24 border border-background/20 rounded-full" />
+              <div className="absolute bottom-8 right-8 w-36 h-36 border border-background/20 rounded-full" />
+              <div className="absolute top-1/2 left-1/3 w-16 h-16 border border-background/20 rounded-full" />
             </div>
             
             <div className="container relative">
-              <div className="grid lg:grid-cols-2 gap-16 items-center">
+              <div className="grid lg:grid-cols-2 gap-12 items-center">
                 <AnimatedSection>
-                  <span className="inline-block px-4 py-2 rounded-full bg-primary-foreground/10 text-primary-foreground text-sm font-medium mb-6">
+                  <span className="inline-block px-4 py-1.5 rounded-full bg-background/8 text-background text-xs font-semibold mb-5 tracking-wide">
                     Program Benefits
                   </span>
-                  <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-6">
+                  <h2 className="text-3xl md:text-4xl font-bold text-background mb-5 leading-tight">
                     Everything You Need to Succeed
                   </h2>
-                  <p className="text-lg text-primary-foreground/70 mb-8">
+                  <p className="text-base text-background/55 mb-7 leading-relaxed">
                     Our comprehensive training programs are designed to give you every advantage in your career journey.
                   </p>
-                  <Button
-                    size="lg"
-                    variant="secondary"
+                  <button
                     onClick={() => setIsFormOpen(true)}
-                    className="group px-8 py-7 text-lg"
+                    className="inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-accent-foreground px-6 py-3 rounded-full text-sm font-semibold transition-colors"
                   >
                     Get Started Today
-                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                  </Button>
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </button>
                 </AnimatedSection>
 
                 <AnimatedSection delay={0.2}>
-                  <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="grid sm:grid-cols-2 gap-3">
                     {benefits.map((benefit, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, x: 20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
-                        transition={{ delay: index * 0.1 }}
-                        className="flex items-center gap-3 bg-primary-foreground/5 rounded-xl p-4 backdrop-blur-sm"
+                        transition={{ delay: index * 0.08 }}
+                        className="flex items-center gap-2.5 bg-background/5 rounded-xl p-3.5 backdrop-blur-sm border border-background/5"
                       >
-                        <div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
-                          <CheckCircle className="h-5 w-5 text-accent" />
+                        <div className="w-7 h-7 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
+                          <CheckCircle className="h-4 w-4 text-accent" />
                         </div>
-                        <span className="text-primary-foreground text-sm font-medium">{benefit}</span>
+                        <span className="text-background text-xs font-medium leading-snug">{benefit}</span>
                       </motion.div>
                     ))}
                   </div>
@@ -644,28 +658,26 @@ const TrainingsPage = () => {
             </div>
           </section>
 
-
           {/* CTA Section */}
-          <section className="py-24 bg-background">
+          <section className="py-20 bg-background">
             <div className="container">
               <AnimatedSection className="text-center">
-                <div className="max-w-3xl mx-auto">
-                  <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6">
+                <div className="max-w-2xl mx-auto">
+                  <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-5">
                     Ready to Transform Your Career?
                   </h2>
-                  <p className="text-lg text-muted-foreground mb-10">
+                  <p className="text-base text-muted-foreground mb-8 leading-relaxed">
                     Join thousands of professionals who have accelerated their careers with Elite Forums Campus. 
                     Get in touch to learn more about our corporate training solutions.
                   </p>
-                  <div className="flex flex-wrap justify-center gap-4">
+                  <div className="flex flex-wrap justify-center gap-3">
                     <RouterLink to="/#contact">
-                      <Button
-                        size="lg"
-                        className="bg-gradient-primary hover:opacity-90 transition-all group px-10 py-7 text-lg"
-                      >
+                      <button className="inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-accent-foreground pl-6 pr-5 py-3 rounded-full text-sm font-semibold transition-colors">
                         Contact Us Today
-                        <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                      </Button>
+                        <span className="ml-1 w-7 h-7 rounded-full bg-accent-foreground/20 flex items-center justify-center">
+                          <ArrowRight className="h-3.5 w-3.5" />
+                        </span>
+                      </button>
                     </RouterLink>
                   </div>
                 </div>
@@ -682,7 +694,7 @@ const TrainingsPage = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+              className="fixed inset-0 bg-foreground/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
               onClick={() => setIsFormOpen(false)}
             >
               <motion.div
@@ -690,28 +702,29 @@ const TrainingsPage = () => {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
                 transition={{ duration: 0.3 }}
-                className="bg-card border border-border rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
+                className="bg-card border border-border/60 rounded-[1.25rem] w-full max-w-lg max-h-[90vh] overflow-y-auto"
+                style={{ boxShadow: '0 20px 60px -15px rgba(0,0,0,0.2)' }}
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Modal Header */}
-                <div className="sticky top-0 bg-card border-b border-border p-6 flex items-center justify-between">
+                <div className="sticky top-0 bg-card border-b border-border/40 px-6 py-5 flex items-center justify-between rounded-t-[1.25rem]">
                   <div>
-                    <h3 className="text-xl font-bold text-foreground">Training Enquiry</h3>
-                    <p className="text-sm text-muted-foreground mt-1">Fill out the form and we'll get back to you</p>
+                    <h3 className="text-lg font-bold text-foreground">Training Enquiry</h3>
+                    <p className="text-xs text-muted-foreground mt-0.5">Fill out the form and we'll get back to you</p>
                   </div>
                   <button
                     onClick={() => setIsFormOpen(false)}
-                    className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center hover:bg-secondary/80 transition-colors"
+                    className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center hover:bg-secondary/80 transition-colors"
                   >
-                    <X className="h-5 w-5 text-foreground" />
+                    <X className="h-4 w-4 text-foreground" />
                   </button>
                 </div>
 
                 {/* Form */}
-                <form onSubmit={handleSubmit} className="p-6 space-y-5">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-foreground flex items-center gap-2">
-                      <User className="h-4 w-4 text-muted-foreground" />
+                <form onSubmit={handleSubmit} className="p-6 space-y-4">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-medium text-foreground flex items-center gap-1.5">
+                      <User className="h-3.5 w-3.5 text-muted-foreground" />
                       Full Name *
                     </label>
                     <input
@@ -720,14 +733,14 @@ const TrainingsPage = () => {
                       value={formData.name}
                       onChange={handleInputChange}
                       placeholder="Enter your full name"
-                      className="w-full px-4 py-3 rounded-lg bg-secondary border border-border focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all text-foreground placeholder:text-muted-foreground"
+                      className="w-full px-4 py-2.5 rounded-xl bg-secondary/40 border border-border/60 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all text-foreground placeholder:text-muted-foreground text-sm"
                       required
                     />
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-foreground flex items-center gap-2">
-                      <Mail className="h-4 w-4 text-muted-foreground" />
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-medium text-foreground flex items-center gap-1.5">
+                      <Mail className="h-3.5 w-3.5 text-muted-foreground" />
                       Email Address *
                     </label>
                     <input
@@ -736,14 +749,14 @@ const TrainingsPage = () => {
                       value={formData.email}
                       onChange={handleInputChange}
                       placeholder="Enter your email address"
-                      className="w-full px-4 py-3 rounded-lg bg-secondary border border-border focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all text-foreground placeholder:text-muted-foreground"
+                      className="w-full px-4 py-2.5 rounded-xl bg-secondary/40 border border-border/60 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all text-foreground placeholder:text-muted-foreground text-sm"
                       required
                     />
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-foreground flex items-center gap-2">
-                      <Phone className="h-4 w-4 text-muted-foreground" />
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-medium text-foreground flex items-center gap-1.5">
+                      <Phone className="h-3.5 w-3.5 text-muted-foreground" />
                       Phone Number *
                     </label>
                     <input
@@ -752,14 +765,14 @@ const TrainingsPage = () => {
                       value={formData.phone}
                       onChange={handleInputChange}
                       placeholder="Enter your phone number"
-                      className="w-full px-4 py-3 rounded-lg bg-secondary border border-border focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all text-foreground placeholder:text-muted-foreground"
+                      className="w-full px-4 py-2.5 rounded-xl bg-secondary/40 border border-border/60 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all text-foreground placeholder:text-muted-foreground text-sm"
                       required
                     />
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-foreground flex items-center gap-2">
-                      <Building className="h-4 w-4 text-muted-foreground" />
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-medium text-foreground flex items-center gap-1.5">
+                      <Building className="h-3.5 w-3.5 text-muted-foreground" />
                       Company / Organization
                     </label>
                     <input
@@ -768,20 +781,20 @@ const TrainingsPage = () => {
                       value={formData.company}
                       onChange={handleInputChange}
                       placeholder="Enter your company name (optional)"
-                      className="w-full px-4 py-3 rounded-lg bg-secondary border border-border focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all text-foreground placeholder:text-muted-foreground"
+                      className="w-full px-4 py-2.5 rounded-xl bg-secondary/40 border border-border/60 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all text-foreground placeholder:text-muted-foreground text-sm"
                     />
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-foreground flex items-center gap-2">
-                      <GraduationCap className="h-4 w-4 text-muted-foreground" />
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-medium text-foreground flex items-center gap-1.5">
+                      <GraduationCap className="h-3.5 w-3.5 text-muted-foreground" />
                       Training Interest *
                     </label>
                     <select
                       name="trainingInterest"
                       value={formData.trainingInterest}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 rounded-lg bg-secondary border border-border focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all text-foreground"
+                      className="w-full px-4 py-2.5 rounded-xl bg-secondary/40 border border-border/60 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all text-foreground text-sm"
                       required
                     >
                       <option value="">Select a program</option>
@@ -793,9 +806,9 @@ const TrainingsPage = () => {
                     </select>
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-foreground flex items-center gap-2">
-                      <MessageSquare className="h-4 w-4 text-muted-foreground" />
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-medium text-foreground flex items-center gap-1.5">
+                      <MessageSquare className="h-3.5 w-3.5 text-muted-foreground" />
                       Additional Message
                     </label>
                     <textarea
@@ -803,32 +816,32 @@ const TrainingsPage = () => {
                       value={formData.message}
                       onChange={handleInputChange}
                       placeholder="Tell us about your training requirements..."
-                      rows={4}
-                      className="w-full px-4 py-3 rounded-lg bg-secondary border border-border focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all text-foreground placeholder:text-muted-foreground resize-none"
+                      rows={3}
+                      className="w-full px-4 py-2.5 rounded-xl bg-secondary/40 border border-border/60 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all text-foreground placeholder:text-muted-foreground resize-none text-sm"
                     />
                   </div>
 
-                  <Button
+                  <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-gradient-primary hover:opacity-90 transition-all py-6 text-lg font-semibold"
+                    className="w-full bg-accent hover:bg-accent/90 text-accent-foreground py-3 rounded-full text-sm font-semibold transition-colors disabled:opacity-50"
                   >
                     {isSubmitting ? (
-                      <span className="flex items-center gap-2">
+                      <span className="flex items-center justify-center gap-2">
                         <motion.div
                           animate={{ rotate: 360 }}
                           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                          className="w-5 h-5 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full"
+                          className="w-4 h-4 border-2 border-accent-foreground/30 border-t-accent-foreground rounded-full"
                         />
                         Submitting...
                       </span>
                     ) : (
-                      <span className="flex items-center gap-2">
+                      <span className="flex items-center justify-center gap-2">
                         Submit Enquiry
-                        <ArrowRight className="h-5 w-5" />
+                        <ArrowRight className="h-4 w-4" />
                       </span>
                     )}
-                  </Button>
+                  </button>
                 </form>
               </motion.div>
             </motion.div>

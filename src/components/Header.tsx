@@ -74,21 +74,21 @@ const Header = () => {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-background/95 backdrop-blur-md shadow-sm py-3"
-          : "bg-transparent py-5"
+          ? "bg-background/90 backdrop-blur-xl border-b border-border/50 py-2.5"
+          : "bg-transparent py-4"
       }`}
     >
       <div className="container flex items-center justify-between">
-        {/* Logo with green dot */}
-        <button onClick={handleLogoClick} className="flex items-center gap-2">
-          <img src={logo} alt="Elite Forums" className="h-9 w-9" />
-          <span className="text-lg font-bold text-foreground">Elite Forums</span>
-          <span className="w-2 h-2 rounded-full bg-emerald-400 -ml-1 mt-1" />
+        {/* Logo */}
+        <button onClick={handleLogoClick} className="flex items-center gap-2 group">
+          <img src={logo} alt="Elite Forums" className="h-8 w-8" />
+          <span className="text-base font-bold text-foreground tracking-tight">Elite Forums</span>
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 -ml-0.5 mt-0.5" />
         </button>
 
-        {/* Desktop Navigation - Centered */}
+        {/* Desktop Navigation - Centered pill */}
         <nav className="hidden lg:flex items-center absolute left-1/2 -translate-x-1/2">
-          <div className="flex items-center gap-0.5 bg-secondary/70 rounded-full px-1.5 py-1 backdrop-blur-sm">
+          <div className="flex items-center gap-0 bg-secondary/60 rounded-full px-1 py-0.5 backdrop-blur-sm border border-border/30">
             {navLinks.map((link) => (
               <div key={link.name} className="relative">
                 {link.children ? (
@@ -98,14 +98,14 @@ const Header = () => {
                     onMouseLeave={() => setOpenDropdown(null)}
                   >
                     <button
-                      className="text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-background/80 transition-all px-4 py-2 rounded-full flex items-center gap-1"
+                      className="text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-background/70 transition-all px-3.5 py-1.5 rounded-full flex items-center gap-1"
                     >
                       {link.name}
-                      <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-200 ${openDropdown === link.name ? 'rotate-180' : ''}`} />
+                      <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${openDropdown === link.name ? 'rotate-180' : ''}`} />
                     </button>
                     
                     <div
-                      className={`absolute top-full left-0 mt-2 w-48 bg-background border border-border rounded-2xl shadow-lg overflow-hidden transition-all duration-200 ${
+                      className={`absolute top-full left-0 mt-1.5 w-44 bg-background border border-border/60 rounded-xl shadow-lg overflow-hidden transition-all duration-200 ${
                         openDropdown === link.name
                           ? 'opacity-100 visible translate-y-0'
                           : 'opacity-0 invisible -translate-y-2'
@@ -115,7 +115,7 @@ const Header = () => {
                         <button
                           key={child.name}
                           onClick={() => handleNavClick(child.href, child.isPage)}
-                          className="w-full text-left px-4 py-3 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-colors"
+                          className="w-full text-left px-4 py-2.5 text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-colors"
                         >
                           {child.name}
                         </button>
@@ -125,7 +125,7 @@ const Header = () => {
                 ) : (
                   <button
                     onClick={() => handleNavClick(link.href, link.isPage)}
-                    className="text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-background/80 transition-all px-4 py-2 rounded-full"
+                    className="text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-background/70 transition-all px-3.5 py-1.5 rounded-full"
                   >
                     {link.name}
                   </button>
@@ -139,7 +139,7 @@ const Header = () => {
         <div className="hidden lg:block">
           <button
             onClick={() => handleNavClick("#contact", false)}
-            className="inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-accent-foreground rounded-full px-6 py-2.5 text-sm font-semibold transition-colors"
+            className="inline-flex items-center gap-1.5 bg-accent hover:bg-accent/90 text-accent-foreground rounded-full px-5 py-2 text-[13px] font-semibold transition-colors"
           >
             Say hi 👋
           </button>
@@ -152,27 +152,27 @@ const Header = () => {
           aria-label="Toggle menu"
         >
           {isMobileMenuOpen ? (
-            <X className="h-6 w-6" />
+            <X className="h-5 w-5" />
           ) : (
-            <Menu className="h-6 w-6" />
+            <Menu className="h-5 w-5" />
           )}
         </button>
       </div>
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden absolute top-full left-0 right-0 bg-background/98 backdrop-blur-md border-b shadow-lg animate-fade-in">
-          <nav className="container py-6 flex flex-col gap-2">
+        <div className="lg:hidden absolute top-full left-0 right-0 bg-background/98 backdrop-blur-xl border-b border-border shadow-lg animate-fade-in">
+          <nav className="container py-5 flex flex-col gap-1">
             {navLinks.map((link) => (
               <div key={link.name}>
                 {link.children ? (
                   <div>
                     <button
                       onClick={() => toggleDropdown(link.name)}
-                      className="w-full flex items-center justify-between text-lg font-medium text-foreground py-2 hover:text-accent transition-colors"
+                      className="w-full flex items-center justify-between text-base font-medium text-foreground py-2.5 hover:text-accent transition-colors"
                     >
                       {link.name}
-                      <ChevronDown className={`h-5 w-5 transition-transform duration-200 ${openDropdown === link.name ? 'rotate-180' : ''}`} />
+                      <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${openDropdown === link.name ? 'rotate-180' : ''}`} />
                     </button>
                     {openDropdown === link.name && (
                       <div className="pl-4 border-l-2 border-accent/30 ml-2 mt-1 space-y-1">
@@ -180,7 +180,7 @@ const Header = () => {
                           <button
                             key={child.name}
                             onClick={() => handleNavClick(child.href, child.isPage)}
-                            className="block w-full text-left text-base font-medium text-muted-foreground py-2 hover:text-accent transition-colors"
+                            className="block w-full text-left text-sm font-medium text-muted-foreground py-2 hover:text-accent transition-colors"
                           >
                             {child.name}
                           </button>
@@ -191,7 +191,7 @@ const Header = () => {
                 ) : (
                   <button
                     onClick={() => handleNavClick(link.href, link.isPage)}
-                    className="text-lg font-medium text-foreground py-2 text-left hover:text-accent transition-colors"
+                    className="text-base font-medium text-foreground py-2.5 text-left hover:text-accent transition-colors"
                   >
                     {link.name}
                   </button>
@@ -200,7 +200,7 @@ const Header = () => {
             ))}
             <button
               onClick={() => handleNavClick("#contact", false)}
-              className="mt-4 bg-accent hover:bg-accent/90 text-accent-foreground rounded-full w-full py-3 font-semibold"
+              className="mt-3 bg-accent hover:bg-accent/90 text-accent-foreground rounded-full w-full py-2.5 text-sm font-semibold"
             >
               Say hi 👋
             </button>

@@ -33,56 +33,60 @@ const CtaBanner = () => {
   };
 
   return (
-    <section className="py-20 bg-secondary/30">
+    <section className="py-16 bg-background">
       <div className="container">
-        <AnimatedSection className="text-center max-w-4xl mx-auto mb-12">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground leading-tight mb-8">
-            Get Complete Digital Solutions For Branding ~ Web/App Development And{" "}
-            <span className="text-gradient">AI Automation.</span>
-          </h2>
+        <AnimatedSection>
+          <div className="bg-secondary/40 border border-border/40 rounded-[2rem] px-6 md:px-12 py-12 md:py-14">
+            <div className="text-center max-w-3xl mx-auto mb-10">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground leading-snug mb-7">
+                Get Complete Digital Solutions For Branding ~ Web/App Development And{" "}
+                <span className="text-gradient">AI Automation.</span>
+              </h2>
 
-          <div className="flex flex-wrap justify-center gap-4">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => handleScroll("#services")}
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border-2 border-accent text-accent font-semibold hover:bg-accent hover:text-accent-foreground transition-colors"
-            >
-              View Services
-              <ArrowRight className="h-4 w-4" />
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => handleScroll("#contact")}
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-foreground text-background font-semibold hover:bg-foreground/90 transition-colors"
-            >
-              <Users className="h-4 w-4" />
-              Request Meeting
-            </motion.button>
-          </div>
-        </AnimatedSection>
-
-        {/* Static Client Logos with dividers */}
-        <AnimatedSection delay={0.2}>
-          <p className="text-center text-sm font-semibold text-muted-foreground uppercase tracking-widest mb-8">
-            Trusted by Leading Brands
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-0">
-            {clients.map((client, index) => (
-              <div key={client.name} className="flex items-center">
-                <div className="px-6 py-3">
-                  <img
-                    src={client.image}
-                    alt={client.name}
-                    className="h-10 md:h-12 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity"
-                  />
-                </div>
-                {index < clients.length - 1 && (
-                  <div className="w-px h-10 bg-border hidden md:block" />
-                )}
+              <div className="flex flex-wrap justify-center gap-3">
+                <motion.button
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.96 }}
+                  onClick={() => handleScroll("#services")}
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full border-2 border-accent text-accent text-sm font-semibold hover:bg-accent hover:text-accent-foreground transition-colors"
+                >
+                  View Services
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.96 }}
+                  onClick={() => handleScroll("#contact")}
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-foreground text-background text-sm font-semibold hover:bg-foreground/90 transition-colors"
+                >
+                  <Users className="h-3.5 w-3.5" />
+                  Request Meeting
+                </motion.button>
               </div>
-            ))}
+            </div>
+
+            {/* Client logos strip */}
+            <div className="border-t border-border/40 pt-8">
+              <p className="text-center text-[11px] font-semibold text-muted-foreground uppercase tracking-[0.15em] mb-6">
+                Trusted by Leading Brands
+              </p>
+              <div className="flex flex-wrap items-center justify-center gap-0">
+                {clients.map((client, index) => (
+                  <div key={client.name} className="flex items-center">
+                    <div className="px-4 md:px-5 py-2">
+                      <img
+                        src={client.image}
+                        alt={client.name}
+                        className="h-8 md:h-9 w-auto object-contain opacity-60 hover:opacity-100 transition-opacity"
+                      />
+                    </div>
+                    {index < clients.length - 1 && (
+                      <div className="w-px h-8 bg-border/50 hidden md:block" />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </AnimatedSection>
       </div>

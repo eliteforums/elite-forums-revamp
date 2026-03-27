@@ -83,29 +83,29 @@ const Footer = () => {
 
   return (
     <footer className="bg-foreground text-background relative overflow-hidden">
-      {/* Large CTA Section */}
-      <div className="container pt-20 pb-16">
+      {/* CTA Section */}
+      <div className="container pt-16 pb-12">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="text-center mb-10"
         >
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 leading-tight">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
             Have 🥳 Great Idea?<br />
             <span className="text-accent">Tell Us About It.</span>
           </h2>
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-3">
             <button
               onClick={() => handleClick("/#about")}
-              className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-7 py-3.5 rounded-full font-semibold hover:bg-accent/90 transition-colors"
+              className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-6 py-3 rounded-full text-sm font-semibold hover:bg-accent/90 transition-colors"
             >
               About Us
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-3.5 w-3.5" />
             </button>
             <button
               onClick={() => handleClick("/#contact")}
-              className="inline-flex items-center gap-2 border-2 border-background/20 text-background px-7 py-3.5 rounded-full font-semibold hover:bg-background hover:text-foreground transition-colors"
+              className="inline-flex items-center gap-2 border-2 border-background/15 text-background px-6 py-3 rounded-full text-sm font-semibold hover:bg-background hover:text-foreground transition-colors"
             >
               Company Details
             </button>
@@ -113,62 +113,62 @@ const Footer = () => {
         </motion.div>
       </div>
 
-      <div className="border-t border-background/10" />
+      <div className="border-t border-background/8" />
 
-      <div className="container py-16 relative">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-accent/10 rounded-full blur-[150px] pointer-events-none" />
+      <div className="container py-12 relative">
+        <div className="absolute top-0 right-0 w-72 h-72 bg-accent/8 rounded-full blur-[120px] pointer-events-none" />
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-6">
           {/* Brand */}
           <div className="lg:col-span-2">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="flex items-center gap-3 mb-6"
+              className="flex items-center gap-2.5 mb-5"
             >
-              <img src={logo} alt="Elite Forums" className="h-12 w-12 invert" />
-              <span className="text-2xl font-bold">Elite Forums</span>
+              <img src={logo} alt="Elite Forums" className="h-10 w-10 invert" />
+              <span className="text-xl font-bold">Elite Forums</span>
             </motion.div>
-            <p className="text-background/60 mb-8 max-w-sm leading-relaxed text-lg">
+            <p className="text-background/50 mb-6 max-w-sm leading-relaxed text-sm">
               Empowering businesses with cutting-edge technology solutions. We
               transform ideas into digital reality through innovation and
               expertise.
             </p>
             
             {/* Contact Info */}
-            <div className="space-y-4 mb-8">
-              <a href="tel:+919322510601" className="flex items-center gap-3 text-background/60 hover:text-background transition-colors group">
-                <div className="w-10 h-10 rounded-xl bg-background/10 flex items-center justify-center group-hover:bg-accent/30 transition-colors">
-                  <Phone className="h-5 w-5" />
+            <div className="space-y-3 mb-6">
+              <a href="tel:+919322510601" className="flex items-center gap-2.5 text-background/50 hover:text-background transition-colors group text-sm">
+                <div className="w-8 h-8 rounded-lg bg-background/8 flex items-center justify-center group-hover:bg-accent/25 transition-colors">
+                  <Phone className="h-4 w-4" />
                 </div>
                 <span>+91 9322510601</span>
               </a>
-              <a href="mailto:admin@eliteforums.in" className="flex items-center gap-3 text-background/60 hover:text-background transition-colors group">
-                <div className="w-10 h-10 rounded-xl bg-background/10 flex items-center justify-center group-hover:bg-accent/30 transition-colors">
-                  <Mail className="h-5 w-5" />
+              <a href="mailto:admin@eliteforums.in" className="flex items-center gap-2.5 text-background/50 hover:text-background transition-colors group text-sm">
+                <div className="w-8 h-8 rounded-lg bg-background/8 flex items-center justify-center group-hover:bg-accent/25 transition-colors">
+                  <Mail className="h-4 w-4" />
                 </div>
                 <span>admin@eliteforums.in</span>
               </a>
-              <div className="flex items-center gap-3 text-background/60">
-                <div className="w-10 h-10 rounded-xl bg-background/10 flex items-center justify-center">
-                  <MapPin className="h-5 w-5" />
+              <div className="flex items-center gap-2.5 text-background/50 text-sm">
+                <div className="w-8 h-8 rounded-lg bg-background/8 flex items-center justify-center">
+                  <MapPin className="h-4 w-4" />
                 </div>
                 <span>Mumbai, MH 401209</span>
               </div>
             </div>
 
             {/* Social Links */}
-            <div className="flex gap-3">
+            <div className="flex gap-2">
               {socialLinks.map((social, index) => (
                 <motion.a
                   key={index}
                   href={social.href}
                   whileHover={{ scale: 1.1, y: -2 }}
-                  className="w-10 h-10 rounded-xl bg-background/10 flex items-center justify-center hover:bg-accent/30 transition-colors"
+                  className="w-8 h-8 rounded-lg bg-background/8 flex items-center justify-center hover:bg-accent/25 transition-colors"
                   aria-label={social.label}
                 >
-                  <social.icon className="h-5 w-5" />
+                  <social.icon className="h-4 w-4" />
                 </motion.a>
               ))}
             </div>
@@ -176,16 +176,16 @@ const Footer = () => {
 
           {/* Services */}
           <div>
-            <h4 className="font-semibold text-lg mb-6">Services</h4>
-            <ul className="space-y-4">
+            <h4 className="font-semibold text-sm mb-5">Services</h4>
+            <ul className="space-y-3">
               {footerLinks.services.map((link, index) => (
-                <motion.li key={index} whileHover={{ x: 5 }} transition={{ duration: 0.2 }}>
+                <motion.li key={index} whileHover={{ x: 4 }} transition={{ duration: 0.2 }}>
                   <button
                     onClick={() => handleClick(link.href)}
-                    className="text-background/60 hover:text-background transition-colors flex items-center gap-2 group"
+                    className="text-background/50 hover:text-background transition-colors flex items-center gap-1.5 group text-sm"
                   >
                     <span>{link.name}</span>
-                    <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <ArrowUpRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </button>
                 </motion.li>
               ))}
@@ -194,16 +194,16 @@ const Footer = () => {
 
           {/* Trainings */}
           <div>
-            <h4 className="font-semibold text-lg mb-6">Trainings</h4>
-            <ul className="space-y-4">
+            <h4 className="font-semibold text-sm mb-5">Trainings</h4>
+            <ul className="space-y-3">
               {footerLinks.trainings.map((link, index) => (
-                <motion.li key={index} whileHover={{ x: 5 }} transition={{ duration: 0.2 }}>
+                <motion.li key={index} whileHover={{ x: 4 }} transition={{ duration: 0.2 }}>
                   <button
                     onClick={() => handleClick(link.href)}
-                    className="text-background/60 hover:text-background transition-colors flex items-center gap-2 group"
+                    className="text-background/50 hover:text-background transition-colors flex items-center gap-1.5 group text-sm"
                   >
                     <span>{link.name}</span>
-                    <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <ArrowUpRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </button>
                 </motion.li>
               ))}
@@ -212,16 +212,16 @@ const Footer = () => {
 
           {/* Company */}
           <div>
-            <h4 className="font-semibold text-lg mb-6">Company</h4>
-            <ul className="space-y-4">
+            <h4 className="font-semibold text-sm mb-5">Company</h4>
+            <ul className="space-y-3">
               {footerLinks.company.map((link, index) => (
-                <motion.li key={index} whileHover={{ x: 5 }} transition={{ duration: 0.2 }}>
+                <motion.li key={index} whileHover={{ x: 4 }} transition={{ duration: 0.2 }}>
                   <button
                     onClick={() => handleClick(link.href)}
-                    className="text-background/60 hover:text-background transition-colors flex items-center gap-2 group"
+                    className="text-background/50 hover:text-background transition-colors flex items-center gap-1.5 group text-sm"
                   >
                     <span>{link.name}</span>
-                    <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <ArrowUpRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </button>
                 </motion.li>
               ))}
@@ -230,19 +230,19 @@ const Footer = () => {
         </div>
 
         {/* Client logos strip */}
-        <div className="border-t border-background/10 mt-16 pt-8">
-          <div className="flex flex-wrap items-center justify-center gap-0 mb-8">
+        <div className="border-t border-background/8 mt-12 pt-6">
+          <div className="flex flex-wrap items-center justify-center gap-0 mb-6">
             {clientLogos.map((client, index) => (
               <div key={client.name} className="flex items-center">
-                <div className="px-4 py-2">
+                <div className="px-3 py-1.5">
                   <img
                     src={client.image}
                     alt={client.name}
-                    className="h-8 w-auto object-contain opacity-40 hover:opacity-70 transition-opacity invert"
+                    className="h-6 w-auto object-contain opacity-30 hover:opacity-60 transition-opacity invert"
                   />
                 </div>
                 {index < clientLogos.length - 1 && (
-                  <div className="w-px h-6 bg-background/10 hidden md:block" />
+                  <div className="w-px h-5 bg-background/8 hidden md:block" />
                 )}
               </div>
             ))}
@@ -254,14 +254,14 @@ const Footer = () => {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="border-t border-background/10 pt-8"
+          className="border-t border-background/8 pt-6"
         >
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-background/50">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-3">
+            <p className="text-xs text-background/40">
               © {new Date().getFullYear()} Elite Forums. All rights reserved.
             </p>
-            <p className="text-sm text-background/50 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+            <p className="text-xs text-background/40 flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
               Crafted with passion in Mumbai, India
             </p>
           </div>
