@@ -21,8 +21,9 @@ import { useLenis } from "@/hooks/useLenis";
 const queryClient = new QueryClient();
 
 const LenisWrapper = ({ children }: { children: React.ReactNode }) => {
-  useLenis();
-  return <>{children}</>;
+  const wrapperRef = React.useRef<HTMLDivElement>(null);
+  useLenis(wrapperRef);
+  return <div ref={wrapperRef}>{children}</div>;
 };
 
 const App = () => (
