@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { AnimatedSection } from "./AnimatedSection";
 import { ArrowRight, Clock, Globe, Users } from "lucide-react";
+import BookingModal from "./BookingModal";
 
 const ReplyBanner = () => {
   const handleScroll = (href: string) => {

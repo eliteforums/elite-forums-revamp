@@ -82,7 +82,7 @@ const Hero = () => {
                 </span>
               </button>
               <button
-                onClick={() => handleScroll("#contact")}
+                onClick={() => setBookingOpen(true)}
                 className="inline-flex items-center gap-2.5 border-2 border-foreground/15 text-foreground pl-3 pr-5 py-2.5 rounded-full text-sm font-semibold hover:bg-foreground hover:text-background transition-colors"
               >
                 <div className="w-7 h-7 rounded-full bg-accent/15 flex items-center justify-center">
@@ -90,6 +90,7 @@ const Hero = () => {
                 </div>
                 Request Meeting
               </button>
+              <BookingModal open={bookingOpen} onOpenChange={setBookingOpen} />
             </motion.div>
           </div>
 
