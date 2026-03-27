@@ -306,7 +306,7 @@ const Contact = () => {
           <div className="flex items-center justify-between mt-4">
             <p className="text-sm text-muted-foreground">
               <MapPin className="inline h-4 w-4 text-accent mr-1.5 -mt-0.5" />
-              Elite Forums — Mumbai, MH 401209
+              Shop No 101, Mahadev House, opp. MSEB Office, Vasai East, Maharashtra 401208
             </p>
             <a
               href="https://share.google/JPfvUVjaWhhmUysBw"
