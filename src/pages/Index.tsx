@@ -5,7 +5,6 @@ import About from "@/components/About";
 import Services from "@/components/Services";
 import Products from "@/components/Products";
 import ClientLogos from "@/components/ClientLogos";
-import BlogPreview from "@/components/BlogPreview";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
@@ -28,11 +27,10 @@ const Index = () => {
         <Header />
         <main>
           <Hero />
-          <About />
-          <Services />
-          <Products />
           <ClientLogos />
-          <BlogPreview />
+          <Services />
+          <About />
+          <Products />
           <Contact />
         </main>
         <Footer />

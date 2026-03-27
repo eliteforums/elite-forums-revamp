@@ -34,8 +34,7 @@ const Footer = () => {
   
   const handleClick = (href: string) => {
     if (href.startsWith("/#")) {
-      // Hash link with path - navigate to home and scroll to section
-      const hash = href.substring(1); // Remove leading /
+      const hash = href.substring(1);
       if (window.location.pathname !== "/") {
         navigate("/");
         setTimeout(() => {
@@ -61,8 +60,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-primary text-primary-foreground relative overflow-hidden">
-      {/* Background decoration */}
+    <footer className="bg-foreground text-background relative overflow-hidden">
       <div className="absolute top-0 right-0 w-96 h-96 bg-accent/10 rounded-full blur-[150px] pointer-events-none" />
       
       <div className="container py-20 relative">
@@ -78,7 +76,7 @@ const Footer = () => {
               <img src={logo} alt="Elite Forums" className="h-12 w-12 invert" />
               <span className="text-2xl font-bold">Elite Forums</span>
             </motion.div>
-            <p className="text-primary-foreground/70 mb-8 max-w-sm leading-relaxed text-lg">
+            <p className="text-background/60 mb-8 max-w-sm leading-relaxed text-lg">
               Empowering businesses with cutting-edge technology solutions. We
               transform ideas into digital reality through innovation and
               expertise.
@@ -86,20 +84,20 @@ const Footer = () => {
             
             {/* Contact Info */}
             <div className="space-y-4 mb-8">
-              <a href="tel:+919322510601" className="flex items-center gap-3 text-primary-foreground/70 hover:text-primary-foreground transition-colors group">
-                <div className="w-10 h-10 rounded-lg bg-primary-foreground/10 flex items-center justify-center group-hover:bg-accent/20 transition-colors">
+              <a href="tel:+919322510601" className="flex items-center gap-3 text-background/60 hover:text-background transition-colors group">
+                <div className="w-10 h-10 rounded-xl bg-background/10 flex items-center justify-center group-hover:bg-accent/30 transition-colors">
                   <Phone className="h-5 w-5" />
                 </div>
                 <span>+91 9322510601</span>
               </a>
-              <a href="mailto:admin@eliteforums.in" className="flex items-center gap-3 text-primary-foreground/70 hover:text-primary-foreground transition-colors group">
-                <div className="w-10 h-10 rounded-lg bg-primary-foreground/10 flex items-center justify-center group-hover:bg-accent/20 transition-colors">
+              <a href="mailto:admin@eliteforums.in" className="flex items-center gap-3 text-background/60 hover:text-background transition-colors group">
+                <div className="w-10 h-10 rounded-xl bg-background/10 flex items-center justify-center group-hover:bg-accent/30 transition-colors">
                   <Mail className="h-5 w-5" />
                 </div>
                 <span>admin@eliteforums.in</span>
               </a>
-              <div className="flex items-center gap-3 text-primary-foreground/70">
-                <div className="w-10 h-10 rounded-lg bg-primary-foreground/10 flex items-center justify-center">
+              <div className="flex items-center gap-3 text-background/60">
+                <div className="w-10 h-10 rounded-xl bg-background/10 flex items-center justify-center">
                   <MapPin className="h-5 w-5" />
                 </div>
                 <span>Mumbai, MH 401209</span>
@@ -113,7 +111,7 @@ const Footer = () => {
                   key={index}
                   href={social.href}
                   whileHover={{ scale: 1.1, y: -2 }}
-                  className="w-10 h-10 rounded-lg bg-primary-foreground/10 flex items-center justify-center hover:bg-accent/30 transition-colors"
+                  className="w-10 h-10 rounded-xl bg-background/10 flex items-center justify-center hover:bg-accent/30 transition-colors"
                   aria-label={social.label}
                 >
                   <social.icon className="h-5 w-5" />
@@ -127,14 +125,10 @@ const Footer = () => {
             <h4 className="font-semibold text-lg mb-6">Services</h4>
             <ul className="space-y-4">
               {footerLinks.services.map((link, index) => (
-                <motion.li
-                  key={index}
-                  whileHover={{ x: 5 }}
-                  transition={{ duration: 0.2 }}
-                >
+                <motion.li key={index} whileHover={{ x: 5 }} transition={{ duration: 0.2 }}>
                   <button
                     onClick={() => handleClick(link.href)}
-                    className="text-primary-foreground/70 hover:text-primary-foreground transition-colors flex items-center gap-2 group"
+                    className="text-background/60 hover:text-background transition-colors flex items-center gap-2 group"
                   >
                     <span>{link.name}</span>
                     <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -149,14 +143,10 @@ const Footer = () => {
             <h4 className="font-semibold text-lg mb-6">Trainings</h4>
             <ul className="space-y-4">
               {footerLinks.trainings.map((link, index) => (
-                <motion.li
-                  key={index}
-                  whileHover={{ x: 5 }}
-                  transition={{ duration: 0.2 }}
-                >
+                <motion.li key={index} whileHover={{ x: 5 }} transition={{ duration: 0.2 }}>
                   <button
                     onClick={() => handleClick(link.href)}
-                    className="text-primary-foreground/70 hover:text-primary-foreground transition-colors flex items-center gap-2 group"
+                    className="text-background/60 hover:text-background transition-colors flex items-center gap-2 group"
                   >
                     <span>{link.name}</span>
                     <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -171,14 +161,10 @@ const Footer = () => {
             <h4 className="font-semibold text-lg mb-6">Company</h4>
             <ul className="space-y-4">
               {footerLinks.company.map((link, index) => (
-                <motion.li
-                  key={index}
-                  whileHover={{ x: 5 }}
-                  transition={{ duration: 0.2 }}
-                >
+                <motion.li key={index} whileHover={{ x: 5 }} transition={{ duration: 0.2 }}>
                   <button
                     onClick={() => handleClick(link.href)}
-                    className="text-primary-foreground/70 hover:text-primary-foreground transition-colors flex items-center gap-2 group"
+                    className="text-background/60 hover:text-background transition-colors flex items-center gap-2 group"
                   >
                     <span>{link.name}</span>
                     <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -194,13 +180,13 @@ const Footer = () => {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="border-t border-primary-foreground/10 mt-16 pt-8"
+          className="border-t border-background/10 mt-16 pt-8"
         >
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-primary-foreground/60">
+            <p className="text-sm text-background/50">
               © {new Date().getFullYear()} Elite Forums. All rights reserved.
             </p>
-            <p className="text-sm text-primary-foreground/60 flex items-center gap-2">
+            <p className="text-sm text-background/50 flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
               Crafted with passion in Mumbai, India
             </p>
