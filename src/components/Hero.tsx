@@ -19,19 +19,25 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="min-h-screen flex items-center relative overflow-hidden pt-28 pb-16 bg-background"
+      className="min-h-[92vh] flex items-center relative overflow-hidden pt-24 pb-12 bg-background"
     >
+      {/* Subtle background grid */}
+      <div className="absolute inset-0 opacity-[0.03]" style={{
+        backgroundImage: `radial-gradient(circle, hsl(var(--foreground)) 1px, transparent 1px)`,
+        backgroundSize: '32px 32px'
+      }} />
+
       <div className="container relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+        <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-8 lg:gap-6 items-center">
           {/* Left - Text Content */}
-          <div className="max-w-2xl">
+          <div className="max-w-[580px]">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm font-medium mb-8"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold mb-6 tracking-wide"
             >
-              <CheckCircle className="h-4 w-4 text-emerald-500" />
+              <CheckCircle className="h-3.5 w-3.5 text-emerald-500" />
               <span>100% TRUSTED PLATFORM</span>
             </motion.div>
 
@@ -39,7 +45,7 @@ const Hero = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-foreground leading-[1.1] mb-8 tracking-tight"
+              className="text-[2.75rem] md:text-[3.25rem] lg:text-[3.75rem] xl:text-[4.25rem] font-bold text-foreground leading-[1.08] mb-6 tracking-tight"
             >
               Your Business 🌿 Our{" "}
               <span className="text-gradient">Digital Strategy</span>
@@ -49,7 +55,7 @@ const Hero = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-lg md:text-xl text-muted-foreground max-w-xl mb-10 leading-relaxed"
+              className="text-base md:text-lg text-muted-foreground max-w-[480px] mb-8 leading-relaxed"
             >
               Transform your business with cutting-edge artificial intelligence,
               machine learning, and digital transformation strategies designed
@@ -60,22 +66,24 @@ const Hero = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="flex flex-wrap items-center gap-4"
+              className="flex flex-wrap items-center gap-3"
             >
               <button
                 onClick={() => handleScroll("#services")}
-                className="inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-accent-foreground px-7 py-3.5 rounded-full text-sm font-semibold transition-colors"
+                className="inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-accent-foreground pl-5 pr-4 py-3 rounded-full text-sm font-semibold transition-colors"
               >
                 <Globe className="h-4 w-4" />
                 View Services
-                <ArrowRight className="h-4 w-4" />
+                <span className="ml-1 w-7 h-7 rounded-full bg-accent-foreground/20 flex items-center justify-center">
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </span>
               </button>
               <button
                 onClick={() => handleScroll("#contact")}
-                className="inline-flex items-center gap-2 border-2 border-foreground/20 text-foreground px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-foreground hover:text-background transition-colors"
+                className="inline-flex items-center gap-2.5 border-2 border-foreground/15 text-foreground pl-3 pr-5 py-2.5 rounded-full text-sm font-semibold hover:bg-foreground hover:text-background transition-colors"
               >
-                <div className="w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center">
-                  <Users className="h-3 w-3 text-accent" />
+                <div className="w-7 h-7 rounded-full bg-accent/15 flex items-center justify-center">
+                  <Users className="h-3.5 w-3.5 text-accent" />
                 </div>
                 Request Meeting
               </button>
@@ -87,28 +95,29 @@ const Hero = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.5 }}
-            className="hidden lg:flex items-end justify-center relative h-[480px]"
+            className="hidden lg:flex items-end justify-center relative h-[440px]"
           >
-            <div className="flex items-end gap-4">
+            <div className="flex items-end gap-3">
               {capsules.map((capsule, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 60 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: capsule.delay }}
-                  className={`relative ${capsule.rotate} hover:rotate-0 transition-transform duration-500`}
-                  style={{ height: index % 2 === 0 ? "320px" : "280px" }}
+                  className={`relative ${capsule.rotate} hover:rotate-0 transition-transform duration-500 cursor-pointer`}
+                  style={{ height: index % 2 === 0 ? "300px" : "260px" }}
                 >
                   <div
-                    className={`${capsule.color} rounded-full w-[80px] h-full flex items-center justify-center relative overflow-hidden shadow-lg`}
+                    className={`${capsule.color} rounded-full w-[72px] h-full flex items-center justify-center relative overflow-hidden`}
+                    style={{ boxShadow: '0 8px 30px -8px rgba(0,0,0,0.15)' }}
                   >
                     {/* Decorative circles */}
-                    <div className="absolute top-6 left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-white/20" />
-                    <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-white/15" />
+                    <div className="absolute top-5 left-1/2 -translate-x-1/2 w-9 h-9 rounded-full bg-white/20" />
+                    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-white/15" />
                     
                     {/* Vertical text */}
                     <span
-                      className="text-white font-semibold text-sm tracking-wider whitespace-nowrap"
+                      className="text-white font-semibold text-xs tracking-widest whitespace-nowrap uppercase"
                       style={{ writingMode: "vertical-rl", textOrientation: "mixed" }}
                     >
                       {capsule.label}
@@ -120,21 +129,23 @@ const Hero = () => {
 
             {/* Floating badge */}
             <motion.div
-              animate={{ y: [-6, 6, -6] }}
+              animate={{ y: [-5, 5, -5] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute top-8 right-4 bg-card rounded-2xl px-5 py-3 shadow-lg border border-border"
+              className="absolute top-6 right-2 bg-card rounded-2xl px-4 py-2.5 border border-border"
+              style={{ boxShadow: '0 4px 20px -4px rgba(0,0,0,0.08)' }}
             >
-              <div className="text-xl font-bold text-foreground">50+</div>
-              <div className="text-xs text-muted-foreground">Projects</div>
+              <div className="text-lg font-bold text-foreground">50+</div>
+              <div className="text-[11px] text-muted-foreground">Projects</div>
             </motion.div>
 
             <motion.div
-              animate={{ y: [6, -6, 6] }}
+              animate={{ y: [5, -5, 5] }}
               transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute bottom-16 left-0 bg-card rounded-2xl px-5 py-3 shadow-lg border border-border"
+              className="absolute bottom-12 left-0 bg-card rounded-2xl px-4 py-2.5 border border-border"
+              style={{ boxShadow: '0 4px 20px -4px rgba(0,0,0,0.08)' }}
             >
-              <div className="text-xl font-bold text-accent">100+</div>
-              <div className="text-xs text-muted-foreground">Clients</div>
+              <div className="text-lg font-bold text-accent">100+</div>
+              <div className="text-[11px] text-muted-foreground">Clients</div>
             </motion.div>
           </motion.div>
         </div>

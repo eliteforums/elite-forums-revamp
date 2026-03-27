@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Quote, Users, Target, Lightbulb, Award, ArrowRight, Star } from "lucide-react";
 import { motion } from "framer-motion";
-import { AnimatedSection, AnimatedCard, StaggerContainer, StaggerItem } from "./AnimatedSection";
+import { AnimatedSection, StaggerContainer, StaggerItem } from "./AnimatedSection";
 import { supabase } from "@/integrations/supabase/client";
 
 import averanceLogo from "@/assets/clients/averance.png";
@@ -21,29 +21,29 @@ const values = [
     icon: Target,
     title: "Mission Driven",
     description: "Focused on delivering measurable impact for every client we serve.",
-    gradient: "from-orange-200 to-amber-100",
-    shape: "rounded-tl-[60px] rounded-br-[60px]",
+    gradient: "from-orange-100 to-amber-50",
+    accent: "bg-orange-400",
   },
   {
     icon: Lightbulb,
     title: "Innovation First",
     description: "Constantly exploring new technologies to solve complex challenges.",
-    gradient: "from-purple-200 to-indigo-100",
-    shape: "rounded-tr-[60px] rounded-bl-[60px]",
+    gradient: "from-purple-100 to-indigo-50",
+    accent: "bg-purple-400",
   },
   {
     icon: Users,
     title: "Client Centric",
     description: "Your success is our priority. We build partnerships, not just products.",
-    gradient: "from-rose-200 to-pink-100",
-    shape: "rounded-tl-[60px] rounded-br-[60px]",
+    gradient: "from-rose-100 to-pink-50",
+    accent: "bg-rose-400",
   },
   {
     icon: Award,
     title: "Excellence",
     description: "Committed to the highest standards in everything we deliver.",
-    gradient: "from-emerald-200 to-teal-100",
-    shape: "rounded-tr-[60px] rounded-bl-[60px]",
+    gradient: "from-emerald-100 to-teal-50",
+    accent: "bg-emerald-400",
   },
 ];
 
@@ -76,32 +76,32 @@ const About = () => {
 
   return (
     <section id="about" className="relative overflow-hidden">
-      {/* Testimonials Section - "What Our Clients Say" */}
+      {/* Testimonials Section */}
       {teamQuotes.length > 0 && (
-        <div className="py-24 bg-background">
+        <div className="py-20 bg-background">
           <div className="container">
-            <div className="grid lg:grid-cols-2 gap-12 items-start">
-              {/* Left side - Heading + client logos */}
+            <div className="grid lg:grid-cols-2 gap-10 items-start">
+              {/* Left side */}
               <AnimatedSection>
-                <span className="inline-block px-5 py-2 rounded-full bg-accent/10 text-accent text-sm font-semibold mb-6">
+                <span className="inline-block px-4 py-1.5 rounded-full bg-accent/10 text-accent text-xs font-semibold mb-5 tracking-wide">
                   Testimonials
                 </span>
-                <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-8 leading-tight">
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 leading-tight">
                   What Our{" "}
                   <span className="text-gradient">Clients Say</span>
                 </h2>
-                <p className="text-lg text-muted-foreground mb-10 max-w-md">
+                <p className="text-base text-muted-foreground mb-8 max-w-sm leading-relaxed">
                   Hear from the businesses we've helped transform with our digital solutions.
                 </p>
 
                 {/* Client logos */}
-                <div className="flex items-center gap-6 flex-wrap">
+                <div className="flex items-center gap-5 flex-wrap">
                   {clientLogos.map((client) => (
                     <img
                       key={client.name}
                       src={client.image}
                       alt={client.name}
-                      className="h-8 w-auto object-contain opacity-50 hover:opacity-100 transition-opacity"
+                      className="h-7 w-auto object-contain opacity-40 hover:opacity-80 transition-opacity"
                     />
                   ))}
                 </div>
@@ -109,43 +109,45 @@ const About = () => {
 
               {/* Right side - Quote card */}
               <AnimatedSection delay={0.2}>
-                <div className="bg-card rounded-3xl p-8 md:p-10 border border-border shadow-lg relative">
-                  <Quote className="h-12 w-12 text-accent/20 mb-6" />
+                <div className="bg-card rounded-[1.25rem] p-7 md:p-8 border border-border/60 relative"
+                  style={{ boxShadow: '0 4px 24px -6px rgba(0,0,0,0.06)' }}
+                >
+                  <Quote className="h-10 w-10 text-accent/15 mb-5" />
                   
-                  <div className="flex items-center gap-1 mb-6">
+                  <div className="flex items-center gap-0.5 mb-5">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="h-5 w-5 text-accent fill-accent" />
+                      <Star key={i} className="h-4 w-4 text-accent fill-accent" />
                     ))}
                   </div>
 
-                  <p className="text-foreground text-lg md:text-xl leading-relaxed mb-8 italic">
+                  <p className="text-foreground text-base md:text-lg leading-relaxed mb-7 italic">
                     "{teamQuotes[0]?.quote}"
                   </p>
 
-                  <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 rounded-full bg-accent flex items-center justify-center text-accent-foreground font-bold text-lg">
+                  <div className="flex items-center gap-3">
+                    <div className="w-11 h-11 rounded-full bg-accent flex items-center justify-center text-accent-foreground font-bold text-sm">
                       {teamQuotes[0]?.name.charAt(0)}
                     </div>
                     <div>
-                      <div className="font-semibold text-lg text-foreground">
+                      <div className="font-semibold text-foreground text-sm">
                         {teamQuotes[0]?.name}
                       </div>
-                      <div className="text-sm text-accent">
+                      <div className="text-xs text-accent">
                         {teamQuotes[0]?.role}
                       </div>
                     </div>
                   </div>
 
-                  {/* More testimonials below */}
+                  {/* More testimonials */}
                   {teamQuotes.length > 1 && (
-                    <div className="mt-8 pt-8 border-t border-border space-y-6">
+                    <div className="mt-6 pt-6 border-t border-border/60 space-y-5">
                       {teamQuotes.slice(1, 3).map((item) => (
-                        <div key={item.id} className="flex items-start gap-4">
-                          <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-accent font-bold text-sm flex-shrink-0">
+                        <div key={item.id} className="flex items-start gap-3">
+                          <div className="w-8 h-8 rounded-full bg-accent/15 flex items-center justify-center text-accent font-bold text-xs flex-shrink-0">
                             {item.name.charAt(0)}
                           </div>
                           <div>
-                            <p className="text-muted-foreground text-sm italic mb-1">
+                            <p className="text-muted-foreground text-[13px] italic mb-1 leading-relaxed">
                               "{item.quote}"
                             </p>
                             <div className="text-xs font-semibold text-foreground">
@@ -164,49 +166,53 @@ const About = () => {
       )}
 
       {/* Values Section - "Why Elite Forums" */}
-      <div className="py-24 bg-foreground text-background">
+      <div className="py-20 bg-foreground text-background">
         <div className="container">
           {/* Header row */}
-          <AnimatedSection className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
-            <div className="max-w-xl">
-              <h3 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight">
+          <AnimatedSection className="flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-14">
+            <div className="max-w-lg">
+              <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3 leading-tight">
                 Why <span className="text-accent">Elite Forums</span>
               </h3>
-              <p className="text-background/60 text-lg leading-relaxed">
+              <p className="text-background/55 text-base leading-relaxed">
                 Elite Forums is a forward-thinking technology company dedicated to
                 empowering businesses through innovative digital solutions.
               </p>
             </div>
             <button
               onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-              className="inline-flex items-center gap-2 self-start md:self-auto px-8 py-4 rounded-full bg-accent text-accent-foreground font-semibold hover:bg-accent/90 transition-colors whitespace-nowrap"
+              className="inline-flex items-center gap-2 self-start md:self-auto px-6 py-3 rounded-full bg-accent text-accent-foreground text-sm font-semibold hover:bg-accent/90 transition-colors whitespace-nowrap"
             >
               Request Meeting 👋
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-3.5 w-3.5" />
             </button>
           </AnimatedSection>
 
-          {/* Value cards with illustrated tops */}
-          <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Value cards */}
+          <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {values.map((value, index) => (
               <StaggerItem key={index}>
                 <motion.div
-                  whileHover={{ y: -8 }}
-                  className="rounded-3xl overflow-hidden bg-background/5 border border-background/10 hover:border-accent/30 transition-all group h-full"
+                  whileHover={{ y: -6 }}
+                  className="rounded-[1.25rem] overflow-hidden bg-background/5 border border-background/8 hover:border-accent/25 transition-all group h-full"
                 >
-                  {/* Illustrated top area */}
-                  <div className={`h-44 bg-gradient-to-br ${value.gradient} relative overflow-hidden flex items-center justify-center`}>
-                    {/* Abstract shapes */}
-                    <div className={`absolute inset-4 bg-white/30 ${value.shape}`} />
-                    <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/20" />
-                    <div className="absolute bottom-3 left-3 w-6 h-6 rounded-lg bg-white/25 rotate-12" />
-                    <value.icon className="h-10 w-10 text-foreground/70 relative z-10" />
+                  {/* Top visual area */}
+                  <div className={`h-36 bg-gradient-to-br ${value.gradient} relative overflow-hidden flex items-center justify-center`}>
+                    {/* Layered abstract shapes */}
+                    <div className="absolute inset-6 rounded-[2rem] bg-white/25" />
+                    <div className="absolute top-4 right-4 w-6 h-6 rounded-full bg-white/20" />
+                    <div className="absolute bottom-4 left-4 w-5 h-5 rounded-lg bg-white/20 rotate-12" />
+                    <div className={`w-10 h-10 rounded-xl ${value.accent} flex items-center justify-center relative z-10`}
+                      style={{ boxShadow: '0 4px 12px -2px rgba(0,0,0,0.15)' }}
+                    >
+                      <value.icon className="h-5 w-5 text-white" />
+                    </div>
                   </div>
 
                   {/* Content */}
-                  <div className="p-6">
-                    <h4 className="text-lg font-semibold mb-2">{value.title}</h4>
-                    <p className="text-background/60 text-sm leading-relaxed">{value.description}</p>
+                  <div className="p-5">
+                    <h4 className="text-base font-semibold mb-1.5">{value.title}</h4>
+                    <p className="text-background/50 text-[13px] leading-relaxed">{value.description}</p>
                   </div>
                 </motion.div>
               </StaggerItem>
