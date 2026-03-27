@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
-import { ExternalLink, ArrowUpRight, ChevronDown } from "lucide-react";
+import { ExternalLink, ArrowUpRight, ChevronDown, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AnimatedSection } from "@/components/AnimatedSection";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import LatestWorks from "@/components/Products";
 
 interface Product {
   id: string;
