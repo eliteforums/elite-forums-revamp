@@ -182,12 +182,13 @@ const About = () => {
               </p>
             </div>
             <button
-              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => setBookingOpen(true)}
               className="inline-flex items-center gap-2 self-start md:self-auto px-6 py-3 rounded-full bg-accent text-accent-foreground text-sm font-semibold hover:bg-accent/90 transition-colors whitespace-nowrap"
             >
               Request Meeting 👋
               <ArrowRight className="h-3.5 w-3.5" />
             </button>
+            <BookingModal open={bookingOpen} onOpenChange={setBookingOpen} />
           </AnimatedSection>
 
           {/* Value cards */}
