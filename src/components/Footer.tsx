@@ -229,25 +229,8 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Client logos strip */}
-        <div className="border-t border-background/8 mt-12 pt-6">
-          <div className="flex flex-wrap items-center justify-center gap-0 mb-6">
-            {clientLogos.map((client, index) => (
-              <div key={client.name} className="flex items-center">
-                <div className="px-3 py-1.5">
-                  <img
-                    src={client.image}
-                    alt={client.name}
-                    className="h-6 w-auto object-contain opacity-30 hover:opacity-60 transition-opacity invert"
-                  />
-                </div>
-                {index < clientLogos.length - 1 && (
-                  <div className="w-px h-5 bg-background/8 hidden md:block" />
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
+        {/* Divider before bottom bar */}
+        <div className="mt-12" />
 
         {/* Bottom Bar */}
         <motion.div

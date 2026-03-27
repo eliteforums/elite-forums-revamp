@@ -131,7 +131,7 @@ const Hero = () => {
             <motion.div
               animate={{ y: [-5, 5, -5] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute top-6 right-2 bg-card rounded-2xl px-4 py-2.5 border border-border"
+              className="absolute top-20 right-2 bg-card rounded-2xl px-4 py-2.5 border border-border"
               style={{ boxShadow: '0 4px 20px -4px rgba(0,0,0,0.08)' }}
             >
               <div className="text-lg font-bold text-foreground">50+</div>
