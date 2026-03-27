@@ -24,7 +24,7 @@ const contactInfo = [
   {
     icon: MapPin,
     label: "Address",
-    value: "Mumbai, MH 401209",
+    value: "Shop No 101, Mahadev House, Vasai East, 401208",
   },
   {
     icon: Clock,
