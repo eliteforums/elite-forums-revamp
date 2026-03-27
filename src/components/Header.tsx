@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { useLocation, useNavigate } from "react-router-dom";
 import logo from "@/assets/logo.png";
 
@@ -75,19 +74,21 @@ const Header = () => {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-background/95 backdrop-blur-md shadow-md py-3"
+          ? "bg-background/95 backdrop-blur-md shadow-sm py-3"
           : "bg-transparent py-5"
       }`}
     >
       <div className="container flex items-center justify-between">
-        <button onClick={handleLogoClick} className="flex items-center gap-3">
-          <img src={logo} alt="Elite Forums" className="h-10 w-10" />
-          <span className="text-xl font-bold text-foreground">Elite Forums</span>
+        {/* Logo with green dot */}
+        <button onClick={handleLogoClick} className="flex items-center gap-2">
+          <img src={logo} alt="Elite Forums" className="h-9 w-9" />
+          <span className="text-lg font-bold text-foreground">Elite Forums</span>
+          <span className="w-2 h-2 rounded-full bg-emerald-400 -ml-1 mt-1" />
         </button>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center">
-          <div className="flex items-center gap-1 bg-secondary/60 rounded-full px-2 py-1.5 backdrop-blur-sm">
+        {/* Desktop Navigation - Centered */}
+        <nav className="hidden lg:flex items-center absolute left-1/2 -translate-x-1/2">
+          <div className="flex items-center gap-0.5 bg-secondary/70 rounded-full px-1.5 py-1 backdrop-blur-sm">
             {navLinks.map((link) => (
               <div key={link.name} className="relative">
                 {link.children ? (
@@ -134,13 +135,14 @@ const Header = () => {
           </div>
         </nav>
 
+        {/* Say hi button */}
         <div className="hidden lg:block">
-          <Button
+          <button
             onClick={() => handleNavClick("#contact", false)}
-            className="bg-accent hover:bg-accent/90 text-accent-foreground rounded-full px-6"
+            className="inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-accent-foreground rounded-full px-6 py-2.5 text-sm font-semibold transition-colors"
           >
-            Get Started
-          </Button>
+            Say hi 👋
+          </button>
         </div>
 
         {/* Mobile Menu Button */}
@@ -196,12 +198,12 @@ const Header = () => {
                 )}
               </div>
             ))}
-            <Button
+            <button
               onClick={() => handleNavClick("#contact", false)}
-              className="mt-4 bg-accent hover:bg-accent/90 text-accent-foreground rounded-full w-full"
+              className="mt-4 bg-accent hover:bg-accent/90 text-accent-foreground rounded-full w-full py-3 font-semibold"
             >
-              Get Started
-            </Button>
+              Say hi 👋
+            </button>
           </nav>
         </div>
       )}
