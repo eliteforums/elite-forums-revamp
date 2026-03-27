@@ -1,7 +1,7 @@
 import logo from "@/assets/logo.png";
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, ArrowUpRight, Linkedin, Instagram } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Mail, Phone, MapPin, ArrowUpRight, Linkedin, Instagram, ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const footerLinks = {
   services: [
@@ -61,9 +61,33 @@ const Footer = () => {
 
   return (
     <footer className="bg-foreground text-background relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-96 h-96 bg-accent/10 rounded-full blur-[150px] pointer-events-none" />
-      
-      <div className="container py-20 relative">
+      {/* Large CTA Section */}
+      <div className="container pt-20 pb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 leading-tight">
+            Need Help With<br />
+            <span className="text-accent">Large Platform?</span>
+          </h2>
+          <button
+            onClick={() => handleClick("/#contact")}
+            className="inline-flex items-center gap-3 bg-accent text-accent-foreground px-8 py-4 rounded-full text-lg font-semibold hover:bg-accent/90 transition-colors"
+          >
+            Request Meeting 👋
+            <ArrowRight className="h-5 w-5" />
+          </button>
+        </motion.div>
+      </div>
+
+      <div className="border-t border-background/10" />
+
+      <div className="container py-16 relative">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-accent/10 rounded-full blur-[150px] pointer-events-none" />
+
         <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8">
           {/* Brand */}
           <div className="lg:col-span-2">
