@@ -180,6 +180,9 @@ const Products = () => {
               )}
             </div>
           </section>
+
+          {/* Latest Works Section */}
+          <LatestWorks />
         </main>
 
         <Footer />
