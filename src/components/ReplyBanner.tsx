@@ -59,7 +59,7 @@ const ReplyBanner = () => {
             <motion.button
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.96 }}
-              onClick={() => handleScroll("#contact")}
+              onClick={() => setBookingOpen(true)}
               className="inline-flex items-center gap-2.5 pl-3 pr-5 py-2.5 rounded-full border-2 border-foreground/15 text-foreground text-sm font-semibold hover:bg-foreground hover:text-background transition-colors"
             >
               <div className="w-6 h-6 rounded-full bg-accent/15 flex items-center justify-center">
@@ -67,6 +67,7 @@ const ReplyBanner = () => {
               </div>
               Request Meeting
             </motion.button>
+            <BookingModal open={bookingOpen} onOpenChange={setBookingOpen} />
           </div>
         </AnimatedSection>
       </div>
