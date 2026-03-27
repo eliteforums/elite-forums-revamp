@@ -27,6 +27,7 @@ const clients = [
 ];
 
 const CtaBanner = () => {
+  const [bookingOpen, setBookingOpen] = useState(false);
   const handleScroll = (href: string) => {
     const element = document.querySelector(href);
     if (element) {
