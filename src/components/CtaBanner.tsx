@@ -59,12 +59,13 @@ const CtaBanner = () => {
                 <motion.button
                   whileHover={{ scale: 1.04 }}
                   whileTap={{ scale: 0.96 }}
-                  onClick={() => handleScroll("#contact")}
+                  onClick={() => setBookingOpen(true)}
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-foreground text-background text-sm font-semibold hover:bg-foreground/90 transition-colors"
                 >
                   <Users className="h-3.5 w-3.5" />
                   Request Meeting
                 </motion.button>
+                <BookingModal open={bookingOpen} onOpenChange={setBookingOpen} />
               </div>
             </div>
 
