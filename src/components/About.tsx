@@ -57,6 +57,7 @@ const clientLogos = [
 
 const About = () => {
   const [teamQuotes, setTeamQuotes] = useState<TeamMember[]>([]);
+  const [bookingOpen, setBookingOpen] = useState(false);
 
   useEffect(() => {
     const fetchTeam = async () => {
