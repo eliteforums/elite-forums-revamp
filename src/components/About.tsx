@@ -3,6 +3,7 @@ import { Quote, Users, Target, Lightbulb, Award, ArrowRight, Star } from "lucide
 import { motion } from "framer-motion";
 import { AnimatedSection, StaggerContainer, StaggerItem } from "./AnimatedSection";
 import { supabase } from "@/integrations/supabase/client";
+import BookingModal from "./BookingModal";
 
 import averanceLogo from "@/assets/clients/averance.png";
 import jumpstartLogo from "@/assets/clients/jumpstart.png";
