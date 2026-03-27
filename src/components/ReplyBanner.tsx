@@ -5,6 +5,7 @@ import { ArrowRight, Clock, Globe, Users } from "lucide-react";
 import BookingModal from "./BookingModal";
 
 const ReplyBanner = () => {
+  const [bookingOpen, setBookingOpen] = useState(false);
   const handleScroll = (href: string) => {
     const element = document.querySelector(href);
     if (element) {
