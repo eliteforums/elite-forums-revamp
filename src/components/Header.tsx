@@ -13,6 +13,7 @@ const navLinks = [
       { name: "About Us", href: "#about", isPage: false },
       { name: "Trainings", href: "/trainings", isPage: true },
       { name: "Projects", href: "/projects", isPage: true },
+      { name: "Certificate", href: "/certificate", isPage: true },
     ],
   },
   { name: "Services", href: "#services", isPage: false },

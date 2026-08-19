@@ -15,6 +15,7 @@ import ReviewForm from "./pages/ReviewForm";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 import Blog from "./pages/Blog";
+import CertificatePage from "./pages/Certificate";
 import NotFound from "./pages/NotFound";
 import { useLenis } from "@/hooks/useLenis";
 
@@ -43,6 +44,7 @@ const App = () => (
               <Route path="/careers" element={<CareersPage />} />
               <Route path="/review" element={<ReviewForm />} />
               <Route path="/blog" element={<Blog />} />
+              <Route path="/certificate" element={<CertificatePage />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="*" element={<NotFound />} />

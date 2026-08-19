@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { z } from "zod";
 import html2canvas from "html2canvas";
@@ -6,20 +6,20 @@ import jsPDF from "jspdf";
 import { Award, Download, FileText, Loader2, RotateCcw } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import CertificateCanvas, { CertificateData } from "@/components/CertificateCanvas";
+import CertificateCanvas, {
+  CERTIFICATE_HEIGHT,
+  CERTIFICATE_WIDTH,
+  CertificateData,
+} from "@/components/CertificateCanvas";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 
-const courses = [
-  "Web Development & Generative AI Internship",
-  "Full Stack Development Program",
-  "Data Science & Analytics Program",
-  "Artificial Intelligence & Machine Learning Program",
-  "Cyber Security Program",
-  "Cloud Computing & DevOps Program",
-  "Digital Marketing Program",
-  "UI/UX Design Program",
-];
+/**
+ * The supplied template carries fixed programme wording, so the programme and
+ * completion date are constants that are stored with every issued certificate.
+ */
+const PROGRAM_TITLE = "Web Development & Generative AI Internship";
+const PROGRAM_COMPLETION_DATE = "2026-08-14";
 
 const schema = z.object({
   fullName: z.string().trim().min(2, "Please enter your full name").max(60, "Name is too long"),
@@ -28,10 +28,8 @@ const schema = z.object({
     .string()
     .trim()
     .regex(/^[0-9+\-\s()]{7,20}$/, "Enter a valid phone number"),
-  college: z.string().trim().min(2, "Please enter your college").max(120),
+  college: z.string().trim().min(2, "Please enter your college name").max(120),
   department: z.string().trim().min(2, "Please enter your department").max(120),
-  course: z.string().trim().min(2, "Please select a program").max(150),
-  completionDate: z.string().min(1, "Please select the completion date"),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -42,17 +40,17 @@ const emptyForm: FormValues = {
   phone: "",
   college: "",
   department: "",
-  course: courses[0],
-  completionDate: new Date().toISOString().slice(0, 10),
 };
 
 const makeCertificateId = () => {
   const year = new Date().getFullYear();
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-  let suffix = "";
   const bytes = new Uint32Array(6);
   crypto.getRandomValues(bytes);
-  bytes.forEach((b) => (suffix += chars[b % chars.length]));
+  let suffix = "";
+  bytes.forEach((byte) => {
+    suffix += chars[byte % chars.length];
+  });
   return `EF-${year}-${suffix}`;
 };
 
@@ -62,15 +60,28 @@ const CertificatePage = () => {
   const [loading, setLoading] = useState(false);
   const [downloading, setDownloading] = useState(false);
   const [certificate, setCertificate] = useState<CertificateData | null>(null);
+  const [previewScale, setPreviewScale] = useState(0.3);
   const canvasRef = useRef<HTMLDivElement>(null);
+  const previewBoxRef = useRef<HTMLDivElement>(null);
+
+  // Scale the full-resolution artwork down to whatever width the preview box has.
+  useEffect(() => {
+    const box = previewBoxRef.current;
+    if (!box) return;
+    const update = () => setPreviewScale(box.clientWidth / CERTIFICATE_WIDTH);
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(box);
+    return () => observer.disconnect();
+  }, [certificate]);
 
   const setField = (key: keyof FormValues, value: string) => {
     setForm((prev) => ({ ...prev, [key]: value }));
     setErrors((prev) => ({ ...prev, [key]: undefined }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
     const parsed = schema.safeParse(form);
     if (!parsed.success) {
       const fieldErrors: Partial<Record<keyof FormValues, string>> = {};
@@ -92,8 +103,8 @@ const CertificatePage = () => {
       phone: data.phone,
       college: data.college,
       department: data.department,
-      course: data.course,
-      completion_date: data.completionDate,
+      course: PROGRAM_TITLE,
+      completion_date: PROGRAM_COMPLETION_DATE,
     });
 
     setLoading(false);
@@ -101,27 +112,28 @@ const CertificatePage = () => {
     if (error) {
       toast({
         title: "Could not generate certificate",
-        description: "Please try again in a moment.",
+        description: "Something went wrong while saving your details. Please try again.",
         variant: "destructive",
       });
       return;
     }
 
-    setCertificate({
-      fullName: data.fullName,
-      course: data.course,
-      college: data.college,
-      department: data.department,
-      completionDate: data.completionDate,
-      certificateId,
+    setCertificate({ fullName: data.fullName, certificateId });
+    toast({
+      title: "Certificate generated",
+      description: `Your certificate ID is ${certificateId}`,
     });
-    toast({ title: "Certificate generated", description: `Your ID is ${certificateId}` });
   };
 
   const capture = async () => {
     if (!canvasRef.current) return null;
+    if (document.fonts?.ready) {
+      await document.fonts.ready;
+    }
     return html2canvas(canvasRef.current, {
       scale: 1,
+      width: CERTIFICATE_WIDTH,
+      height: CERTIFICATE_HEIGHT,
       backgroundColor: "#ffffff",
       useCORS: true,
       logging: false,
@@ -137,6 +149,12 @@ const CertificatePage = () => {
       link.download = `${certificate?.certificateId}.png`;
       link.href = canvas.toDataURL("image/png");
       link.click();
+    } catch {
+      toast({
+        title: "Download failed",
+        description: "Please try downloading again.",
+        variant: "destructive",
+      });
     } finally {
       setDownloading(false);
     }
@@ -147,9 +165,26 @@ const CertificatePage = () => {
     try {
       const canvas = await capture();
       if (!canvas) return;
-      const pdf = new jsPDF({ orientation: "portrait", unit: "px", format: [1358, 1920] });
-      pdf.addImage(canvas.toDataURL("image/jpeg", 0.95), "JPEG", 0, 0, 1358, 1920);
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "px",
+        format: [CERTIFICATE_WIDTH, CERTIFICATE_HEIGHT],
+      });
+      pdf.addImage(
+        canvas.toDataURL("image/jpeg", 0.95),
+        "JPEG",
+        0,
+        0,
+        CERTIFICATE_WIDTH,
+        CERTIFICATE_HEIGHT
+      );
       pdf.save(`${certificate?.certificateId}.pdf`);
+    } catch {
+      toast({
+        title: "Download failed",
+        description: "Please try downloading again.",
+        variant: "destructive",
+      });
     } finally {
       setDownloading(false);
     }
@@ -181,13 +216,13 @@ const CertificatePage = () => {
               Get Your <span className="text-gradient">Elite Forums Certificate</span>
             </h1>
             <p className="text-muted-foreground text-base leading-relaxed">
-              Fill in your details to instantly generate your official certificate of completion.
+              Enter your details to instantly generate your official certificate of completion.
               Every certificate carries a unique certificate ID for verification.
             </p>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-10 items-start">
-            {/* Form */}
+            {/* Details form */}
             <form
               onSubmit={handleSubmit}
               className="bg-card rounded-[1.25rem] border border-border/60 p-6 md:p-8 space-y-5"
@@ -202,12 +237,14 @@ const CertificatePage = () => {
                   placeholder="As it should appear on the certificate"
                   onChange={(e) => setField("fullName", e.target.value)}
                 />
-                {errors.fullName && <p className="text-destructive text-xs mt-1.5">{errors.fullName}</p>}
+                {errors.fullName && (
+                  <p className="text-destructive text-xs mt-1.5">{errors.fullName}</p>
+                )}
               </div>
 
               <div className="grid sm:grid-cols-2 gap-5">
                 <div>
-                  <label className="block text-sm font-semibold text-foreground mb-2">Email</label>
+                  <label className="block text-sm font-semibold text-foreground mb-2">Email ID</label>
                   <input
                     className={inputClass}
                     type="email"
@@ -219,9 +256,12 @@ const CertificatePage = () => {
                   {errors.email && <p className="text-destructive text-xs mt-1.5">{errors.email}</p>}
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-foreground mb-2">Phone</label>
+                  <label className="block text-sm font-semibold text-foreground mb-2">
+                    Phone Number
+                  </label>
                   <input
                     className={inputClass}
+                    type="tel"
                     value={form.phone}
                     maxLength={20}
                     placeholder="+91 98765 43210"
@@ -233,7 +273,9 @@ const CertificatePage = () => {
 
               <div className="grid sm:grid-cols-2 gap-5">
                 <div>
-                  <label className="block text-sm font-semibold text-foreground mb-2">College</label>
+                  <label className="block text-sm font-semibold text-foreground mb-2">
+                    College Name
+                  </label>
                   <input
                     className={inputClass}
                     value={form.college}
@@ -241,10 +283,14 @@ const CertificatePage = () => {
                     placeholder="Your college / university"
                     onChange={(e) => setField("college", e.target.value)}
                   />
-                  {errors.college && <p className="text-destructive text-xs mt-1.5">{errors.college}</p>}
+                  {errors.college && (
+                    <p className="text-destructive text-xs mt-1.5">{errors.college}</p>
+                  )}
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-foreground mb-2">Department</label>
+                  <label className="block text-sm font-semibold text-foreground mb-2">
+                    Department
+                  </label>
                   <input
                     className={inputClass}
                     value={form.department}
@@ -258,49 +304,26 @@ const CertificatePage = () => {
                 </div>
               </div>
 
-              <div className="grid sm:grid-cols-2 gap-5">
-                <div>
-                  <label className="block text-sm font-semibold text-foreground mb-2">Program</label>
-                  <select
-                    className={inputClass}
-                    value={form.course}
-                    onChange={(e) => setField("course", e.target.value)}
-                  >
-                    {courses.map((c) => (
-                      <option key={c} value={c}>
-                        {c}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.course && <p className="text-destructive text-xs mt-1.5">{errors.course}</p>}
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-foreground mb-2">
-                    Completion Date
-                  </label>
-                  <input
-                    className={inputClass}
-                    type="date"
-                    value={form.completionDate}
-                    onChange={(e) => setField("completionDate", e.target.value)}
-                  />
-                  {errors.completionDate && (
-                    <p className="text-destructive text-xs mt-1.5">{errors.completionDate}</p>
-                  )}
-                </div>
-              </div>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Programme: {PROGRAM_TITLE}. Your details are recorded against the generated
+                certificate ID for verification.
+              </p>
 
               <button
                 type="submit"
                 disabled={loading}
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-accent text-accent-foreground text-sm font-semibold hover:bg-accent/90 transition-colors disabled:opacity-60"
               >
-                {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Award className="h-4 w-4" />}
+                {loading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Award className="h-4 w-4" />
+                )}
                 {loading ? "Generating..." : "Generate Certificate"}
               </button>
             </form>
 
-            {/* Preview */}
+            {/* Live preview */}
             <div className="bg-card rounded-[1.25rem] border border-border/60 p-6 md:p-8">
               <h2 className="text-lg font-semibold text-foreground mb-1">Preview</h2>
               <p className="text-muted-foreground text-sm mb-6">
@@ -312,8 +335,13 @@ const CertificatePage = () => {
               {certificate ? (
                 <>
                   <div
+                    ref={previewBoxRef}
                     className="relative mx-auto overflow-hidden rounded-xl border border-border/60"
-                    style={{ width: "100%", maxWidth: 480, aspectRatio: "1358 / 1920" }}
+                    style={{
+                      width: "100%",
+                      maxWidth: 480,
+                      aspectRatio: `${CERTIFICATE_WIDTH} / ${CERTIFICATE_HEIGHT}`,
+                    }}
                   >
                     <div
                       style={{
@@ -321,8 +349,7 @@ const CertificatePage = () => {
                         top: 0,
                         left: 0,
                         transformOrigin: "top left",
-                        transform: "scale(var(--cert-scale))",
-                        ["--cert-scale" as string]: "calc(100% / 1358)",
+                        transform: `scale(${previewScale})`,
                       }}
                     >
                       <CertificateCanvas ref={canvasRef} data={certificate} />
@@ -354,11 +381,12 @@ const CertificatePage = () => {
                       onClick={() => {
                         setCertificate(null);
                         setForm(emptyForm);
+                        setErrors({});
                       }}
                       className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border text-muted-foreground text-sm font-semibold hover:bg-muted transition-colors"
                     >
                       <RotateCcw className="h-4 w-4" />
-                      New
+                      New Certificate
                     </button>
                   </div>
                 </>
