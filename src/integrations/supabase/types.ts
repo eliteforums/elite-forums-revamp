@@ -98,6 +98,45 @@ export type Database = {
         }
         Relationships: []
       }
+      certificates: {
+        Row: {
+          certificate_id: string
+          college: string
+          completion_date: string
+          course: string
+          created_at: string
+          department: string
+          email: string
+          full_name: string
+          id: string
+          phone: string
+        }
+        Insert: {
+          certificate_id: string
+          college: string
+          completion_date: string
+          course: string
+          created_at?: string
+          department: string
+          email: string
+          full_name: string
+          id?: string
+          phone: string
+        }
+        Update: {
+          certificate_id?: string
+          college?: string
+          completion_date?: string
+          course?: string
+          created_at?: string
+          department?: string
+          email?: string
+          full_name?: string
+          id?: string
+          phone?: string
+        }
+        Relationships: []
+      }
       client_logos: {
         Row: {
           created_at: string
