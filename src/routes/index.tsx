@@ -45,7 +45,7 @@ function Index() {
             <div className="relative flex justify-between p-6 text-xs">
               <span>eliteforums.in</span><span>© All rights reserved</span>
             </div>
-            <p className="absolute left-4 top-16 origin-bottom-left font-display text-6xl font-bold [writing-mode:vertical-rl] rotate-180">EliteForums</p>
+            <p className="absolute bottom-40 left-4 font-display text-6xl font-bold [writing-mode:vertical-rl] rotate-180">EliteForums</p>
             <p className="absolute right-5 top-16 text-[0.65rem] tracking-[0.4em] [writing-mode:vertical-rl]">BUILDING THE NEXT FOUNDERS — 2026</p>
             <div className="absolute bottom-6 left-6 right-6 flex items-end gap-4">
               <LogoMark className="h-12" />
@@ -110,7 +110,7 @@ function Index() {
             <Handshake className="h-14 w-14" />
           </div>
 
-          <div className={`${card} flex flex-1 flex-col items-center justify-center gap-2 bg-teal py-12 font-display font-bold uppercase text-foreground`}>
+          <div className={`${card} flex flex-1 flex-col items-center justify-center gap-2 bg-electric py-12 font-display font-bold uppercase text-ink`}>
             <p className="text-4xl opacity-30">Learn</p>
             <p className="text-4xl opacity-60">Build</p>
             <p className="text-5xl">Founders</p>
