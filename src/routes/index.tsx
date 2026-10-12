@@ -31,7 +31,7 @@ function Index() {
     <>
       <PageHero
         eyebrow="Student entrepreneurship community"
-        title={<>Where student <span className="text-gradient-brand">founders</span> begin.</>}
+        title={<>Where student <span className="bg-brand bg-clip-text text-transparent">founders</span> begin.</>}
         intro="Elite Forums brings college students, E-Cells and founders together to learn, build and grow startup ideas."
       >
         <div className="flex flex-wrap gap-3">
