@@ -14,7 +14,222 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      ambassador_applications: {
+        Row: {
+          availability: string
+          college: string
+          consent: boolean
+          course_year: string
+          created_at: string
+          email: string
+          experience: string | null
+          id: string
+          motivation: string
+          name: string
+          profile_url: string | null
+          status: string
+        }
+        Insert: {
+          availability: string
+          college: string
+          consent?: boolean
+          course_year: string
+          created_at?: string
+          email: string
+          experience?: string | null
+          id?: string
+          motivation: string
+          name: string
+          profile_url?: string | null
+          status?: string
+        }
+        Update: {
+          availability?: string
+          college?: string
+          consent?: boolean
+          course_year?: string
+          created_at?: string
+          email?: string
+          experience?: string | null
+          id?: string
+          motivation?: string
+          name?: string
+          profile_url?: string | null
+          status?: string
+        }
+        Relationships: []
+      }
+      college_applications: {
+        Row: {
+          additional_info: string | null
+          city: string
+          community_size: string | null
+          consent: boolean
+          created_at: string
+          current_activities: string | null
+          ecell_name: string | null
+          email: string
+          id: string
+          institution_name: string
+          phone: string | null
+          rep_designation: string
+          rep_name: string
+          state: string
+          status: string
+          support_needed: string
+          website: string | null
+        }
+        Insert: {
+          additional_info?: string | null
+          city: string
+          community_size?: string | null
+          consent?: boolean
+          created_at?: string
+          current_activities?: string | null
+          ecell_name?: string | null
+          email: string
+          id?: string
+          institution_name: string
+          phone?: string | null
+          rep_designation: string
+          rep_name: string
+          state: string
+          status?: string
+          support_needed: string
+          website?: string | null
+        }
+        Update: {
+          additional_info?: string | null
+          city?: string
+          community_size?: string | null
+          consent?: boolean
+          created_at?: string
+          current_activities?: string | null
+          ecell_name?: string | null
+          email?: string
+          id?: string
+          institution_name?: string
+          phone?: string | null
+          rep_designation?: string
+          rep_name?: string
+          state?: string
+          status?: string
+          support_needed?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
+      contact_enquiries: {
+        Row: {
+          consent: boolean
+          created_at: string
+          email: string
+          id: string
+          message: string
+          name: string
+          status: string
+          topic: string
+        }
+        Insert: {
+          consent?: boolean
+          created_at?: string
+          email: string
+          id?: string
+          message: string
+          name: string
+          status?: string
+          topic: string
+        }
+        Update: {
+          consent?: boolean
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+          status?: string
+          topic?: string
+        }
+        Relationships: []
+      }
+      event_registrations: {
+        Row: {
+          consent: boolean
+          created_at: string
+          email: string
+          event_slug: string
+          id: string
+          institution: string
+          name: string
+        }
+        Insert: {
+          consent?: boolean
+          created_at?: string
+          email: string
+          event_slug: string
+          id?: string
+          institution: string
+          name: string
+        }
+        Update: {
+          consent?: boolean
+          created_at?: string
+          email?: string
+          event_slug?: string
+          id?: string
+          institution?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      student_registrations: {
+        Row: {
+          city: string
+          consent: boolean
+          course_year: string | null
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          institution: string
+          interests: string[]
+          marketing_opt_in: boolean
+          phone: string | null
+          preferred_channel: string
+          status: string
+        }
+        Insert: {
+          city: string
+          consent?: boolean
+          course_year?: string | null
+          created_at?: string
+          email: string
+          full_name: string
+          id?: string
+          institution: string
+          interests?: string[]
+          marketing_opt_in?: boolean
+          phone?: string | null
+          preferred_channel: string
+          status?: string
+        }
+        Update: {
+          city?: string
+          consent?: boolean
+          course_year?: string | null
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          institution?: string
+          interests?: string[]
+          marketing_opt_in?: boolean
+          phone?: string | null
+          preferred_channel?: string
+          status?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
