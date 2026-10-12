@@ -38,7 +38,8 @@ export function StudentForm() {
     marketing_opt_in: chk(fd, "marketing_opt_in"),
     website: val(fd, "website"),
   }));
-  const e = f.errors;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const e: any = f.errors;
   if (f.state === "success")
     return (
       <Success title="You're in the community.">
@@ -94,7 +95,8 @@ export function CollegeForm() {
     ...Object.fromEntries(keys.map((k) => [k, val(fd, k)])),
     consent: chk(fd, "consent"),
   }));
-  const e = f.errors;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const e: any = f.errors;
   if (f.state === "success")
     return (
       <Success title="Application received.">
@@ -132,7 +134,8 @@ export function AmbassadorForm() {
     ...Object.fromEntries(keys.map((k) => [k, val(fd, k)])),
     consent: chk(fd, "consent"),
   }));
-  const e = f.errors;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const e: any = f.errors;
   if (f.state === "success")
     return (
       <Success title="Application sent.">
@@ -172,7 +175,8 @@ export function ContactForm({ defaultTopic = "" }: { defaultTopic?: string }) {
     consent: chk(fd, "consent"),
     website: val(fd, "website"),
   }));
-  const e = f.errors;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const e: any = f.errors;
   if (f.state === "success")
     return <Success title="Message received."><p>Thanks for reaching out. The right person on our team will reply by email.</p></Success>;
   return (
@@ -207,7 +211,8 @@ export function EventRegisterForm({ slug, title }: { slug: string; title: string
     consent: chk(fd, "consent"),
     website: val(fd, "website"),
   }));
-  const e = f.errors;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const e: any = f.errors;
   if (f.state === "success")
     return <Success title="You're registered."><p>Your spot for {title} is noted. Details and joining instructions will be emailed before the event.</p></Success>;
   return (

@@ -10,33 +10,180 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as CampusAmbassadorsRouteImport } from './routes/campus-ambassadors'
+import { Route as CollegesRouteImport } from './routes/colleges'
+import { Route as CommunityRouteImport } from './routes/community'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as EcosystemRouteImport } from './routes/ecosystem'
+import { Route as EventsRouteImport } from './routes/events'
+import { Route as NetworkRouteImport } from './routes/network'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ResourcesRouteImport } from './routes/resources'
+import { Route as TermsRouteImport } from './routes/terms'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CampusAmbassadorsRoute = CampusAmbassadorsRouteImport.update({
+  id: '/campus-ambassadors',
+  path: '/campus-ambassadors',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CollegesRoute = CollegesRouteImport.update({
+  id: '/colleges',
+  path: '/colleges',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CommunityRoute = CommunityRouteImport.update({
+  id: '/community',
+  path: '/community',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EcosystemRoute = EcosystemRouteImport.update({
+  id: '/ecosystem',
+  path: '/ecosystem',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventsRoute = EventsRouteImport.update({
+  id: '/events',
+  path: '/events',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NetworkRoute = NetworkRouteImport.update({
+  id: '/network',
+  path: '/network',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResourcesRoute = ResourcesRouteImport.update({
+  id: '/resources',
+  path: '/resources',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/campus-ambassadors': typeof CampusAmbassadorsRoute
+  '/colleges': typeof CollegesRoute
+  '/community': typeof CommunityRoute
+  '/contact': typeof ContactRoute
+  '/ecosystem': typeof EcosystemRoute
+  '/events': typeof EventsRoute
+  '/network': typeof NetworkRoute
+  '/privacy': typeof PrivacyRoute
+  '/resources': typeof ResourcesRoute
+  '/terms': typeof TermsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/campus-ambassadors': typeof CampusAmbassadorsRoute
+  '/colleges': typeof CollegesRoute
+  '/community': typeof CommunityRoute
+  '/contact': typeof ContactRoute
+  '/ecosystem': typeof EcosystemRoute
+  '/events': typeof EventsRoute
+  '/network': typeof NetworkRoute
+  '/privacy': typeof PrivacyRoute
+  '/resources': typeof ResourcesRoute
+  '/terms': typeof TermsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/campus-ambassadors': typeof CampusAmbassadorsRoute
+  '/colleges': typeof CollegesRoute
+  '/community': typeof CommunityRoute
+  '/contact': typeof ContactRoute
+  '/ecosystem': typeof EcosystemRoute
+  '/events': typeof EventsRoute
+  '/network': typeof NetworkRoute
+  '/privacy': typeof PrivacyRoute
+  '/resources': typeof ResourcesRoute
+  '/terms': typeof TermsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/campus-ambassadors'
+    | '/colleges'
+    | '/community'
+    | '/contact'
+    | '/ecosystem'
+    | '/events'
+    | '/network'
+    | '/privacy'
+    | '/resources'
+    | '/terms'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/campus-ambassadors'
+    | '/colleges'
+    | '/community'
+    | '/contact'
+    | '/ecosystem'
+    | '/events'
+    | '/network'
+    | '/privacy'
+    | '/resources'
+    | '/terms'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/campus-ambassadors'
+    | '/colleges'
+    | '/community'
+    | '/contact'
+    | '/ecosystem'
+    | '/events'
+    | '/network'
+    | '/privacy'
+    | '/resources'
+    | '/terms'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  CampusAmbassadorsRoute: typeof CampusAmbassadorsRoute
+  CollegesRoute: typeof CollegesRoute
+  CommunityRoute: typeof CommunityRoute
+  ContactRoute: typeof ContactRoute
+  EcosystemRoute: typeof EcosystemRoute
+  EventsRoute: typeof EventsRoute
+  NetworkRoute: typeof NetworkRoute
+  PrivacyRoute: typeof PrivacyRoute
+  ResourcesRoute: typeof ResourcesRoute
+  TermsRoute: typeof TermsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +195,99 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/campus-ambassadors': {
+      id: '/campus-ambassadors'
+      path: '/campus-ambassadors'
+      fullPath: '/campus-ambassadors'
+      preLoaderRoute: typeof CampusAmbassadorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/colleges': {
+      id: '/colleges'
+      path: '/colleges'
+      fullPath: '/colleges'
+      preLoaderRoute: typeof CollegesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/community': {
+      id: '/community'
+      path: '/community'
+      fullPath: '/community'
+      preLoaderRoute: typeof CommunityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ecosystem': {
+      id: '/ecosystem'
+      path: '/ecosystem'
+      fullPath: '/ecosystem'
+      preLoaderRoute: typeof EcosystemRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/events': {
+      id: '/events'
+      path: '/events'
+      fullPath: '/events'
+      preLoaderRoute: typeof EventsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/network': {
+      id: '/network'
+      path: '/network'
+      fullPath: '/network'
+      preLoaderRoute: typeof NetworkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/resources': {
+      id: '/resources'
+      path: '/resources'
+      fullPath: '/resources'
+      preLoaderRoute: typeof ResourcesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  CampusAmbassadorsRoute: CampusAmbassadorsRoute,
+  CollegesRoute: CollegesRoute,
+  CommunityRoute: CommunityRoute,
+  ContactRoute: ContactRoute,
+  EcosystemRoute: EcosystemRoute,
+  EventsRoute: EventsRoute,
+  NetworkRoute: NetworkRoute,
+  PrivacyRoute: PrivacyRoute,
+  ResourcesRoute: ResourcesRoute,
+  TermsRoute: TermsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
