@@ -20,8 +20,8 @@ export function Field({
 }: {
   label: string;
   name: string;
-  error?: string;
-  hint?: string;
+  error?: string | undefined;
+  hint?: string | undefined;
   optional?: boolean;
   children: ReactNode;
   className?: string;
@@ -54,7 +54,7 @@ export function Honeypot({ name = "website" }: { name?: string }) {
   );
 }
 
-export function Consent({ error, name = "consent", children }: { error?: string; name?: string; children?: ReactNode }) {
+export function Consent({ error, name = "consent", children }: { error?: string | undefined; name?: string; children?: ReactNode }) {
   return (
     <div>
       <label className="flex items-start gap-3 text-sm text-muted-foreground">
