@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 
 /** Elite Forums mark: three rising, connected parallelograms. */
-export function LogoMark({ className, mono }: { className?: string; mono?: "ink" | "light" }) {
+export function LogoMark({ className, mono }: { className?: string; mono?: "ink" | "light" | undefined }) {
   const fill = mono === "ink" ? "var(--ink)" : mono === "light" ? "var(--foreground)" : "url(#ef-grad)";
   return (
     <svg viewBox="0 0 64 48" className={cn("h-8 w-auto", className)} aria-hidden="true">
@@ -19,7 +19,7 @@ export function LogoMark({ className, mono }: { className?: string; mono?: "ink"
   );
 }
 
-export function Logo({ className, mono }: { className?: string; mono?: "ink" | "light" }) {
+export function Logo({ className, mono }: { className?: string; mono?: "ink" | "light" | undefined }) {
   return (
     <span className={cn("inline-flex items-center gap-2.5", className)}>
       <LogoMark mono={mono} className="h-7" />

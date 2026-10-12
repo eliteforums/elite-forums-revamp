@@ -20,8 +20,8 @@ type Table =
 type Result = { ok: true } | { ok: false; error: string };
 
 async function insertRow(table: Table, row: Record<string, unknown>): Promise<Result> {
-  const url = process.env.SUPABASE_URL;
-  const key = process.env.SUPABASE_PUBLISHABLE_KEY;
+  const url = process.env["SUPABASE_URL"];
+  const key = process.env["SUPABASE_PUBLISHABLE_KEY"];
   if (!url || !key) return { ok: false, error: "Submissions are not configured yet." };
   const sb = createClient<Database>(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
