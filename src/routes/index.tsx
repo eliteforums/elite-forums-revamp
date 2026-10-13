@@ -9,8 +9,8 @@ import students from "@/assets/students.jpg";
 export const Route = createFileRoute("/")({
   head: () =>
     pageMeta(
-      "Elite Forums | Where student ambition meets opportunity",
-      "Elite Forums connects college E-Cells, aspiring founders and student communities through entrepreneurship, collaboration and meaningful experiences.",
+      "Elite Forums | Where founder ambition meets opportunity",
+      "Elite Forums is a community for anyone who wants to become a founder. Started in Mumbai and growing across colleges and cities, with a vision to make India a startup hub.",
     ),
   component: Home,
 });
@@ -27,15 +27,16 @@ function Home() {
         <div className="photo-shade absolute inset-0" />
         <div className="canvas-grid pointer-events-none absolute inset-0 opacity-20" />
         <Container className="relative">
-          <p className="eyebrow animate-rise text-electric">The entrepreneurship ecosystem</p>
+          <p className="eyebrow animate-rise text-electric">Building India’s startup ecosystem</p>
           <h1 className="display-xl animate-rise mt-7 max-w-5xl text-[2.5rem] sm:text-6xl md:text-7xl lg:text-[5.5rem]">
-            Where <span className="text-brand">student</span>
+            Where <span className="text-brand">founder</span>
             <br className="hidden sm:block" /> ambition meets
             <br className="hidden sm:block" /> <span className="text-brand">opportunity.</span>
           </h1>
           <p className="animate-rise mt-8 max-w-xl text-base leading-7 text-muted-foreground">
-            Elite Forums connects college E-Cells, aspiring founders, and student communities to
-            create meaningful opportunities for entrepreneurship, collaboration, and growth.
+            Elite Forums is for anyone who wants to become a founder — students, working
+            professionals and first-time builders. We started in Mumbai, India’s financial capital,
+            and are growing across colleges and cities to make India a startup hub.
           </p>
           <div className="animate-rise mt-9 flex flex-wrap gap-4">
             <Button asChild variant="brand" size="lg">
@@ -56,8 +57,8 @@ function Home() {
       <section className="border-b border-border py-8">
         <Container className="grid gap-8 sm:grid-cols-3">
           {[
+            ["Aspiring founders", "Where ambition finds its people"],
             ["Colleges & E-Cells", "Where communities take shape"],
-            ["Student builders", "Where ambition finds its people"],
             ["Founders & mentors", "Where experience opens doors"],
           ].map(([t, d]) => (
             <div key={t} className="sm:border-r sm:border-border sm:last:border-0">

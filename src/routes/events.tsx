@@ -10,7 +10,7 @@ export const Route = createFileRoute("/events")({
   head: () =>
     pageMeta(
       "Events",
-      "Explore workshops, hackathons and founder conversations for student entrepreneurs at Elite Forums.",
+      "Explore workshops, hackathons and founder conversations for aspiring founders at Elite Forums.",
     ),
   component: Events,
 });

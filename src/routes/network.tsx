@@ -16,7 +16,7 @@ export const Route = createFileRoute("/network")({
         eyebrow="Partner network"
         title={
           <>
-            Different campuses.
+            Different cities.
             <br />
             <span className="text-brand">Shared ambition.</span>
           </>
@@ -34,7 +34,7 @@ export const Route = createFileRoute("/network")({
               ],
               [
                 "Founders & mentors",
-                "Help student builders navigate their next step through practical advice and honest conversations.",
+                "Help aspiring founders navigate their next step through practical advice and honest conversations.",
               ],
               [
                 "Industry partners",

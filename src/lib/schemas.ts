@@ -19,7 +19,7 @@ export const INTERESTS = [
 export const studentSchema = z.object({
   full_name: req("Full name", 120),
   email,
-  institution: req("College or institution"),
+  institution: req("College, company or organisation"),
   course_year: opt(120),
   city: req("City", 100),
   interests: z.array(z.string().max(60)).min(1, "Pick at least one interest").max(10),
@@ -81,7 +81,7 @@ export const eventRegSchema = z.object({
   event_slug: req("Event", 120),
   name: req("Name", 120),
   email,
-  institution: req("Institution"),
+  institution: req("College, company or organisation"),
   consent,
   website: honeypot,
 });

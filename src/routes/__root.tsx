@@ -77,10 +77,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Elite Forums — Student Entrepreneurship Community" },
+      { title: "Elite Forums — Community for Aspiring Founders" },
       {
         name: "description",
-        content: "Elite Forums connects college students with founders, workshops and hackathons.",
+        content:
+          "Elite Forums is a community for anyone who wants to become a founder. Started in Mumbai, growing across India through colleges, workshops and hackathons.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

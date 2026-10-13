@@ -33,14 +33,14 @@ export const EVENTS: EventItem[] = [
     format: "Online",
     location: "Live online session",
     summary:
-      "An illustrative format for a fireside conversation where an early-stage founder walks students through validating an idea and finding first users.",
+      "An illustrative format for a fireside conversation where an early-stage founder walks aspiring founders through validating an idea and finding first users.",
     image: founder,
     agenda: [
       { time: "18:00", item: "Welcome and context" },
       { time: "18:10", item: "Founder story and lessons" },
       { time: "18:50", item: "Open Q&A" },
     ],
-    eligibility: "Open to all registered college students.",
+    eligibility: "Open to all registered community members.",
     organizer: "Elite Forums",
   },
   {

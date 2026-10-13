@@ -9,10 +9,13 @@ export const Route = createFileRoute("/community")({
       {
         name: "description",
         content:
-          "Join Elite Forums for founder learning, workshops, hackathons and a network of student builders.",
+          "Join Elite Forums for founder learning, workshops, hackathons and a network of aspiring founders across India.",
       },
       { property: "og:title", content: "Join the Community — Elite Forums" },
-      { property: "og:description", content: "A network of student builders across campuses." },
+      {
+        property: "og:description",
+        content: "A network of aspiring founders across colleges and cities.",
+      },
     ],
   }),
   component: Community,
@@ -23,8 +26,8 @@ function Community() {
     <>
       <PageHero
         eyebrow="Community"
-        title="Join students who build."
-        intro="Get early access to events, founder sessions and resources picked for student entrepreneurs."
+        title="Join people who build."
+        intro="Get early access to events, founder sessions and resources for aspiring founders — whether you’re a student, a working professional or building your first startup."
       />
       <section className="pb-24">
         <Container className="max-w-3xl">

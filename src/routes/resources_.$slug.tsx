@@ -13,7 +13,7 @@ export const Route = createFileRoute("/resources_/$slug")({
   head: ({ loaderData }) =>
     pageMeta(
       loaderData?.title ?? "Resource unavailable",
-      loaderData?.excerpt ?? "Read resources for student entrepreneurs at Elite Forums.",
+      loaderData?.excerpt ?? "Read resources for aspiring founders at Elite Forums.",
     ),
   component: ArticleDetail,
 });

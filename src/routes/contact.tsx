@@ -7,7 +7,7 @@ export const Route = createFileRoute("/contact")({
   head: () =>
     pageMeta(
       "Contact",
-      "Get in touch about college partnerships, student enquiries, events, mentorship and collaboration with Elite Forums.",
+      "Get in touch about college partnerships, community enquiries, events, mentorship and collaboration with Elite Forums.",
     ),
   component: () => (
     <>
@@ -33,7 +33,10 @@ export const Route = createFileRoute("/contact")({
               {[
                 ["Colleges & E-Cells", "Partnerships, campus programmes and community support."],
                 ["Founders & mentors", "Share your experience with the next generation."],
-                ["Students & partners", "Events, opportunities and ideas for collaboration."],
+                [
+                  "Aspiring founders & partners",
+                  "Events, opportunities and ideas for collaboration.",
+                ],
               ].map(([t, d]) => (
                 <div key={t} className="border-t border-border pt-5">
                   <h3 className="text-lg">{t}</h3>

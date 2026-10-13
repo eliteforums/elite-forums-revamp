@@ -72,11 +72,20 @@ export function StudentForm() {
       <Field label="Email address" name="email" error={e.email}>
         <input type="email" className={inputCls} autoComplete="email" {...inv(e, "email")} />
       </Field>
-      <Field label="College or institution" name="institution" error={e.institution}>
+      <Field label="College, company or organisation" name="institution" error={e.institution}>
         <input className={inputCls} {...inv(e, "institution")} />
       </Field>
-      <Field label="Course and year" name="course_year" optional error={e.course_year}>
-        <input className={inputCls} placeholder="B.Tech, 2nd year" {...inv(e, "course_year")} />
+      <Field
+        label="Course and year, or current role"
+        name="course_year"
+        optional
+        error={e.course_year}
+      >
+        <input
+          className={inputCls}
+          placeholder="B.Tech 2nd year, or Product designer"
+          {...inv(e, "course_year")}
+        />
       </Field>
       <Field label="City" name="city" error={e.city}>
         <input className={inputCls} autoComplete="address-level2" {...inv(e, "city")} />
@@ -352,7 +361,7 @@ export function ContactForm({ defaultTopic = "" }: { defaultTopic?: string }) {
             Choose one
           </option>
           <option value="college">College partnerships</option>
-          <option value="student">Student enquiries</option>
+          <option value="student">Community enquiries</option>
           <option value="events">Events</option>
           <option value="mentor">Mentors and founders</option>
           <option value="sponsorship">Sponsorship and collaboration</option>
@@ -401,7 +410,7 @@ export function EventRegisterForm({ slug, title }: { slug: string; title: string
       <Field label="Email" name="email" error={e.email}>
         <input type="email" className={inputCls} {...inv(e, "email")} />
       </Field>
-      <Field label="College or institution" name="institution" error={e.institution}>
+      <Field label="College, company or organisation" name="institution" error={e.institution}>
         <input className={inputCls} {...inv(e, "institution")} />
       </Field>
       <Consent error={e.consent} />

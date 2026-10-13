@@ -8,20 +8,20 @@ import founder from "@/assets/founder.jpg";
 
 export const STEPS = [
   [
-    "Connect with colleges",
-    "Partner with E-Cells and institutions to bring entrepreneurial opportunities closer to students.",
+    "Start with people",
+    "Welcome anyone with the ambition to build — students, working professionals and first-time founders.",
   ],
   [
-    "Build campus communities",
-    "Support student leaders in creating active, inclusive communities where ideas find their people.",
+    "Build communities",
+    "Grow active, inclusive communities across colleges and cities, where ideas find their people.",
   ],
   [
     "Create experiences",
     "Bring learning to life through workshops, hackathons, founder conversations and collaborative projects.",
   ],
   [
-    "Grow through collaboration",
-    "Connect campuses, mentors and industry partners so knowledge and opportunities travel further.",
+    "Scale across India",
+    "Connect communities, mentors and industry partners so opportunity travels from Mumbai to the whole nation.",
   ],
 ];
 
@@ -60,17 +60,19 @@ export function EcosystemGrid() {
             <Network className="h-8 w-8 text-electric" />
             <div>
               <p className="text-3xl font-medium">
-                One network.
+                From Mumbai.
                 <br />
-                Many campuses.
+                To all of India.
               </p>
-              <p className="mt-3 text-xs text-muted-foreground">Built around a shared ambition.</p>
+              <p className="mt-3 text-xs text-muted-foreground">
+                One network, built to make India a startup hub.
+              </p>
             </div>
           </div>
           <div className="panel relative sm:col-span-2">
             <img
               src={students}
-              alt="Student team working together on a startup project"
+              alt="Team working together on a startup project"
               className="absolute inset-0 h-full w-full object-cover"
               loading="lazy"
             />
@@ -98,7 +100,7 @@ export function EcosystemGrid() {
           <Link to="/events" className="panel group relative">
             <img
               src={founder}
-              alt="Founder sharing experience with students"
+              alt="Founder sharing experience with the community"
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
               loading="lazy"
             />
@@ -121,9 +123,9 @@ export function EcosystemGrid() {
               <MoveUpRight className="h-8 w-8" />
             </div>
             <p className="display-xl max-w-md text-4xl">
-              Your campus.
+              Your idea.
               <br />
-              Your ideas.
+              Your city.
               <br />
               Your next move.
             </p>
@@ -145,14 +147,15 @@ export function Mission() {
         </h2>
         <div className="mt-10 grid gap-8 md:grid-cols-2">
           <p className="max-w-xl reading-copy">
-            Great ideas exist on every campus. But turning them into something meaningful takes more
-            than ambition. It takes people who believe in you, spaces to experiment, and the right
-            opportunities at the right time.
+            Great ideas exist everywhere — in classrooms, offices and living rooms. But turning them
+            into something meaningful takes more than ambition. It takes people who believe in you,
+            spaces to experiment, and the right opportunities at the right time.
           </p>
           <p className="max-w-xl reading-copy">
-            Elite Forums exists to bring those pieces together. We empower students and communities
-            to lead through entrepreneurship — connecting campus communities with founders,
-            meaningful experiences and one another.
+            Elite Forums exists to bring those pieces together for anyone who wants to become a
+            founder. We began in Mumbai, India’s financial capital, with college communities at the
+            heart of our work — and we’re scaling across the country with one vision: to make India
+            a startup hub.
           </p>
         </div>
         <div className="mt-16 border-t border-border pt-8">
@@ -172,12 +175,12 @@ export function Mission() {
   );
 }
 
-const STUDENT_BENEFITS = [
-  "Meet ambitious students and aspiring founders",
+const FOUNDER_BENEFITS = [
+  "Meet ambitious builders and aspiring founders",
   "Learn through practical workshops",
   "Build at hackathons and collaborative events",
   "Get closer to founders and mentors",
-  "Discover opportunities beyond your campus",
+  "Discover opportunities beyond your own circle",
 ];
 const COLLEGE_BENEFITS = [
   "Strengthen your college’s E-Cell",
@@ -204,9 +207,9 @@ export function JoinPaths() {
         <div className="mt-12 grid gap-6 md:grid-cols-2">
           {[
             {
-              tag: "For students",
+              tag: "For aspiring founders",
               title: "Discover your entrepreneurial community.",
-              items: STUDENT_BENEFITS,
+              items: FOUNDER_BENEFITS,
               to: "/community",
               label: "Explore the Community",
               icon: Sparkles,

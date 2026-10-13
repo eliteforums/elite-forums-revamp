@@ -10,7 +10,7 @@ export const Route = createFileRoute("/resources")({
   head: () =>
     pageMeta(
       "Resources",
-      "Practical guides, founder insights and stories for student entrepreneurs and campus E-Cell leaders.",
+      "Practical guides, founder insights and stories for aspiring founders, students and campus E-Cell leaders.",
     ),
   component: Resources,
 });

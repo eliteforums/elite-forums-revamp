@@ -1,8 +1,8 @@
 # Elite Forums
 
-Marketing site for the Elite Forums student entrepreneurship community. It connects
-colleges and E-Cells, student builders, and founders and mentors through workshops,
-hackathons and community programmes.
+Marketing site for Elite Forums, a community for anyone who wants to become a founder.
+Started in Mumbai and growing across India, it connects aspiring founders, colleges and
+E-Cells, and mentors through workshops, hackathons and community programmes.
 
 ## Tech stack
 

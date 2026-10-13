@@ -37,7 +37,7 @@ export function Footer() {
         <div>
           <Logo />
           <p className="mt-5 max-w-xs text-sm text-muted-foreground">
-            Building the next generation of entrepreneurial communities.
+            A community for aspiring founders. Started in Mumbai, building for all of India.
           </p>
         </div>
         {COLS.map((c) => (
