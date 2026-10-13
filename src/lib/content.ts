@@ -23,68 +23,6 @@ export type EventItem = {
   organizer: string;
 };
 
-export const EVENTS: EventItem[] = [
-  {
-    slug: "founder-connect-concept",
-    sample: true,
-    type: "Founder Connect",
-    title: "Founder Connect: From Idea to First Users",
-    date: "2026-12-05",
-    format: "Online",
-    location: "Live online session",
-    summary:
-      "An illustrative format for a fireside conversation where an early-stage founder walks aspiring founders through validating an idea and finding first users.",
-    image: founder,
-    agenda: [
-      { time: "18:00", item: "Welcome and context" },
-      { time: "18:10", item: "Founder story and lessons" },
-      { time: "18:50", item: "Open Q&A" },
-    ],
-    eligibility: "Open to all registered community members.",
-    organizer: "Elite Forums",
-  },
-  {
-    slug: "campus-hackathon-concept",
-    sample: true,
-    type: "Hackathon",
-    title: "Campus Build Weekend",
-    date: "2027-01-23",
-    format: "In-person",
-    city: "To be announced",
-    location: "Partner campus, to be announced",
-    summary:
-      "A sample 36-hour build weekend concept where interdisciplinary student teams prototype solutions to real campus problems.",
-    image: hackathon,
-    agenda: [
-      { time: "Day 1", item: "Kick-off, team formation, problem briefs" },
-      { time: "Day 2", item: "Build sprint with mentor check-ins" },
-      { time: "Day 2 PM", item: "Demos and feedback" },
-    ],
-    eligibility: "Teams of 2–4 students from any discipline.",
-    organizer: "Elite Forums with a partner E-Cell",
-  },
-  {
-    slug: "startup-basics-workshop-concept",
-    sample: true,
-    type: "Workshop",
-    title: "Startup Basics Workshop",
-    date: "2026-09-12",
-    format: "In-person",
-    city: "To be announced",
-    location: "Partner campus",
-    summary:
-      "A sample hands-on workshop concept covering problem discovery, customer interviews, and simple prototyping.",
-    image: students,
-    agenda: [
-      { time: "10:00", item: "Problem discovery" },
-      { time: "11:30", item: "Customer interview practice" },
-      { time: "13:30", item: "Paper prototyping" },
-    ],
-    eligibility: "First- and second-year students.",
-    organizer: "Elite Forums",
-  },
-];
-
 export const isUpcoming = (e: EventItem) => new Date(e.date) >= new Date(new Date().toDateString());
 
 export type Article = {

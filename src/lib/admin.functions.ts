@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { EVENTS, type EventItem } from "./content";
+import type { EventItem } from "./content";
 
 const eventInput = z.object({
   id: z.string().uuid().optional(),
@@ -140,7 +140,7 @@ export const getPublicEvents = createServerFn({ method: "GET" }).handler(async (
     .order("date", { ascending: true });
   if (error) {
     console.error("Unable to load managed events", error.message);
-    return EVENTS;
+    return [];
   }
   const managed: EventItem[] = (data ?? []).map((event) => ({
     ...event,
@@ -148,8 +148,5 @@ export const getPublicEvents = createServerFn({ method: "GET" }).handler(async (
     agenda: Array.isArray(event.agenda) ? event.agenda : [],
     city: event.city ?? undefined,
   })) as EventItem[];
-  return [
-    ...managed,
-    ...EVENTS.filter((event) => !managed.some((item) => item.slug === event.slug)),
-  ];
+  return managed;
 });
