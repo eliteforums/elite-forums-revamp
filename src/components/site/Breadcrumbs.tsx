@@ -19,13 +19,16 @@ const LABELS: Record<string, string> = {
   terms: "Terms of Use",
 };
 
-export function Breadcrumbs() {
+/** `current` replaces the last crumb, for pages whose address is not a readable name. */
+export function Breadcrumbs({ current }: { current?: string }) {
   const { pathname } = useLocation();
   const segments = pathname.split("/").filter(Boolean);
   if (segments.length === 0) return null;
 
   const items = segments.map((segment, index) => ({
-    label: LABELS[segment] ?? decodeURIComponent(segment).replace(/-/g, " "),
+    label:
+      (index === segments.length - 1 && current) ||
+      (LABELS[segment] ?? decodeURIComponent(segment).replace(/-/g, " ")),
     href: `/${segments.slice(0, index + 1).join("/")}`,
   }));
   const jsonLd = {
@@ -61,7 +64,10 @@ export function Breadcrumbs() {
               <li key={item.href} className="flex items-center gap-1">
                 <ChevronRight className="h-3 w-3" aria-hidden="true" />
                 {index === items.length - 1 ? (
-                  <span aria-current="page" className="text-foreground">
+                  <span
+                    aria-current="page"
+                    className="max-w-[60vw] truncate text-foreground sm:max-w-md"
+                  >
                     {item.label}
                   </span>
                 ) : (

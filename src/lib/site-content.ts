@@ -112,7 +112,7 @@ export const CONTENT_PAGES: PageDef[] = [
           "footer.explore.title": text("Column 1 title", "Explore"),
           "footer.explore.links": lines(
             "Column 1 link labels",
-            ["Innovation Lab", "Ecosystem", "Events", "Resources", "Partner Network"],
+            ["Innovation Lab", "Ecosystem", "Events", "Resources", "FAQs", "Partner Network"],
             "One per line, in order. The links themselves are fixed.",
           ),
           "footer.involved.title": text("Column 2 title", "Get involved"),
