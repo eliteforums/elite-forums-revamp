@@ -457,6 +457,7 @@ export const CONTENT_PAGES: PageDef[] = [
                   "Mentorship from our experts whenever the founder team is present",
                   "Discounted rates on services such as desk space and conference rooms",
                   "Special IT project-development pricing, advertised at up to 4x cheaper than typical market cost",
+                  "Cloud credits to help reduce infrastructure costs for your startup, subject to provider eligibility and availability",
                   "Practical support through the Elite Forums Innovation Lab team",
                 ],
               },
