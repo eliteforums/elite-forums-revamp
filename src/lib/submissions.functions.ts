@@ -9,13 +9,15 @@ import {
   eventRegSchema,
   studentSchema,
 } from "./schemas";
+import { COMMON_KEYS, ACKNOWLEDGEMENTS, programApplicationSchema } from "./program-application";
 
 type Table =
   | "student_registrations"
   | "college_applications"
   | "ambassador_applications"
   | "contact_enquiries"
-  | "event_registrations";
+  | "event_registrations"
+  | "program_applications";
 
 type Result = { ok: true } | { ok: false; error: string };
 
@@ -65,3 +67,20 @@ export const submitCollege = make(collegeSchema, "college_applications", "url_hp
 export const submitAmbassador = make(ambassadorSchema, "ambassador_applications", "website");
 export const submitContact = make(contactSchema, "contact_enquiries", "website");
 export const submitEventReg = make(eventRegSchema, "event_registrations", "website");
+
+export const submitProgramApplication = createServerFn({ method: "POST" })
+  .inputValidator((d: unknown) => programApplicationSchema.parse(d))
+  .handler(async ({ data }) => {
+    const { website, program, ...fields } = data as Record<string, unknown>;
+    if (website) return { ok: true } as Result; // silently drop bots
+    // Questions asked of everyone are columns; the rest are programme-specific answers.
+    const columnKeys = new Set<string>([...COMMON_KEYS, ...ACKNOWLEDGEMENTS.map((a) => a.key)]);
+    const row: Record<string, unknown> = { program };
+    const answers: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(fields)) {
+      if (columnKeys.has(key)) row[key] = value === "" ? null : value;
+      else if (value !== "" && !(Array.isArray(value) && value.length === 0)) answers[key] = value;
+    }
+    row["whatsapp_available"] = row["whatsapp_available"] === "Yes";
+    return insertRow("program_applications", { ...row, answers });
+  });

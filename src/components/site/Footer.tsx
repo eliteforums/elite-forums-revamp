@@ -16,6 +16,7 @@ const COLS = [
     title: "Get involved",
     links: [
       { to: "/community", label: "Join the Community" },
+      { to: "/apply", label: "Apply to a Program" },
       { to: "/colleges", label: "Partner Your College" },
       { to: "/campus-ambassadors", label: "Campus Ambassadors" },
       { to: "/contact", label: "Contact" },

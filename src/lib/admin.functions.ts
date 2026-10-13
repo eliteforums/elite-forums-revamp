@@ -38,6 +38,7 @@ const submissionTables = [
   "ambassador_applications",
   "contact_enquiries",
   "event_registrations",
+  "program_applications",
 ] as const;
 
 function isAdmin(claims: Record<string, unknown>) {

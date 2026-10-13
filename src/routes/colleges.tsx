@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowUpRight, Building2, FlaskConical, Rocket } from "lucide-react";
 import { Container, PageHero, SectionHead } from "@/components/site/Blocks";
 import { CollegeForm } from "@/components/forms/Forms";
@@ -35,6 +35,7 @@ const OFFER = [
 const PROGRAMMES = [
   {
     icon: Rocket,
+    id: "cohort" as const,
     eyebrow: "For founders building from zero",
     title: "Startup Cohort Program",
     intro:
@@ -54,6 +55,7 @@ const PROGRAMMES = [
   },
   {
     icon: FlaskConical,
+    id: "incubation" as const,
     eyebrow: "For startups ready to accelerate",
     title: "Incubation Program",
     intro:
@@ -72,6 +74,7 @@ const PROGRAMMES = [
   },
   {
     icon: Building2,
+    id: "coworking" as const,
     eyebrow: "For two founders or a startup team",
     title: "Coworking Space Membership",
     intro:
@@ -127,7 +130,7 @@ function Colleges() {
             closer to mentorship, execution support, workspace and the wider startup ecosystem.
           </p>
           <div className="mt-12 grid gap-6 lg:grid-cols-3">
-            {PROGRAMMES.map(({ icon: Icon, eyebrow, title, intro, benefits }) => (
+            {PROGRAMMES.map(({ icon: Icon, id, eyebrow, title, intro, benefits }) => (
               <article
                 key={title}
                 className="panel flex flex-col border border-border bg-background p-7"
@@ -152,12 +155,13 @@ function Colleges() {
                     </li>
                   ))}
                 </ul>
-                <a
-                  href="#programme-enquiry"
+                <Link
+                  to="/apply"
+                  search={{ program: id }}
                   className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-electric hover:text-foreground"
                 >
-                  Enquire about this programme <ArrowUpRight className="h-4 w-4" />
-                </a>
+                  Apply for this programme <ArrowUpRight className="h-4 w-4" />
+                </Link>
               </article>
             ))}
           </div>

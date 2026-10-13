@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
+import { Route as ApplyRouteImport } from './routes/apply'
 import { Route as CampusAmbassadorsRouteImport } from './routes/campus-ambassadors'
 import { Route as CollegesRouteImport } from './routes/colleges'
 import { Route as CommunityRouteImport } from './routes/community'
@@ -36,6 +37,11 @@ const IndexRoute = IndexRouteImport.update({
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApplyRoute = ApplyRouteImport.update({
+  id: '/apply',
+  path: '/apply',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CampusAmbassadorsRoute = CampusAmbassadorsRouteImport.update({
@@ -122,6 +128,7 @@ const ResourcesSlugRoute = ResourcesSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/apply': typeof ApplyRoute
   '/campus-ambassadors': typeof CampusAmbassadorsRoute
   '/colleges': typeof CollegesRoute
   '/community': typeof CommunityRoute
@@ -142,6 +149,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/apply': typeof ApplyRoute
   '/campus-ambassadors': typeof CampusAmbassadorsRoute
   '/colleges': typeof CollegesRoute
   '/community': typeof CommunityRoute
@@ -163,6 +171,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/apply': typeof ApplyRoute
   '/campus-ambassadors': typeof CampusAmbassadorsRoute
   '/colleges': typeof CollegesRoute
   '/community': typeof CommunityRoute
@@ -185,6 +194,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin'
+    | '/apply'
     | '/campus-ambassadors'
     | '/colleges'
     | '/community'
@@ -205,6 +215,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/admin'
+    | '/apply'
     | '/campus-ambassadors'
     | '/colleges'
     | '/community'
@@ -225,6 +236,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/admin'
+    | '/apply'
     | '/campus-ambassadors'
     | '/colleges'
     | '/community'
@@ -246,6 +258,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
+  ApplyRoute: typeof ApplyRoute
   CampusAmbassadorsRoute: typeof CampusAmbassadorsRoute
   CollegesRoute: typeof CollegesRoute
   CommunityRoute: typeof CommunityRoute
@@ -278,6 +291,13 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/apply': {
+      id: '/apply'
+      path: '/apply'
+      fullPath: '/apply'
+      preLoaderRoute: typeof ApplyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/campus-ambassadors': {
@@ -398,6 +418,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
+  ApplyRoute: ApplyRoute,
   CampusAmbassadorsRoute: CampusAmbassadorsRoute,
   CollegesRoute: CollegesRoute,
   CommunityRoute: CommunityRoute,

@@ -27,6 +27,7 @@ import {
   saveSiteContent,
   updateSubmissionStatus,
 } from "@/lib/admin.functions";
+import { answerLabel, programLabel } from "@/lib/program-application";
 
 export const Route = createFileRoute("/admin")({
   component: AdminPage,
@@ -633,6 +634,29 @@ function ContentPanel({
   );
 }
 
+const showValue = (value: unknown) =>
+  Array.isArray(value)
+    ? value.join(", ")
+    : typeof value === "boolean"
+      ? value
+        ? "Yes"
+        : "No"
+      : String(value ?? "");
+
+/** Label/value pairs for one submission; programme answers are shown under their question text. */
+function submissionDetails(row: Record<string, unknown>): Array<[string, string]> {
+  const details: Array<[string, string]> = [];
+  for (const [key, value] of Object.entries(row)) {
+    if (["id", "created_at", "email", "status"].includes(key)) continue;
+    if (key === "program") details.push([key, programLabel(String(value))]);
+    else if (key === "answers" && value && typeof value === "object" && !Array.isArray(value)) {
+      for (const [answerKey, answer] of Object.entries(value))
+        details.push([answerLabel(String(row["program"]), answerKey), showValue(answer)]);
+    } else details.push([key, showValue(value)]);
+  }
+  return details;
+}
+
 function SubmissionsPanel({
   submissions,
   refresh,
@@ -682,14 +706,11 @@ function SubmissionsPanel({
                       </span>
                     </td>
                     <td className="max-w-md p-4 text-xs leading-5 text-muted-foreground">
-                      {Object.entries(row)
-                        .filter(([key]) => !["id", "created_at", "email", "status"].includes(key))
-                        .map(([key, value]) => (
-                          <p key={key}>
-                            <b>{key}:</b>{" "}
-                            {Array.isArray(value) ? value.join(", ") : String(value ?? "")}
-                          </p>
-                        ))}
+                      {submissionDetails(row).map(([label, value]) => (
+                        <p key={label}>
+                          <b>{label}:</b> {value}
+                        </p>
+                      ))}
                     </td>
                     <td className="whitespace-nowrap p-4">
                       {row.status ? (

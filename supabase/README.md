@@ -7,6 +7,7 @@ This directory contains the complete database setup used by the website.
 - `config.toml` — local Supabase CLI configuration.
 - `migrations/0001_admin_console.sql` — managed events and editable site content.
 - `migrations/0002_form_submissions.sql` — student, college, ambassador, contact and event registration submissions.
+- `migrations/0003_program_applications.sql` — programme admission applications (Startup Cohort, Startup Incubation, Coworking Space Membership).
 - `seed.sql` — intentionally empty production seed; events and submissions are created through the app.
 
 ## Apply the database
