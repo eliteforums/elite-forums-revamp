@@ -317,6 +317,18 @@ export const CONTENT_PAGES: PageDef[] = [
         },
       },
       {
+        title: "Impact figures",
+        fields: {
+          "stats.eyebrow": text("Small label", "Innovation Lab impact"),
+          "stats.title": text("Title", "Ideas built into real outcomes."),
+          "stats.items": items("Lab figures", "Figure", TITLE_BODY, [
+            { title: "25+", body: "Projects built" },
+            { title: "1,500+", body: "People trained" },
+            { title: "50+", body: "Technologies discovered and used" },
+          ]),
+        },
+      },
+      {
         title: "What we build",
         fields: {
           "tracks.eyebrow": text("Small label", "What we build"),
