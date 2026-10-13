@@ -22,9 +22,8 @@ pnpm dev
 ## Admin console
 
 The `/admin` route uses Supabase Auth. Create administrator users in Supabase
-Authentication, run the migration in
-`supabase/migrations/0001_admin_console.sql`, and set these server environment
-variables:
+Authentication, apply all migrations in `supabase/migrations/`, and set these
+server environment variables:
 
 ```sh
 ADMIN_EMAILS=admin@example.com,another-admin@example.com
@@ -36,6 +35,7 @@ SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 `ADMIN_EMAILS` is an explicit allowlist; an authenticated Supabase user who is
 not listed there cannot use the admin API. The console manages published
 events, editable JSON content records, and submissions from all site forms.
+The complete Supabase CLI setup is documented in `supabase/README.md`.
 
 The dev server runs on <http://localhost:8080>.
 

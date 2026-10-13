@@ -1,0 +1,7 @@
+-- Elite Forums does not seed production events or submissions.
+-- Create administrator accounts through Supabase Dashboard > Authentication.
+--
+-- Optional local development example:
+-- insert into public.site_content (key, value)
+-- values ('homepage.notice', '{"enabled": false}'::jsonb)
+-- on conflict (key) do nothing;
