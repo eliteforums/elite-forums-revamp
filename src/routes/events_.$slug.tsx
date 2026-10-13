@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { EVENTS } from "@/lib/content";
 import { pageMeta } from "@/lib/metadata";
 
-export const Route = createFileRoute("/events/$slug")({
+export const Route = createFileRoute("/events_/$slug")({
   loader: ({ params }) => {
     const event = EVENTS.find((e) => e.slug === params.slug);
     if (!event) throw notFound();

@@ -21,8 +21,8 @@ import { Route as NetworkRouteImport } from './routes/network'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as TermsRouteImport } from './routes/terms'
-import { Route as EventsSlugRouteImport } from './routes/events.$slug'
-import { Route as ResourcesSlugRouteImport } from './routes/resources.$slug'
+import { Route as EventsSlugRouteImport } from './routes/events_.$slug'
+import { Route as ResourcesSlugRouteImport } from './routes/resources_.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -85,14 +85,14 @@ const TermsRoute = TermsRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const EventsSlugRoute = EventsSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => EventsRoute,
+  id: '/events_/$slug',
+  path: '/events/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ResourcesSlugRoute = ResourcesSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => ResourcesRoute,
+  id: '/resources_/$slug',
+  path: '/resources/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -103,10 +103,10 @@ export interface FileRoutesByFullPath {
   '/community': typeof CommunityRoute
   '/contact': typeof ContactRoute
   '/ecosystem': typeof EcosystemRoute
-  '/events': typeof EventsRouteWithChildren
+  '/events': typeof EventsRoute
   '/network': typeof NetworkRoute
   '/privacy': typeof PrivacyRoute
-  '/resources': typeof ResourcesRouteWithChildren
+  '/resources': typeof ResourcesRoute
   '/terms': typeof TermsRoute
   '/events/$slug': typeof EventsSlugRoute
   '/resources/$slug': typeof ResourcesSlugRoute
@@ -119,10 +119,10 @@ export interface FileRoutesByTo {
   '/community': typeof CommunityRoute
   '/contact': typeof ContactRoute
   '/ecosystem': typeof EcosystemRoute
-  '/events': typeof EventsRouteWithChildren
+  '/events': typeof EventsRoute
   '/network': typeof NetworkRoute
   '/privacy': typeof PrivacyRoute
-  '/resources': typeof ResourcesRouteWithChildren
+  '/resources': typeof ResourcesRoute
   '/terms': typeof TermsRoute
   '/events/$slug': typeof EventsSlugRoute
   '/resources/$slug': typeof ResourcesSlugRoute
@@ -136,13 +136,13 @@ export interface FileRoutesById {
   '/community': typeof CommunityRoute
   '/contact': typeof ContactRoute
   '/ecosystem': typeof EcosystemRoute
-  '/events': typeof EventsRouteWithChildren
+  '/events': typeof EventsRoute
   '/network': typeof NetworkRoute
   '/privacy': typeof PrivacyRoute
-  '/resources': typeof ResourcesRouteWithChildren
+  '/resources': typeof ResourcesRoute
   '/terms': typeof TermsRoute
-  '/events/$slug': typeof EventsSlugRoute
-  '/resources/$slug': typeof ResourcesSlugRoute
+  '/events_/$slug': typeof EventsSlugRoute
+  '/resources_/$slug': typeof ResourcesSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -191,8 +191,8 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/resources'
     | '/terms'
-    | '/events/$slug'
-    | '/resources/$slug'
+    | '/events_/$slug'
+    | '/resources_/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -203,11 +203,13 @@ export interface RootRouteChildren {
   CommunityRoute: typeof CommunityRoute
   ContactRoute: typeof ContactRoute
   EcosystemRoute: typeof EcosystemRoute
-  EventsRoute: typeof EventsRouteWithChildren
+  EventsRoute: typeof EventsRoute
   NetworkRoute: typeof NetworkRoute
   PrivacyRoute: typeof PrivacyRoute
-  ResourcesRoute: typeof ResourcesRouteWithChildren
+  ResourcesRoute: typeof ResourcesRoute
   TermsRoute: typeof TermsRoute
+  EventsSlugRoute: typeof EventsSlugRoute
+  ResourcesSlugRoute: typeof ResourcesSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -296,45 +298,22 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/events/$slug': {
-      id: '/events/$slug'
-      path: '/$slug'
+    '/events_/$slug': {
+      id: '/events_/$slug'
+      path: '/events/$slug'
       fullPath: '/events/$slug'
       preLoaderRoute: typeof EventsSlugRouteImport
-      parentRoute: typeof EventsRoute
+      parentRoute: typeof rootRouteImport
     }
-    '/resources/$slug': {
-      id: '/resources/$slug'
-      path: '/$slug'
+    '/resources_/$slug': {
+      id: '/resources_/$slug'
+      path: '/resources/$slug'
       fullPath: '/resources/$slug'
       preLoaderRoute: typeof ResourcesSlugRouteImport
-      parentRoute: typeof ResourcesRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
-
-interface EventsRouteChildren {
-  EventsSlugRoute: typeof EventsSlugRoute
-}
-
-const EventsRouteChildren: EventsRouteChildren = {
-  EventsSlugRoute: EventsSlugRoute,
-}
-
-const EventsRouteWithChildren =
-  EventsRoute._addFileChildren(EventsRouteChildren)
-
-interface ResourcesRouteChildren {
-  ResourcesSlugRoute: typeof ResourcesSlugRoute
-}
-
-const ResourcesRouteChildren: ResourcesRouteChildren = {
-  ResourcesSlugRoute: ResourcesSlugRoute,
-}
-
-const ResourcesRouteWithChildren = ResourcesRoute._addFileChildren(
-  ResourcesRouteChildren,
-)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -344,11 +323,13 @@ const rootRouteChildren: RootRouteChildren = {
   CommunityRoute: CommunityRoute,
   ContactRoute: ContactRoute,
   EcosystemRoute: EcosystemRoute,
-  EventsRoute: EventsRouteWithChildren,
+  EventsRoute: EventsRoute,
   NetworkRoute: NetworkRoute,
   PrivacyRoute: PrivacyRoute,
-  ResourcesRoute: ResourcesRouteWithChildren,
+  ResourcesRoute: ResourcesRoute,
   TermsRoute: TermsRoute,
+  EventsSlugRoute: EventsSlugRoute,
+  ResourcesSlugRoute: ResourcesSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

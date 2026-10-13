@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ARTICLES } from "@/lib/content";
 import { pageMeta } from "@/lib/metadata";
 
-export const Route = createFileRoute("/resources/$slug")({
+export const Route = createFileRoute("/resources_/$slug")({
   loader: ({ params }) => {
     const article = ARTICLES.find((a) => a.slug === params.slug);
     if (!article) throw notFound();
