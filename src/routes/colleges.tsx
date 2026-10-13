@@ -3,27 +3,16 @@ import { ArrowUpRight, Building2, FlaskConical, Rocket } from "lucide-react";
 import { Container, PageHero, SectionHead } from "@/components/site/Blocks";
 import { CollegeForm } from "@/components/forms/Forms";
 import { Rich, useContent } from "@/lib/content-context";
+import { pageMeta } from "@/lib/metadata";
 import { itemLines, itemText } from "@/lib/site-content";
 
 export const Route = createFileRoute("/colleges")({
-  head: () => ({
-    meta: [
-      { title: "For Colleges — Elite Forums" },
-      {
-        name: "description",
-        content:
-          "Explore Elite Forums Startup Cohort, Incubation and Coworking Space programmes for founders, teams and college innovation communities.",
-      },
-      { property: "og:title", content: "For Colleges — Elite Forums" },
-      { property: "og:description", content: "Partner your college or E-Cell with Elite Forums." },
-      {
-        name: "keywords",
-        content:
-          "college E-Cell partnerships India, campus entrepreneurship, college startup programs",
-      },
-    ],
-    links: [{ rel: "canonical", href: "https://eliteforums.in/colleges" }],
-  }),
+  head: () =>
+    pageMeta(
+      "Startup Programs for Colleges and E-Cells",
+      "Explore founder education, startup incubation and coworking programmes for colleges, campus E-Cells and student startup teams in India.",
+      "/colleges",
+    ),
   component: Colleges,
 });
 

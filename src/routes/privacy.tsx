@@ -1,20 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { Container, PageHero } from "@/components/site/Blocks";
+import { pageMeta } from "@/lib/metadata";
 
 export const Route = createFileRoute("/privacy")({
-  head: () => ({
-    meta: [
-      { title: "Privacy — Elite Forums" },
-      {
-        name: "description",
-        content: "Learn how Elite Forums collects, uses and protects your personal information.",
-      },
-      { property: "og:title", content: "Privacy — Elite Forums" },
-      { property: "og:description", content: "Privacy at Elite Forums." },
-    ],
-    links: [{ rel: "canonical", href: "https://eliteforums.in/privacy" }],
-  }),
+  head: () =>
+    pageMeta(
+      "Privacy Policy",
+      "Learn what personal information Elite Forums collects, how it is used, and how to exercise your privacy choices.",
+      "/privacy",
+    ),
   component: Privacy,
 });
 

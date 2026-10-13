@@ -26,6 +26,7 @@ import { Route as NetworkRouteImport } from './routes/network'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as RefundsRouteImport } from './routes/refunds'
 import { Route as ResourcesRouteImport } from './routes/resources'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as EventsSlugRouteImport } from './routes/events_.$slug'
 import { Route as ResourcesSlugRouteImport } from './routes/resources_.$slug'
@@ -115,6 +116,11 @@ const ResourcesRoute = ResourcesRouteImport.update({
   path: '/resources',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -149,6 +155,7 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/refunds': typeof RefundsRoute
   '/resources': typeof ResourcesRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/events/$slug': typeof EventsSlugRoute
   '/resources/$slug': typeof ResourcesSlugRoute
@@ -171,6 +178,7 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/refunds': typeof RefundsRoute
   '/resources': typeof ResourcesRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/events/$slug': typeof EventsSlugRoute
   '/resources/$slug': typeof ResourcesSlugRoute
@@ -194,6 +202,7 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/refunds': typeof RefundsRoute
   '/resources': typeof ResourcesRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/events_/$slug': typeof EventsSlugRoute
   '/resources_/$slug': typeof ResourcesSlugRoute
@@ -218,6 +227,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/refunds'
     | '/resources'
+    | '/sitemap.xml'
     | '/terms'
     | '/events/$slug'
     | '/resources/$slug'
@@ -240,6 +250,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/refunds'
     | '/resources'
+    | '/sitemap.xml'
     | '/terms'
     | '/events/$slug'
     | '/resources/$slug'
@@ -262,6 +273,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/refunds'
     | '/resources'
+    | '/sitemap.xml'
     | '/terms'
     | '/events_/$slug'
     | '/resources_/$slug'
@@ -285,6 +297,7 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   RefundsRoute: typeof RefundsRoute
   ResourcesRoute: typeof ResourcesRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   EventsSlugRoute: typeof EventsSlugRoute
   ResourcesSlugRoute: typeof ResourcesSlugRoute
@@ -411,6 +424,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResourcesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms': {
       id: '/terms'
       path: '/terms'
@@ -453,6 +473,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   RefundsRoute: RefundsRoute,
   ResourcesRoute: ResourcesRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   EventsSlugRoute: EventsSlugRoute,
   ResourcesSlugRoute: ResourcesSlugRoute,

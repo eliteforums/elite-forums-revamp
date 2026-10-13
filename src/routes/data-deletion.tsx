@@ -1,19 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Container, PageHero } from "@/components/site/Blocks";
 import { ContactForm } from "@/components/forms/Forms";
+import { pageMeta } from "@/lib/metadata";
 
 export const Route = createFileRoute("/data-deletion")({
-  head: () => ({
-    meta: [
-      { title: "Delete My Data — Elite Forums" },
-      {
-        name: "description",
-        content: "Request access, correction or deletion of your Elite Forums personal data.",
-      },
-      { name: "robots", content: "noindex, nofollow" },
-    ],
-    links: [{ rel: "canonical", href: "https://eliteforums.in/data-deletion" }],
-  }),
+  head: () =>
+    pageMeta(
+      "Request Data Deletion",
+      "Request access, correction or deletion of your personal information held by Elite Forums.",
+      "/data-deletion",
+      { noIndex: true, noFollow: true },
+    ),
   component: DataDeletion,
 });
 

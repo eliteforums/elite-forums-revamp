@@ -9,8 +9,8 @@ import { itemText } from "@/lib/site-content";
 export const Route = createFileRoute("/innovation-lab")({
   head: () =>
     pageMeta(
-      "Innovation Laboratory",
-      "The Elite Forums Innovation Laboratory is where we build technology and startups — turning ideas from the community into working products and new ventures.",
+      "Startup Innovation Lab",
+      "See how the Elite Forums Innovation Lab helps turn community ideas into technology, working products and new ventures.",
       "/innovation-lab",
     ),
   component: InnovationLab,

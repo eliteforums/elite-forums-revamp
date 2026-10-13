@@ -12,8 +12,8 @@ export const Route = createFileRoute("/apply")({
   }),
   head: () =>
     pageMeta(
-      "Apply to a Program",
-      "Apply to the Elite Forums Startup Cohort Program, Startup Incubation Program or Coworking Space Membership.",
+      "Apply to Startup Incubation and Cohort Programs",
+      "Apply to the Elite Forums Startup Cohort, Startup Incubation Program or Coworking Space Membership in India.",
       "/apply",
     ),
   component: Apply,

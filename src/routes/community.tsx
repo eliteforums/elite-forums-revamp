@@ -2,30 +2,16 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Container, PageHero, SectionHead } from "@/components/site/Blocks";
 import { StudentForm } from "@/components/forms/Forms";
 import { Rich, useContent } from "@/lib/content-context";
+import { pageMeta } from "@/lib/metadata";
 import { itemText } from "@/lib/site-content";
 
 export const Route = createFileRoute("/community")({
-  head: () => ({
-    meta: [
-      { title: "Join the Community — Elite Forums" },
-      {
-        name: "description",
-        content:
-          "Join Elite Forums for founder learning, workshops, hackathons and a network of aspiring founders across India.",
-      },
-      { property: "og:title", content: "Join the Community — Elite Forums" },
-      {
-        property: "og:description",
-        content: "A network of aspiring founders across colleges and cities.",
-      },
-      {
-        name: "keywords",
-        content:
-          "startup community India, aspiring founders, student entrepreneurs, founder network",
-      },
-    ],
-    links: [{ rel: "canonical", href: "https://eliteforums.in/community" }],
-  }),
+  head: () =>
+    pageMeta(
+      "Startup Community for Students and Founders",
+      "Join Elite Forums to learn with aspiring founders, take part in workshops and hackathons, and connect with student entrepreneurs across India.",
+      "/community",
+    ),
   component: Community,
 });
 

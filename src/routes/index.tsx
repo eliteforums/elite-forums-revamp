@@ -11,8 +11,8 @@ import { FaqSection } from "@/components/site/FaqSection";
 export const Route = createFileRoute("/")({
   head: () =>
     pageMeta(
-      "Elite Forums | Where founder ambition meets opportunity",
-      "Elite Forums is a community for anyone who wants to become a founder. Started in Mumbai and growing across colleges and cities, with a vision to make India a startup hub.",
+      "Startup Community for Aspiring Founders in India",
+      "Join an India-focused startup community for student entrepreneurs and aspiring founders, with practical programmes, events and college partnerships.",
       "/",
     ),
   component: Home,

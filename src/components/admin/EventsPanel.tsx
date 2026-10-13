@@ -45,7 +45,7 @@ const blank = (): Draft => ({
   city: "",
   location: "",
   summary: "",
-  image: "/og-image.svg",
+  image: "/og-image.png",
   registration_url: "",
   agenda: [{ time: "", item: "" }],
   eligibility: "",

@@ -8,8 +8,8 @@ import { itemText } from "@/lib/site-content";
 export const Route = createFileRoute("/network")({
   head: () =>
     pageMeta(
-      "Partner Network",
-      "Connect your college, startup community or organisation with the Elite Forums entrepreneurship ecosystem.",
+      "Startup and College Partner Network",
+      "Connect your college, E-Cell, startup community or organisation with the Elite Forums entrepreneurship network.",
       "/network",
     ),
   component: NetworkPage,

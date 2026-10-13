@@ -8,8 +8,8 @@ import { itemText } from "@/lib/site-content";
 export const Route = createFileRoute("/campus-ambassadors")({
   head: () =>
     pageMeta(
-      "Campus Ambassadors",
-      "Apply to represent Elite Forums on your campus and help build a community of student entrepreneurs.",
+      "Campus Ambassador Program for Students",
+      "Represent Elite Forums on your campus, connect student entrepreneurs and help grow a practical entrepreneurship community.",
       "/campus-ambassadors",
     ),
   component: AmbassadorsPage,

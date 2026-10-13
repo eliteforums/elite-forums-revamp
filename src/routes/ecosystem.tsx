@@ -7,8 +7,8 @@ import { Rich, useContent } from "@/lib/content-context";
 export const Route = createFileRoute("/ecosystem")({
   head: () =>
     pageMeta(
-      "The Ecosystem",
-      "Explore a connected ecosystem of aspiring founders, college E-Cells, mentors and industry partners across India.",
+      "Startup Ecosystem for Aspiring Founders",
+      "Explore how aspiring founders, college E-Cells, mentors and industry partners connect through the Elite Forums startup ecosystem.",
       "/ecosystem",
     ),
   component: EcosystemPage,

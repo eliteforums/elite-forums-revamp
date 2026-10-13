@@ -11,8 +11,8 @@ import { Route as RootRoute } from "./__root";
 export const Route = createFileRoute("/resources")({
   head: () =>
     pageMeta(
-      "Resources",
-      "Practical guides, founder insights and stories for aspiring founders, students and campus E-Cell leaders.",
+      "Startup Guides for Students and Aspiring Founders",
+      "Explore practical startup guides on testing ideas, building campus E-Cells and learning to launch as a student founder.",
       "/resources",
     ),
   component: Resources,

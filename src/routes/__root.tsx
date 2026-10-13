@@ -82,28 +82,29 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "robots", content: "index, follow, max-image-preview:large" },
-      { name: "googlebot", content: "index, follow, max-image-preview:large" },
-      { title: "Elite Forums — Community for Aspiring Founders" },
+      { title: "Startup Community in India for Aspiring Founders — Elite Forums" },
       {
         name: "description",
         content:
-          "Elite Forums is a community for anyone who wants to become a founder. Started in Mumbai, growing across India through colleges, workshops and hackathons.",
+          "Join Elite Forums, an India-focused startup community for aspiring founders and student entrepreneurs. Explore founder programmes, events, college partnerships and practical resources.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://eliteforums.in/" },
       { property: "og:site_name", content: "Elite Forums" },
       { property: "og:locale", content: "en_IN" },
-      { property: "og:image", content: "https://eliteforums.in/og-image.svg" },
+      { property: "og:image", content: "https://eliteforums.in/og-image.png" },
       { property: "og:image:alt", content: "Elite Forums founder and startup ecosystem" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Elite Forums — Community for Aspiring Founders" },
+      {
+        name: "twitter:title",
+        content: "Startup Community in India for Aspiring Founders — Elite Forums",
+      },
       {
         name: "twitter:description",
         content:
-          "A startup community connecting aspiring founders, students, colleges, E-Cells and mentors across India.",
+          "Join an India-focused community for aspiring founders, student entrepreneurs, colleges and E-Cells.",
       },
-      { name: "twitter:image", content: "https://eliteforums.in/og-image.svg" },
+      { name: "twitter:image", content: "https://eliteforums.in/og-image.png" },
       { name: "theme-color", content: "#0a0a0a" },
       ...(import.meta.env.VITE_GOOGLE_SITE_VERIFICATION
         ? [
@@ -162,7 +163,12 @@ function RootShell({ children }: { children: ReactNode }) {
                   description:
                     "A community for aspiring founders, students, colleges, E-Cells and mentors across India.",
                   areaServed: "IN",
-                  sameAs: [],
+                  knowsAbout: [
+                    "Student entrepreneurship",
+                    "Startup incubation",
+                    "College entrepreneurship cells",
+                    "Founder education",
+                  ],
                 },
                 {
                   "@type": "WebSite",

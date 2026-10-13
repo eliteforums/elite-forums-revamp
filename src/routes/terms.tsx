@@ -1,20 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { Container, PageHero } from "@/components/site/Blocks";
+import { pageMeta } from "@/lib/metadata";
 
 export const Route = createFileRoute("/terms")({
-  head: () => ({
-    meta: [
-      { title: "Terms — Elite Forums" },
-      {
-        name: "description",
-        content: "The terms that apply when you use the Elite Forums website and programmes.",
-      },
-      { property: "og:title", content: "Terms — Elite Forums" },
-      { property: "og:description", content: "Terms at Elite Forums." },
-    ],
-    links: [{ rel: "canonical", href: "https://eliteforums.in/terms" }],
-  }),
+  head: () =>
+    pageMeta(
+      "Terms of Use",
+      "Read the terms for using the Elite Forums website, community, events and programmes.",
+      "/terms",
+    ),
   component: Terms,
 });
 

@@ -13,8 +13,8 @@ export const Route = createFileRoute("/events")({
   loader: () => getPublicEvents(),
   head: () =>
     pageMeta(
-      "Events",
-      "Explore workshops, hackathons and founder conversations for aspiring founders at Elite Forums.",
+      "Startup Events, Workshops and Hackathons in India",
+      "Find startup workshops, hackathons and founder conversations for students and aspiring entrepreneurs in India.",
       "/events",
     ),
   component: Events,

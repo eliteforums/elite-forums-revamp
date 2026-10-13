@@ -1,18 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { Container, PageHero } from "@/components/site/Blocks";
+import { pageMeta } from "@/lib/metadata";
 
 export const Route = createFileRoute("/refunds")({
-  head: () => ({
-    meta: [
-      { title: "Refund Policy — Elite Forums" },
-      {
-        name: "description",
-        content: "Refunds, cancellations and event changes for Elite Forums programmes.",
-      },
-    ],
-    links: [{ rel: "canonical", href: "https://eliteforums.in/refunds" }],
-  }),
+  head: () =>
+    pageMeta(
+      "Refund and Cancellation Policy",
+      "Understand refund requests, participant cancellations and event changes for paid Elite Forums programmes.",
+      "/refunds",
+    ),
   component: Refunds,
 });
 

@@ -6,7 +6,7 @@ import { pageMeta } from "@/lib/metadata";
 export const Route = createFileRoute("/faqs")({
   head: () =>
     pageMeta(
-      "Frequently Asked Questions",
+      "Startup Community and Program FAQs",
       "Answers about Elite Forums, its founder community, startup programmes, coworking membership, college partnerships, applications and events in India.",
       "/faqs",
     ),

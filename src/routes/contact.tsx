@@ -8,8 +8,8 @@ import { itemText } from "@/lib/site-content";
 export const Route = createFileRoute("/contact")({
   head: () =>
     pageMeta(
-      "Contact",
-      "Get in touch about college partnerships, community enquiries, events, mentorship and collaboration with Elite Forums.",
+      "Contact Elite Forums",
+      "Contact Elite Forums about college and E-Cell partnerships, events, founder programmes, mentorship or collaboration.",
       "/contact",
     ),
   component: ContactPage,

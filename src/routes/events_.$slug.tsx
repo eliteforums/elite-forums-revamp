@@ -4,9 +4,10 @@ import { Container, SampleBadge } from "@/components/site/Blocks";
 import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 import { EventDescription, descriptionLead } from "@/components/site/EventDescription";
 import { EventRegisterForm } from "@/components/forms/Forms";
+import { JsonLd } from "@/components/site/JsonLd";
 import { Button } from "@/components/ui/button";
 import { getPublicEvents } from "@/lib/admin.functions";
-import { pageMeta } from "@/lib/metadata";
+import { absoluteUrl, pageMeta, SITE_URL } from "@/lib/metadata";
 import { eventStatus } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
@@ -23,6 +24,9 @@ export const Route = createFileRoute("/events_/$slug")({
         ? descriptionLead(loaderData.summary, loaderData.title)
         : "Explore entrepreneurship events at Elite Forums.",
       loaderData ? `/events/${loaderData.slug}` : "/events",
+      loaderData
+        ? { image: loaderData.image, imageAlt: `${loaderData.title} event poster` }
+        : {},
     ),
   component: EventDetail,
 });
@@ -60,6 +64,33 @@ function EventDetail() {
     <>
       <section className="relative overflow-hidden border-b border-border bg-surface/30 pb-12 pt-36 md:pb-16 md:pt-44">
         <Breadcrumbs current={event.title} />
+        {event.format === "In-person" && (
+          <JsonLd
+            data={{
+              "@context": "https://schema.org",
+              "@type": "Event",
+              name: event.title,
+              description: event.summary,
+              image: [absoluteUrl(event.image)],
+              url: `${SITE_URL}/events/${event.slug}`,
+              startDate: event.date,
+              eventStatus: ended
+                ? "https://schema.org/EventCompleted"
+                : "https://schema.org/EventScheduled",
+              eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+              location: {
+                "@type": "Place",
+                name: [event.location, event.city].filter(Boolean).join(", "),
+                address: {
+                  "@type": "PostalAddress",
+                  ...(event.city ? { addressLocality: event.city } : {}),
+                  addressCountry: "IN",
+                },
+              },
+              organizer: { "@id": `${SITE_URL}/#organization` },
+            }}
+          />
+        )}
         <Container className="relative">
           <div className="flex flex-wrap items-center gap-2.5">
             <p className="eyebrow text-electric">{event.type}</p>

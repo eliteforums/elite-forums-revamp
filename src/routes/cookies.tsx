@@ -1,18 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { Container, PageHero } from "@/components/site/Blocks";
+import { pageMeta } from "@/lib/metadata";
 
 export const Route = createFileRoute("/cookies")({
-  head: () => ({
-    meta: [
-      { title: "Cookie Policy — Elite Forums" },
-      {
-        name: "description",
-        content: "How Elite Forums uses cookies and essential browser storage.",
-      },
-    ],
-    links: [{ rel: "canonical", href: "https://eliteforums.in/cookies" }],
-  }),
+  head: () =>
+    pageMeta(
+      "Cookie Policy",
+      "Learn how Elite Forums uses essential browser storage and optional analytics cookies, and how to control your choice.",
+      "/cookies",
+    ),
   component: Cookies,
 });
 
