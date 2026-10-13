@@ -20,6 +20,7 @@ import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as DataDeletionRouteImport } from './routes/data-deletion'
 import { Route as EcosystemRouteImport } from './routes/ecosystem'
 import { Route as EventsRouteImport } from './routes/events'
+import { Route as FaqsRouteImport } from './routes/faqs'
 import { Route as InnovationLabRouteImport } from './routes/innovation-lab'
 import { Route as NetworkRouteImport } from './routes/network'
 import { Route as PrivacyRouteImport } from './routes/privacy'
@@ -84,6 +85,11 @@ const EventsRoute = EventsRouteImport.update({
   path: '/events',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FaqsRoute = FaqsRouteImport.update({
+  id: '/faqs',
+  path: '/faqs',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const InnovationLabRoute = InnovationLabRouteImport.update({
   id: '/innovation-lab',
   path: '/innovation-lab',
@@ -137,6 +143,7 @@ export interface FileRoutesByFullPath {
   '/data-deletion': typeof DataDeletionRoute
   '/ecosystem': typeof EcosystemRoute
   '/events': typeof EventsRoute
+  '/faqs': typeof FaqsRoute
   '/innovation-lab': typeof InnovationLabRoute
   '/network': typeof NetworkRoute
   '/privacy': typeof PrivacyRoute
@@ -158,6 +165,7 @@ export interface FileRoutesByTo {
   '/data-deletion': typeof DataDeletionRoute
   '/ecosystem': typeof EcosystemRoute
   '/events': typeof EventsRoute
+  '/faqs': typeof FaqsRoute
   '/innovation-lab': typeof InnovationLabRoute
   '/network': typeof NetworkRoute
   '/privacy': typeof PrivacyRoute
@@ -180,6 +188,7 @@ export interface FileRoutesById {
   '/data-deletion': typeof DataDeletionRoute
   '/ecosystem': typeof EcosystemRoute
   '/events': typeof EventsRoute
+  '/faqs': typeof FaqsRoute
   '/innovation-lab': typeof InnovationLabRoute
   '/network': typeof NetworkRoute
   '/privacy': typeof PrivacyRoute
@@ -203,6 +212,7 @@ export interface FileRouteTypes {
     | '/data-deletion'
     | '/ecosystem'
     | '/events'
+    | '/faqs'
     | '/innovation-lab'
     | '/network'
     | '/privacy'
@@ -224,6 +234,7 @@ export interface FileRouteTypes {
     | '/data-deletion'
     | '/ecosystem'
     | '/events'
+    | '/faqs'
     | '/innovation-lab'
     | '/network'
     | '/privacy'
@@ -245,6 +256,7 @@ export interface FileRouteTypes {
     | '/data-deletion'
     | '/ecosystem'
     | '/events'
+    | '/faqs'
     | '/innovation-lab'
     | '/network'
     | '/privacy'
@@ -267,6 +279,7 @@ export interface RootRouteChildren {
   DataDeletionRoute: typeof DataDeletionRoute
   EcosystemRoute: typeof EcosystemRoute
   EventsRoute: typeof EventsRoute
+  FaqsRoute: typeof FaqsRoute
   InnovationLabRoute: typeof InnovationLabRoute
   NetworkRoute: typeof NetworkRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -356,6 +369,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EventsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/faqs': {
+      id: '/faqs'
+      path: '/faqs'
+      fullPath: '/faqs'
+      preLoaderRoute: typeof FaqsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/innovation-lab': {
       id: '/innovation-lab'
       path: '/innovation-lab'
@@ -427,6 +447,7 @@ const rootRouteChildren: RootRouteChildren = {
   DataDeletionRoute: DataDeletionRoute,
   EcosystemRoute: EcosystemRoute,
   EventsRoute: EventsRoute,
+  FaqsRoute: FaqsRoute,
   InnovationLabRoute: InnovationLabRoute,
   NetworkRoute: NetworkRoute,
   PrivacyRoute: PrivacyRoute,
