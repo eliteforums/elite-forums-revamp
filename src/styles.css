@@ -5,8 +5,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -124,7 +124,7 @@
   }
   h1, h2, h3, h4 {
     font-family: var(--font-display);
-    letter-spacing: -0.03em;
+    letter-spacing: 0;
   }
   ::selection {
     background: var(--electric);
@@ -160,16 +160,16 @@
 }
 @utility display-xl {
   font-family: var(--font-display);
-  font-weight: 700;
-  line-height: 0.92;
-  letter-spacing: -0.045em;
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 @utility eyebrow {
   font-family: var(--font-display);
   font-size: 0.72rem;
   font-weight: 500;
-  letter-spacing: 0.28em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 @utility panel {
@@ -210,6 +210,25 @@
 @utility animate-draw {
   stroke-dasharray: 400;
   animation: draw 2.4s ease-out both;
+}
+
+@utility canvas-grid {
+  background-image: linear-gradient(to right, var(--border) 1px, transparent 1px), linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+  background-size: 100px 100px;
+}
+
+@utility section-space {
+  padding-block: 5rem;
+  @media (min-width: 768px) { padding-block: 7rem; }
+}
+
+@utility photo-shade {
+  background-image: var(--gradient-fade);
+}
+
+@utility reading-copy {
+  line-height: 1.85;
+  color: var(--muted-foreground);
 }
 
 @media (prefers-reduced-motion: reduce) {

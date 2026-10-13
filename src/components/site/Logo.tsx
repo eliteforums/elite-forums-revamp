@@ -22,8 +22,8 @@ export function LogoMark({ className, mono }: { className?: string; mono?: "ink"
 export function Logo({ className, mono }: { className?: string; mono?: "ink" | "light" | undefined }) {
   return (
     <span className={cn("inline-flex items-center gap-2.5", className)}>
-      <LogoMark mono={mono} className="h-7" />
-      <span className="font-display text-[0.95rem] font-bold tracking-[0.14em]">ELITE FORUMS</span>
+      <span className="flex h-8 w-8 items-center justify-center rounded bg-paper"><LogoMark mono="ink" className="h-5" /></span>
+      <span className="font-display text-lg font-bold">Elite<span className={mono === "ink" ? "text-ink" : "text-electric"}>Forums</span></span>
     </span>
   );
 }
