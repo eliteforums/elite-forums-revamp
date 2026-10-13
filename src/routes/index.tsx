@@ -6,6 +6,7 @@ import { EcosystemGrid, JoinPaths, Mission } from "@/components/site/EcosystemSe
 import { pageMeta } from "@/lib/metadata";
 import { Rich, resolveImage, useContent } from "@/lib/content-context";
 import { itemText } from "@/lib/site-content";
+import { FaqSection } from "@/components/site/FaqSection";
 
 export const Route = createFileRoute("/")({
   head: () =>
@@ -66,6 +67,7 @@ function Home() {
       <EcosystemGrid />
       <Mission />
       <JoinPaths />
+      <FaqSection preview />
       <FinalCTA />
     </>
   );

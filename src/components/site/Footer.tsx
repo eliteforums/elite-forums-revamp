@@ -11,6 +11,7 @@ const COLS = [
       { to: "/ecosystem", label: "Ecosystem" },
       { to: "/events", label: "Events" },
       { to: "/resources", label: "Resources" },
+      { to: "/faqs", label: "FAQs" },
       { to: "/network", label: "Partner Network" },
     ],
   },
