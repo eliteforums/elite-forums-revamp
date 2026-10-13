@@ -3,10 +3,12 @@ import { useState } from "react";
 import { ArrowUpRight, CalendarDays, MapPin } from "lucide-react";
 import { Container, FinalCTA, PageHero, SampleBadge } from "@/components/site/Blocks";
 import { Button } from "@/components/ui/button";
-import { EVENTS, isUpcoming } from "@/lib/content";
+import { isUpcoming } from "@/lib/content";
+import { getPublicEvents } from "@/lib/admin.functions";
 import { pageMeta } from "@/lib/metadata";
 
 export const Route = createFileRoute("/events")({
+  loader: () => getPublicEvents(),
   head: () =>
     pageMeta(
       "Events",
@@ -16,13 +18,16 @@ export const Route = createFileRoute("/events")({
 });
 
 function Events() {
+  const managedEvents = Route.useLoaderData();
   const [type, setType] = useState("All");
   const [period, setPeriod] = useState("All dates");
-  const events = EVENTS.filter(
-    (e) =>
-      (type === "All" || e.type === type) &&
-      (period === "All dates" || (period === "Upcoming" ? isUpcoming(e) : !isUpcoming(e))),
-  ).sort((a, b) => a.date.localeCompare(b.date));
+  const events = managedEvents
+    .filter(
+      (e) =>
+        (type === "All" || e.type === type) &&
+        (period === "All dates" || (period === "Upcoming" ? isUpcoming(e) : !isUpcoming(e))),
+    )
+    .sort((a, b) => a.date.localeCompare(b.date));
   return (
     <>
       <PageHero

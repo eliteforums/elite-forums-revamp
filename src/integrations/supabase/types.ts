@@ -8,6 +8,63 @@ export type Database = {
   };
   public: {
     Tables: {
+      admin_events: {
+        Row: {
+          agenda: Json;
+          city: string | null;
+          created_at: string;
+          date: string;
+          eligibility: string;
+          format: string;
+          id: string;
+          image: string;
+          location: string;
+          organizer: string;
+          published: boolean;
+          slug: string;
+          summary: string;
+          title: string;
+          type: string;
+          updated_at: string;
+        };
+        Insert: {
+          agenda?: Json;
+          city?: string | null;
+          created_at?: string;
+          date: string;
+          eligibility: string;
+          format: string;
+          id?: string;
+          image: string;
+          location: string;
+          organizer: string;
+          published?: boolean;
+          slug: string;
+          summary: string;
+          title: string;
+          type: string;
+          updated_at?: string;
+        };
+        Update: {
+          agenda?: Json;
+          city?: string | null;
+          created_at?: string;
+          date?: string;
+          eligibility?: string;
+          format?: string;
+          id?: string;
+          image?: string;
+          location?: string;
+          organizer?: string;
+          published?: boolean;
+          slug?: string;
+          summary?: string;
+          title?: string;
+          type?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       ambassador_applications: {
         Row: {
           availability: string;
@@ -173,6 +230,24 @@ export type Database = {
           id?: string;
           institution?: string;
           name?: string;
+        };
+        Relationships: [];
+      };
+      site_content: {
+        Row: {
+          key: string;
+          updated_at: string;
+          value: Json;
+        };
+        Insert: {
+          key: string;
+          updated_at?: string;
+          value?: Json;
+        };
+        Update: {
+          key?: string;
+          updated_at?: string;
+          value?: Json;
         };
         Relationships: [];
       };

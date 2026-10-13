@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as CampusAmbassadorsRouteImport } from './routes/campus-ambassadors'
 import { Route as CollegesRouteImport } from './routes/colleges'
 import { Route as CommunityRouteImport } from './routes/community'
@@ -27,6 +28,11 @@ import { Route as ResourcesSlugRouteImport } from './routes/resources_.$slug'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CampusAmbassadorsRoute = CampusAmbassadorsRouteImport.update({
@@ -97,6 +103,7 @@ const ResourcesSlugRoute = ResourcesSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/campus-ambassadors': typeof CampusAmbassadorsRoute
   '/colleges': typeof CollegesRoute
   '/community': typeof CommunityRoute
@@ -113,6 +120,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/campus-ambassadors': typeof CampusAmbassadorsRoute
   '/colleges': typeof CollegesRoute
   '/community': typeof CommunityRoute
@@ -130,6 +138,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/campus-ambassadors': typeof CampusAmbassadorsRoute
   '/colleges': typeof CollegesRoute
   '/community': typeof CommunityRoute
@@ -148,6 +157,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/campus-ambassadors'
     | '/colleges'
     | '/community'
@@ -164,6 +174,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin'
     | '/campus-ambassadors'
     | '/colleges'
     | '/community'
@@ -180,6 +191,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/campus-ambassadors'
     | '/colleges'
     | '/community'
@@ -197,6 +209,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
   CampusAmbassadorsRoute: typeof CampusAmbassadorsRoute
   CollegesRoute: typeof CollegesRoute
   CommunityRoute: typeof CommunityRoute
@@ -219,6 +232,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/campus-ambassadors': {
@@ -317,6 +337,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
   CampusAmbassadorsRoute: CampusAmbassadorsRoute,
   CollegesRoute: CollegesRoute,
   CommunityRoute: CommunityRoute,

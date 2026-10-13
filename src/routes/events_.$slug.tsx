@@ -2,12 +2,12 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { Container, PageHero, SampleBadge } from "@/components/site/Blocks";
 import { EventRegisterForm } from "@/components/forms/Forms";
 import { Button } from "@/components/ui/button";
-import { EVENTS } from "@/lib/content";
+import { getPublicEvents } from "@/lib/admin.functions";
 import { pageMeta } from "@/lib/metadata";
 
 export const Route = createFileRoute("/events_/$slug")({
-  loader: ({ params }) => {
-    const event = EVENTS.find((e) => e.slug === params.slug);
+  loader: async ({ params }) => {
+    const event = (await getPublicEvents()).find((e) => e.slug === params.slug);
     if (!event) throw notFound();
     return event;
   },
