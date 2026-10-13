@@ -139,17 +139,11 @@ function EventDetail() {
                   </Button>
                 </>
               ) : event.registration_url ? (
-                <>
-                  <h2 className="font-display text-2xl font-medium">Reserve your spot.</h2>
-                  <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                    Registration opens in a new tab.
-                  </p>
-                  <Button asChild variant="brand" size="lg" className="mt-6 w-full">
-                    <a href={event.registration_url} target="_blank" rel="noopener noreferrer">
-                      Register for this event <ArrowUpRight />
-                    </a>
-                  </Button>
-                </>
+                <Button asChild variant="brand" size="lg" className="w-full">
+                  <a href={event.registration_url}>
+                    Register for this event <ArrowUpRight />
+                  </a>
+                </Button>
               ) : (
                 <>
                   <h2 className="font-display text-2xl font-medium">Reserve your spot.</h2>

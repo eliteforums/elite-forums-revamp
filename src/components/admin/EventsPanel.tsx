@@ -141,7 +141,7 @@ export function EventsPanel({
     <>
       <PanelHeader
         title="Events"
-        description="Create and publish events. Published events appear on the public Events page with their own page and registration form."
+        description="Create and publish events. Add a registration URL to show a Register button, or leave it empty to collect registrations on the event page."
         actions={
           <Button variant="brand" size="sm" onClick={() => setDraft(blank())}>
             <Plus /> New event
@@ -417,7 +417,7 @@ function EventDrawer({
         </div>
         <FieldLabel
           label="Event registration URL (optional)"
-          hint="Use this for an external registration page. Leave empty to collect registrations on this website."
+          hint="When set, the event page shows a Register button that opens this URL. Leave empty to show the on-page registration form."
         >
           <input
             type="url"
