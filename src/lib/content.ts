@@ -13,6 +13,7 @@ export type EventItem = {
   location: string;
   summary: string;
   image: string;
+  registration_url?: string | null;
   agenda: { time: string; item: string }[];
   eligibility: string;
   organizer: string;

@@ -1,8 +1,8 @@
-import { CalendarDays, MapPin, Plus, Save, Trash2 } from "lucide-react";
+import { CalendarDays, ImagePlus, MapPin, Plus, Save, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { deleteAdminEvent, saveAdminEvent } from "@/lib/admin.functions";
+import { deleteAdminEvent, saveAdminEvent, uploadEventPoster } from "@/lib/admin.functions";
 import { cn } from "@/lib/utils";
 import { Card, Drawer, Empty, FieldLabel, PanelHeader, Pill, errorMessage, fieldCls } from "./ui";
 
@@ -21,6 +21,7 @@ export type AdminEvent = {
   eligibility: string;
   organizer: string;
   published: boolean;
+  registration_url: string | null;
 };
 
 type AgendaRow = { time: string; item: string };
@@ -28,6 +29,7 @@ type Draft = Omit<AdminEvent, "id" | "agenda" | "city"> & {
   id?: string;
   city: string;
   agenda: AgendaRow[];
+  registration_url: string;
 };
 
 const TYPES = ["Workshop", "Hackathon", "Founder Connect", "Bootcamp"] as const;
@@ -43,6 +45,7 @@ const blank = (): Draft => ({
   location: "",
   summary: "",
   image: "/og-image.svg",
+  registration_url: "",
   agenda: [{ time: "", item: "" }],
   eligibility: "",
   organizer: "Elite Forums",
@@ -52,6 +55,7 @@ const blank = (): Draft => ({
 const toDraft = (event: AdminEvent): Draft => ({
   ...event,
   city: event.city ?? "",
+  registration_url: event.registration_url ?? "",
   agenda: Array.isArray(event.agenda)
     ? event.agenda.map((row) => ({
         time: String((row as AgendaRow | null)?.time ?? ""),
@@ -96,13 +100,12 @@ export function EventsPanel({
         ["summary", "a summary"],
         ["eligibility", "who can join"],
         ["organizer", "an organiser"],
-        ["image", "an image"],
       ] as const
     ).find(([key]) => !draft[key].trim());
     if (missing) return void toast.error(`Add ${missing[1]} before saving.`);
     setSaving(true);
     try {
-      const { city, agenda, ...rest } = draft;
+      const { city, agenda, registration_url, ...rest } = draft;
       await saveAdminEvent({
         data: {
           ...rest,
@@ -110,6 +113,7 @@ export function EventsPanel({
           format: rest.format as (typeof FORMATS)[number],
           agenda: agenda.filter((row) => row.time.trim() || row.item.trim()),
           ...(city.trim() ? { city: city.trim() } : {}),
+          registration_url: registration_url.trim(),
         },
       });
       await refresh();
@@ -227,6 +231,35 @@ function EventDrawer({
       "agenda",
       draft.agenda.map((row, i) => (i === index ? { ...row, [key]: value } : row)),
     );
+  async function uploadPoster(file: File) {
+    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+      toast.error("Use a JPG, PNG or WebP poster.");
+      return;
+    }
+    if (file.size > 6 * 1024 * 1024) {
+      toast.error("Poster must be no larger than 6 MB.");
+      return;
+    }
+    const data = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result));
+      reader.onerror = () => reject(new Error("Unable to read poster."));
+      reader.readAsDataURL(file);
+    });
+    try {
+      const result = await uploadEventPoster({
+        data: {
+          fileName: file.name,
+          contentType: file.type as "image/jpeg" | "image/png" | "image/webp",
+          data,
+        },
+      });
+      set("image", result.url);
+      toast.success("Event poster uploaded.");
+    } catch (error) {
+      toast.error(errorMessage(error, "Unable to upload poster."));
+    }
+  }
   return (
     <Drawer
       title={draft.id ? "Edit event" : "New event"}
@@ -335,6 +368,9 @@ function EventDrawer({
             placeholder="What the event is and why someone should come."
             onChange={(e) => set("summary", e.target.value)}
           />
+          <p className="mt-1 text-right text-xs text-muted-foreground">
+            {draft.summary.length}/3000
+          </p>
         </FieldLabel>
         <FieldLabel label="Who can join">
           <textarea
@@ -353,16 +389,41 @@ function EventDrawer({
             />
           </FieldLabel>
           <FieldLabel
-            label="Image link"
-            hint="A full https:// link, or a path such as /og-image.svg."
+            label="Event poster"
+            hint="Upload a JPG, PNG or WebP up to 6 MB, or paste an image URL."
           >
             <input
               className={fieldCls}
               value={draft.image}
               onChange={(e) => set("image", e.target.value)}
             />
+            <label className="mt-2 inline-flex cursor-pointer items-center gap-2 rounded-lg border border-input px-3 py-2 text-sm hover:bg-accent">
+              <ImagePlus className="h-4 w-4" /> Upload poster
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                className="sr-only"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) void uploadPoster(file);
+                  e.currentTarget.value = "";
+                }}
+              />
+            </label>
           </FieldLabel>
         </div>
+        <FieldLabel
+          label="Event registration URL (optional)"
+          hint="Use this for an external registration page. Leave empty to collect registrations on this website."
+        >
+          <input
+            type="url"
+            className={fieldCls}
+            value={draft.registration_url}
+            placeholder="https://example.com/register"
+            onChange={(e) => set("registration_url", e.target.value)}
+          />
+        </FieldLabel>
         <div>
           <p className="mb-2 text-xs font-medium text-foreground/90">Agenda</p>
           <div className="space-y-2">

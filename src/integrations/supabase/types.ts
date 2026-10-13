@@ -21,6 +21,7 @@ export type Database = {
           location: string;
           organizer: string;
           published: boolean;
+          registration_url: string | null;
           slug: string;
           summary: string;
           title: string;
@@ -39,6 +40,7 @@ export type Database = {
           location: string;
           organizer: string;
           published?: boolean;
+          registration_url?: string | null;
           slug: string;
           summary: string;
           title: string;
@@ -57,6 +59,7 @@ export type Database = {
           location?: string;
           organizer?: string;
           published?: boolean;
+          registration_url?: string | null;
           slug?: string;
           summary?: string;
           title?: string;

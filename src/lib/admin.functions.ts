@@ -18,8 +18,9 @@ const eventInput = z.object({
   format: z.enum(["Online", "In-person"]),
   city: z.string().trim().max(120).optional(),
   location: z.string().trim().min(1).max(240),
-  summary: z.string().trim().min(1).max(1000),
+  summary: z.string().trim().min(1).max(3000),
   image: z.string().trim().url().or(z.string().startsWith("/")),
+  registration_url: z.string().trim().url().optional().or(z.literal("")),
   agenda: z.array(z.object({ time: z.string().max(40), item: z.string().max(240) })).max(30),
   eligibility: z.string().trim().min(1).max(500),
   organizer: z.string().trim().min(1).max(180),
@@ -88,6 +89,36 @@ export const saveAdminEvent = createServerFn({ method: "POST" })
     const { error } = await query;
     if (error) throw new Error(`Unable to save event: ${error.message}`);
     return { ok: true };
+  });
+
+export const uploadEventPoster = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: unknown) =>
+    z
+      .object({
+        fileName: z.string().trim().min(1).max(120),
+        contentType: z.enum(["image/jpeg", "image/png", "image/webp"]),
+        data: z.string().regex(/^data:image\/(?:jpeg|png|webp);base64,[A-Za-z0-9+/]+=*$/),
+      })
+      .refine((value) => value.data.length <= 8_000_000, "Poster must be no larger than 6 MB.")
+      .parse(data),
+  )
+  .handler(async ({ data, context }) => {
+    assertAdmin(context.claims as Record<string, unknown>);
+    const { Buffer } = await import("node:buffer");
+    const base64 = data.data.slice(data.data.indexOf(",") + 1);
+    const bytes = Buffer.from(base64, "base64");
+    if (bytes.byteLength > 6 * 1024 * 1024) {
+      throw new Error("Poster must be no larger than 6 MB.");
+    }
+    const safeName = data.fileName.toLowerCase().replace(/[^a-z0-9._-]/g, "-");
+    const path = `event-posters/${crypto.randomUUID()}-${safeName}`;
+    const { error } = await supabaseAdmin.storage
+      .from("event-posters")
+      .upload(path, bytes, { contentType: data.contentType, upsert: false });
+    if (error) throw new Error(`Unable to upload event poster: ${error.message}`);
+    const { data: publicUrl } = supabaseAdmin.storage.from("event-posters").getPublicUrl(path);
+    return { url: publicUrl.publicUrl };
   });
 
 export const deleteAdminEvent = createServerFn({ method: "POST" })

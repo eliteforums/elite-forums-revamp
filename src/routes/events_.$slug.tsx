@@ -77,6 +77,12 @@ function EventDetail() {
                   <Link to="/community">Join the Community</Link>
                 </Button>
               </>
+            ) : event.registration_url ? (
+              <Button asChild variant="brand" className="mt-7">
+                <a href={event.registration_url} target="_blank" rel="noopener noreferrer">
+                  Register for this event
+                </a>
+              </Button>
             ) : (
               <div className="mt-7">
                 <EventRegisterForm slug={event.slug} title={event.title} />
