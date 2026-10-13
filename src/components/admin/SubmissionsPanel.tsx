@@ -87,7 +87,7 @@ export function SubmissionsPanel({
                 setStatus("all");
               }}
               className={cn(
-                "flex shrink-0 items-center gap-2 rounded-full border px-4 py-2 text-sm transition-colors",
+                "flex min-h-11 shrink-0 touch-manipulation items-center gap-2 rounded-full border px-4 py-2 text-sm transition-colors",
                 table === form.table
                   ? "border-electric bg-electric text-ink"
                   : "border-border text-muted-foreground hover:border-foreground/30 hover:text-foreground",
@@ -228,14 +228,14 @@ function SubmissionDrawer({
       {hasStatus && (
         <div className="mb-7">
           <p className="mb-2 text-xs font-medium text-muted-foreground">Status</p>
-          <div className="grid grid-cols-4 gap-1 rounded-xl border border-border p-1">
+          <div className="grid grid-cols-2 gap-1 rounded-xl border border-border p-1 sm:grid-cols-4">
             {STATUSES.map((s) => (
               <button
                 key={s}
                 disabled={saving}
                 onClick={() => onStatus(s)}
                 className={cn(
-                  "rounded-lg px-2 py-2 text-xs font-medium capitalize transition-colors disabled:opacity-60",
+                  "min-h-11 touch-manipulation rounded-lg px-2 py-2 text-xs font-medium capitalize transition-colors disabled:opacity-60",
                   row["status"] === s
                     ? "bg-electric text-ink"
                     : "text-muted-foreground hover:bg-accent hover:text-foreground",

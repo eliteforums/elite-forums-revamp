@@ -124,13 +124,16 @@
     border-color: var(--color-border);
   }
   html {
-    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    overflow-x: clip;
   }
   body {
+    min-width: 320px;
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
   }
   h1,
   h2,
@@ -250,7 +253,7 @@
 }
 
 @utility section-space {
-  padding-block: 5rem;
+  padding-block: 4rem;
   @media (min-width: 768px) {
     padding-block: 7rem;
   }
@@ -272,5 +275,17 @@
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@media (hover: none) {
+  .lift:hover {
+    transform: none;
   }
 }

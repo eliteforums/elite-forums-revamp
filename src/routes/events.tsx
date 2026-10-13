@@ -51,7 +51,7 @@ function Events() {
             <h2 className="display-xl mt-4 text-4xl md:text-5xl">{c.t("calendar.title")}</h2>
             <p className="mt-5 reading-copy">{c.t("calendar.intro")}</p>
           </div>
-          <div className="panel border border-border bg-surface p-4 md:p-8">
+          <div className="panel min-w-0 max-w-full overflow-x-auto border border-border bg-surface p-4 md:p-8">
             <IlluxusEvents />
           </div>
         </Container>
@@ -75,7 +75,7 @@ function Events() {
               aria-label="Event dates"
               value={period}
               onChange={(e) => setPeriod(e.target.value)}
-              className="rounded-lg border border-input bg-background px-4 py-3 text-sm"
+              className="min-h-11 w-full touch-manipulation rounded-lg border border-input bg-background px-4 py-3 text-base md:w-auto md:text-sm"
             >
               <option>All dates</option>
               <option>Upcoming</option>

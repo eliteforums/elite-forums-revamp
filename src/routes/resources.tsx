@@ -50,14 +50,14 @@ function Resources() {
                 </Button>
               ))}
             </div>
-            <label className="flex items-center gap-3 rounded-lg border border-input px-4">
+            <label className="flex w-full min-w-0 items-center gap-3 rounded-lg border border-input px-4 sm:w-auto">
               <Search className="h-4 w-4 text-muted-foreground" />
               <input
                 aria-label="Search resources"
                 placeholder="Search resources"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-48 bg-transparent py-3 text-sm outline-none"
+                className="min-w-0 flex-1 bg-transparent py-3 text-base outline-none sm:w-48 sm:flex-none sm:text-sm"
               />
             </label>
           </div>

@@ -115,7 +115,7 @@ export function StudentForm() {
           {INTERESTS.map((i) => (
             <label key={i} className="cursor-pointer">
               <input type="checkbox" name="interests" value={i} className="peer sr-only" />
-              <span className="inline-block rounded-full border border-input px-4 py-2 text-sm transition-colors peer-checked:border-electric peer-checked:bg-electric peer-checked:text-ink peer-focus-visible:ring-2 peer-focus-visible:ring-ring">
+              <span className="inline-flex min-h-11 items-center rounded-full border border-input px-4 py-2 text-sm transition-colors peer-checked:border-electric peer-checked:bg-electric peer-checked:text-ink peer-focus-visible:ring-2 peer-focus-visible:ring-ring">
                 {i}
               </span>
             </label>

@@ -108,7 +108,7 @@ function EventDetail() {
           </div>
           <div className="mt-6 grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_minmax(15rem,0.55fr)] md:gap-12">
             <div className="min-w-0">
-              <h1 className="animate-rise max-w-4xl text-balance font-display text-4xl font-medium leading-[1.08] tracking-tight sm:text-5xl lg:text-6xl">
+              <h1 className="animate-rise max-w-4xl break-words text-balance font-display text-[clamp(2.125rem,9vw,2.5rem)] font-medium leading-[1.08] tracking-tight sm:text-5xl lg:text-6xl">
                 {event.title}
               </h1>
               <p className="animate-rise mt-6 max-w-2xl text-base leading-7 text-muted-foreground md:text-lg md:leading-8">

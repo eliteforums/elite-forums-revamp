@@ -32,7 +32,7 @@ function Home() {
         <div className="canvas-grid pointer-events-none absolute inset-0 opacity-20" />
         <Container className="relative">
           <p className="eyebrow animate-rise text-electric">{c.t("hero.eyebrow")}</p>
-          <h1 className="display-xl animate-rise mt-7 max-w-5xl text-[2.5rem] sm:text-6xl md:text-7xl lg:text-[5.5rem]">
+          <h1 className="display-xl animate-rise mt-7 max-w-5xl break-words text-[clamp(2.125rem,9vw,2.5rem)] sm:text-6xl md:text-7xl lg:text-[5.5rem]">
             <Rich text={c.t("hero.title")} breakClassName="hidden sm:block" />
           </h1>
           <p className="animate-rise mt-8 max-w-xl text-base leading-7 text-muted-foreground">

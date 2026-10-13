@@ -38,7 +38,7 @@ export function PageHero({
       <Breadcrumbs />
       <Container className="relative">
         <p className="eyebrow animate-rise text-electric">{eyebrow}</p>
-        <h1 className="display-xl animate-rise mt-6 max-w-5xl text-[2.5rem] sm:text-6xl md:text-7xl lg:text-[5rem]">
+        <h1 className="display-xl animate-rise mt-6 max-w-5xl break-words text-[clamp(2.125rem,9vw,2.5rem)] sm:text-6xl md:text-7xl lg:text-[5rem]">
           {title}
         </h1>
         {intro && (

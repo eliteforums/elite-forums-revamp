@@ -21,11 +21,43 @@ export function Header() {
   const c = useContent("global");
   const labels = c.list("nav.labels");
   useEffect(() => {
-    const on = () => setScrolled(window.scrollY > 12);
-    on();
-    window.addEventListener("scroll", on, { passive: true });
-    return () => window.removeEventListener("scroll", on);
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      setScrolled((current) => {
+        const next = window.scrollY > 12;
+        return current === next ? current : next;
+      });
+    };
+    const onScroll = () => {
+      if (!frame) frame = window.requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
   }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    const previousOverflow = document.body.style.overflow;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    const onResize = () => {
+      if (window.matchMedia("(min-width: 1024px)").matches) setOpen(false);
+    };
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKeyDown);
+    window.addEventListener("resize", onResize);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [open]);
 
   return (
     <header
@@ -36,7 +68,7 @@ export function Header() {
           : "bg-transparent",
       )}
     >
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-5 md:px-8">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-3 px-4 sm:px-5 md:px-8">
         <Link to="/" aria-label="Elite Forums home" onClick={() => setOpen(false)}>
           <Logo />
         </Link>
@@ -66,6 +98,7 @@ export function Header() {
             className="lg:hidden"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
+            aria-controls="mobile-navigation"
             onClick={() => setOpen((o) => !o)}
           >
             {open ? <X /> : <Menu />}
@@ -73,13 +106,17 @@ export function Header() {
         </div>
       </div>
       {open && (
-        <nav className="border-t border-border px-5 pb-6 pt-2 lg:hidden" aria-label="Mobile">
+        <nav
+          id="mobile-navigation"
+          className="max-h-[calc(100dvh-5rem)] overflow-y-auto overscroll-contain border-t border-border px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-2 lg:hidden"
+          aria-label="Mobile"
+        >
           {NAV.map((n, i) => (
             <Link
               key={n.to}
               to={n.to}
               onClick={() => setOpen(false)}
-              className="block border-b border-border py-4 font-display text-2xl font-medium uppercase"
+              className="block min-h-14 border-b border-border py-4 font-display text-2xl font-medium uppercase"
             >
               {labels[i] || n.label}
             </Link>

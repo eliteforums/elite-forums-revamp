@@ -22,7 +22,7 @@ import appCss from "../styles.css?url";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex min-h-svh items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <p className="eyebrow text-electric">404 · Lost in the ecosystem</p>
         <h1 className="display-xl mt-5 text-6xl text-foreground">Page not found</h1>
@@ -47,7 +47,7 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
   const router = useRouter();
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex min-h-svh items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-xl font-semibold tracking-tight text-foreground">
           This page didn't load

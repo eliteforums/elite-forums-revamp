@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { flatten, type FieldErrors } from "@/lib/schemas";
 
 export const inputCls =
-  "w-full rounded-xl border border-input bg-background/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 transition-colors focus:border-turquoise focus:outline-none focus:ring-2 focus:ring-ring/30 aria-[invalid=true]:border-destructive";
+  "min-h-11 w-full rounded-xl border border-input bg-background/60 px-4 py-3 text-base text-foreground placeholder:text-muted-foreground/70 transition-colors focus:border-turquoise focus:outline-none focus:ring-2 focus:ring-ring/30 aria-[invalid=true]:border-destructive md:text-sm";
 
 export function Field({
   label,

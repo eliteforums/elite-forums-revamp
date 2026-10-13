@@ -22,7 +22,7 @@ export function CookieConsent() {
   return (
     <aside
       aria-label="Cookie consent"
-      className="fixed inset-x-4 bottom-4 z-[60] rounded-2xl border border-border bg-surface p-5 shadow-2xl md:inset-x-auto md:right-6 md:max-w-lg"
+      className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-[60] max-h-[calc(100dvh-1.5rem)] overflow-y-auto overscroll-contain rounded-2xl border border-border bg-surface p-4 shadow-2xl sm:inset-x-4 sm:p-5 md:inset-x-auto md:right-6 md:max-w-lg"
     >
       <p className="eyebrow text-electric">Your privacy choices</p>
       <h2 className="mt-2 text-lg text-foreground">Cookies on Elite Forums</h2>
@@ -38,7 +38,7 @@ export function CookieConsent() {
         </Link>
         .
       </p>
-      <div className="mt-4 flex flex-wrap gap-2">
+      <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
         <Button type="button" variant="brand" size="sm" onClick={() => saveChoice("accepted")}>
           Accept optional cookies
         </Button>

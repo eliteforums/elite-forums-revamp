@@ -65,7 +65,7 @@ function AdminPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-svh bg-background text-foreground">
       {authLoading ? (
         <Centered>
           <Loader2 className="h-5 w-5 animate-spin text-electric" />
@@ -81,7 +81,7 @@ function AdminPage() {
 }
 
 function Centered({ children }: { children: React.ReactNode }) {
-  return <div className="flex min-h-screen items-center justify-center px-5">{children}</div>;
+  return <div className="flex min-h-svh items-center justify-center px-5">{children}</div>;
 }
 
 function SignIn() {
@@ -100,7 +100,7 @@ function SignIn() {
   }
 
   return (
-    <div className="grid min-h-screen lg:grid-cols-2">
+    <div className="grid min-h-svh lg:grid-cols-2">
       <div className="relative hidden overflow-hidden bg-brand p-12 text-ink lg:flex lg:flex-col lg:justify-between">
         <div className="pointer-events-none absolute inset-0 grid-lines opacity-50" />
         <Logo variant="ink" className="relative h-9 self-start" />
@@ -239,7 +239,7 @@ function AdminDashboard({ email }: { email: string }) {
       onClick={() => setTab(id)}
       aria-current={tab === id ? "page" : undefined}
       className={cn(
-        "flex shrink-0 items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors",
+        "flex min-h-11 shrink-0 touch-manipulation items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors",
         tab === id
           ? "bg-electric/10 font-medium text-electric"
           : "text-muted-foreground hover:bg-accent/60 hover:text-foreground",
@@ -293,7 +293,7 @@ function AdminDashboard({ email }: { email: string }) {
           <button
             onClick={() => void signOut()}
             aria-label="Sign out"
-            className="rounded-lg p-2 text-muted-foreground hover:bg-accent hover:text-foreground"
+            className="flex min-h-11 min-w-11 touch-manipulation items-center justify-center rounded-lg p-2 text-muted-foreground hover:bg-accent hover:text-foreground"
           >
             <LogOut className="h-4 w-4" />
           </button>
