@@ -33,7 +33,7 @@ function EventDetail() {
             <img
               src={event.image}
               alt={event.title}
-              className="panel aspect-[16/10] w-full object-cover"
+              className="panel aspect-[16/10] w-full bg-black/5 object-contain"
             />
             <div className="mt-10 grid gap-6 sm:grid-cols-2">
               {[

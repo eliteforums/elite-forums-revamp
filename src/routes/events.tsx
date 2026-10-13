@@ -83,14 +83,14 @@ function Events() {
                 <Link
                   to="/events/$slug"
                   params={{ slug: e.slug }}
-                  className="group block overflow-hidden"
+                  className="group block overflow-hidden bg-black/5"
                 >
                   <img
                     src={e.image}
                     alt={e.title}
                     loading="lazy"
                     decoding="async"
-                    className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="aspect-[4/3] w-full object-contain transition-transform duration-500 group-hover:scale-[1.02]"
                   />
                 </Link>
                 <div className="flex flex-1 flex-col p-7">
