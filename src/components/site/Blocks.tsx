@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ArrowUpRight } from "lucide-react";
+import { useContent } from "@/lib/content-context";
 
 export function Container({
   className,
@@ -64,27 +65,26 @@ export function SectionHead({
   );
 }
 
-export function FinalCTA({
-  title = "The next entrepreneurial community could start with you.",
-}: {
-  title?: string;
-}) {
+export function FinalCTA({ title }: { title?: string }) {
+  const c = useContent("global");
   return (
     <section className="py-16 md:py-24">
       <Container>
         <div className="panel bg-brand px-6 py-16 text-ink md:px-14 md:py-20">
           <div className="pointer-events-none absolute inset-0 grid-lines opacity-60" />
           <div className="relative">
-            <p className="eyebrow mb-6">Make your next move</p>
-            <h2 className="display-xl max-w-4xl text-4xl sm:text-5xl md:text-6xl">{title}</h2>
+            <p className="eyebrow mb-6">{c.t("cta.eyebrow")}</p>
+            <h2 className="display-xl max-w-4xl text-4xl sm:text-5xl md:text-6xl">
+              {title || c.t("cta.title")}
+            </h2>
             <div className="mt-10 flex flex-wrap gap-3">
               <Button asChild variant="ink" size="lg">
                 <Link to="/community">
-                  Join the Community <ArrowUpRight />
+                  {c.t("cta.primary")} <ArrowUpRight />
                 </Link>
               </Button>
               <Button asChild variant="ghostInk" size="lg">
-                <Link to="/colleges">Partner Your College</Link>
+                <Link to="/colleges">{c.t("cta.secondary")}</Link>
               </Button>
             </div>
           </div>

@@ -3,7 +3,8 @@ import { ArrowUpRight, Cpu, Rocket } from "lucide-react";
 import { Container, FinalCTA, PageHero, SectionHead } from "@/components/site/Blocks";
 import { Button } from "@/components/ui/button";
 import { pageMeta } from "@/lib/metadata";
-import hackathon from "@/assets/hackathon.jpg";
+import { Rich, resolveImage, useContent } from "@/lib/content-context";
+import { itemText } from "@/lib/site-content";
 
 export const Route = createFileRoute("/innovation-lab")({
   head: () =>
@@ -15,86 +16,71 @@ export const Route = createFileRoute("/innovation-lab")({
   component: InnovationLab,
 });
 
-const TRACKS = [
-  {
-    icon: Cpu,
-    tag: "Technology",
-    title: "We build technology.",
-    body: "Ideas become prototypes and prototypes become products. The lab is where builders get hands-on and ship real technology.",
-  },
-  {
-    icon: Rocket,
-    tag: "Startups",
-    title: "We build startups.",
-    body: "Strong ideas and committed teams are shaped into ventures — from the first problem statement to a company that can stand on its own.",
-  },
-];
-
-const STAGES = [
-  ["Explore", "Start from a real problem worth solving and the people who have it."],
-  ["Prototype", "Build a working version quickly and put it in front of users."],
-  ["Launch", "Turn what works into a product, a team and a startup."],
-];
+const TRACK_ICONS = [Cpu, Rocket];
 
 function InnovationLab() {
+  const c = useContent("lab");
   return (
     <>
       <PageHero
-        eyebrow="Innovation Laboratory"
-        title={
-          <>
-            Here we build
-            <br />
-            <span className="text-brand">technology and startups.</span>
-          </>
-        }
-        intro="The Innovation Laboratory is the building arm of Elite Forums — where ideas from the community become working technology and new ventures."
+        eyebrow={c.t("hero.eyebrow")}
+        title={<Rich text={c.t("hero.title")} />}
+        intro={c.t("hero.intro")}
       >
         <div className="flex flex-wrap gap-4">
           <Button asChild variant="brand" size="lg">
             <Link to="/contact">
-              Build with us <ArrowUpRight />
+              {c.t("hero.primary")} <ArrowUpRight />
             </Link>
           </Button>
           <Button asChild variant="outline" size="lg">
-            <Link to="/community">Join the Community</Link>
+            <Link to="/community">{c.t("hero.secondary")}</Link>
           </Button>
         </div>
       </PageHero>
       <section className="section-space border-b border-border">
         <Container>
-          <SectionHead eyebrow="What we build" title="Two things. Done properly." />
+          <SectionHead
+            eyebrow={c.t("tracks.eyebrow")}
+            title={<Rich text={c.t("tracks.title")} />}
+          />
           <div className="mt-12 grid gap-6 md:grid-cols-2">
-            {TRACKS.map((t) => (
-              <div key={t.tag} className="panel border border-border bg-surface p-7 md:p-10">
-                <div className="flex items-center justify-between">
-                  <p className="eyebrow text-electric">{t.tag}</p>
-                  <t.icon className="h-6 w-6 text-turquoise" />
+            {c.items("tracks").map((track, i) => {
+              const Icon = TRACK_ICONS[i % TRACK_ICONS.length] ?? Cpu;
+              return (
+                <div key={i} className="panel border border-border bg-surface p-7 md:p-10">
+                  <div className="flex items-center justify-between">
+                    <p className="eyebrow text-electric">{itemText(track, "tag")}</p>
+                    <Icon className="h-6 w-6 text-turquoise" />
+                  </div>
+                  <h3 className="mt-7 text-3xl font-medium">{itemText(track, "title")}</h3>
+                  <p className="mt-5 reading-copy">{itemText(track, "body")}</p>
                 </div>
-                <h3 className="mt-7 text-3xl font-medium">{t.title}</h3>
-                <p className="mt-5 reading-copy">{t.body}</p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </Container>
       </section>
       <section className="section-space">
         <Container className="grid items-center gap-12 md:grid-cols-2">
           <img
-            src={hackathon}
+            src={resolveImage(c.t("stages.image"), "hackathon")}
             alt="Builders working on a project together"
             className="panel aspect-[4/3] w-full object-cover"
             loading="lazy"
           />
           <div>
-            <SectionHead eyebrow="How the lab works" title="From idea to venture." />
+            <SectionHead
+              eyebrow={c.t("stages.eyebrow")}
+              title={<Rich text={c.t("stages.title")} />}
+            />
             <div className="mt-10 space-y-8">
-              {STAGES.map(([t, d], i) => (
-                <div key={t} className="flex gap-6 border-t border-border pt-6">
+              {c.items("stages").map((stage, i) => (
+                <div key={i} className="flex gap-6 border-t border-border pt-6">
                   <p className="font-display text-3xl text-electric">0{i + 1}</p>
                   <div>
-                    <h3 className="text-xl font-medium">{t}</h3>
-                    <p className="mt-2 text-sm reading-copy">{d}</p>
+                    <h3 className="text-xl font-medium">{itemText(stage, "title")}</h3>
+                    <p className="mt-2 text-sm reading-copy">{itemText(stage, "body")}</p>
                   </div>
                 </div>
               ))}
@@ -102,7 +88,7 @@ function InnovationLab() {
           </div>
         </Container>
       </section>
-      <FinalCTA title="Have something worth building? Bring it to the lab." />
+      <FinalCTA title={c.t("cta.title")} />
     </>
   );
 }

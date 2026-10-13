@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Container, PageHero, SectionHead } from "@/components/site/Blocks";
 import { StudentForm } from "@/components/forms/Forms";
+import { Rich, useContent } from "@/lib/content-context";
 
 export const Route = createFileRoute("/community")({
   head: () => ({
@@ -28,16 +29,17 @@ export const Route = createFileRoute("/community")({
 });
 
 function Community() {
+  const c = useContent("community");
   return (
     <>
       <PageHero
-        eyebrow="Community"
-        title="Join people who build."
-        intro="Get early access to events, founder sessions and resources for aspiring founders — whether you’re a student, a working professional or building your first startup."
+        eyebrow={c.t("hero.eyebrow")}
+        title={<Rich text={c.t("hero.title")} />}
+        intro={c.t("hero.intro")}
       />
       <section className="pb-24">
         <Container className="max-w-3xl">
-          <SectionHead eyebrow="Register" title="Your details" />
+          <SectionHead eyebrow={c.t("form.eyebrow")} title={c.t("form.title")} />
           <div className="mt-10">
             <StudentForm />
           </div>

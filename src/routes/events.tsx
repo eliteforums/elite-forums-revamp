@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { isUpcoming } from "@/lib/content";
 import { getPublicEvents } from "@/lib/admin.functions";
 import { pageMeta } from "@/lib/metadata";
+import { Rich, useContent } from "@/lib/content-context";
 
 export const Route = createFileRoute("/events")({
   loader: () => getPublicEvents(),
@@ -20,6 +21,7 @@ export const Route = createFileRoute("/events")({
 });
 
 function Events() {
+  const c = useContent("events");
   const managedEvents = Route.useLoaderData();
   const [type, setType] = useState("All");
   const [period, setPeriod] = useState("All dates");
@@ -33,24 +35,16 @@ function Events() {
   return (
     <>
       <PageHero
-        eyebrow="Experiences that move you forward"
-        title={
-          <>
-            Show up.
-            <br />
-            <span className="text-brand">Build something.</span>
-          </>
-        }
-        intro="Workshops, build weekends and honest founder conversations. Find the experience that sparks your next step."
+        eyebrow={c.t("hero.eyebrow")}
+        title={<Rich text={c.t("hero.title")} />}
+        intro={c.t("hero.intro")}
       />
       <section className="section-space border-b border-border">
         <Container>
           <div className="mb-8 max-w-2xl">
-            <p className="eyebrow text-electric">Live event calendar</p>
-            <h2 className="display-xl mt-4 text-4xl md:text-5xl">What’s happening next.</h2>
-            <p className="mt-5 reading-copy">
-              Browse upcoming events and register through our event partner.
-            </p>
+            <p className="eyebrow text-electric">{c.t("calendar.eyebrow")}</p>
+            <h2 className="display-xl mt-4 text-4xl md:text-5xl">{c.t("calendar.title")}</h2>
+            <p className="mt-5 reading-copy">{c.t("calendar.intro")}</p>
           </div>
           <div className="panel border border-border bg-surface p-4 md:p-8">
             <IlluxusEvents />
@@ -132,7 +126,7 @@ function Events() {
           </div>
           {events.length === 0 && (
             <div className="border-y border-border py-16 text-center">
-              <h2 className="text-2xl">No events in this selection.</h2>
+              <h2 className="text-2xl">{c.t("list.empty")}</h2>
               <Button
                 variant="link"
                 className="mt-4"

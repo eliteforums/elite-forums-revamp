@@ -2,20 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { Container, PageHero, SectionHead } from "@/components/site/Blocks";
 import { ProgramApplicationForm } from "@/components/forms/ProgramApplicationForm";
+import { Rich, useContent } from "@/lib/content-context";
 import { pageMeta } from "@/lib/metadata";
-
-const STEPS = [
-  ["Application form", "Common questions, followed by the section for your program."],
-  ["Internal review", "We assess fit, support requirements, eligibility and readiness."],
-  [
-    "Interview or facility visit",
-    "Cohort and incubation applicants are interviewed; coworking applicants get a tour or onboarding call.",
-  ],
-  [
-    "Offer and onboarding",
-    "We confirm scope, fees, duration, house rules and payment terms before admission.",
-  ],
-];
+import { itemText } from "@/lib/site-content";
 
 export const Route = createFileRoute("/apply")({
   validateSearch: z.object({
@@ -31,29 +20,24 @@ export const Route = createFileRoute("/apply")({
 });
 
 function Apply() {
+  const c = useContent("apply");
   const { program } = Route.useSearch();
   return (
     <>
       <PageHero
-        eyebrow="Program admissions"
-        title={
-          <>
-            Apply to build
-            <br />
-            <span className="text-brand">with Elite Forums.</span>
-          </>
-        }
-        intro="One application for the Startup Cohort Program, the Startup Incubation Program and Coworking Space Membership. Choose your program and answer the questions that apply to it."
+        eyebrow={c.t("hero.eyebrow")}
+        title={<Rich text={c.t("hero.title")} />}
+        intro={c.t("hero.intro")}
       />
       <section className="section-space border-b border-border">
         <Container>
-          <SectionHead eyebrow="How admission works" title="Four steps." />
+          <SectionHead eyebrow={c.t("steps.eyebrow")} title={c.t("steps.title")} />
           <div className="mt-10 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-            {STEPS.map(([t, d], i) => (
-              <div key={t}>
+            {c.items("steps").map((step, i) => (
+              <div key={i}>
                 <p className="font-display text-3xl text-electric">0{i + 1}</p>
-                <h3 className="mt-6 text-xl font-medium">{t}</h3>
-                <p className="mt-3 text-sm reading-copy">{d}</p>
+                <h3 className="mt-6 text-xl font-medium">{itemText(step, "title")}</h3>
+                <p className="mt-3 text-sm reading-copy">{itemText(step, "body")}</p>
               </div>
             ))}
           </div>
@@ -61,7 +45,7 @@ function Apply() {
       </section>
       <section className="py-16 md:py-24">
         <Container className="max-w-4xl">
-          <SectionHead eyebrow="Application" title="Your application" />
+          <SectionHead eyebrow={c.t("form.eyebrow")} title={c.t("form.title")} />
           <div className="mt-10">
             <ProgramApplicationForm defaultProgram={program} />
           </div>

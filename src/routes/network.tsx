@@ -1,8 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Container, FinalCTA, PageHero, SectionHead } from "@/components/site/Blocks";
 import { Button } from "@/components/ui/button";
-import { PARTNERS } from "@/lib/content";
 import { pageMeta } from "@/lib/metadata";
+import { Rich, useContent } from "@/lib/content-context";
+import { itemText } from "@/lib/site-content";
 
 export const Route = createFileRoute("/network")({
   head: () =>
@@ -11,68 +12,55 @@ export const Route = createFileRoute("/network")({
       "Connect your college, startup community or organisation with the Elite Forums entrepreneurship ecosystem.",
       "/network",
     ),
-  component: () => (
+  component: NetworkPage,
+});
+
+function NetworkPage() {
+  const c = useContent("network");
+  const partners = c.items("partners").filter((partner) => itemText(partner, "name"));
+  return (
     <>
       <PageHero
-        eyebrow="Partner network"
-        title={
-          <>
-            Different cities.
-            <br />
-            <span className="text-brand">Shared ambition.</span>
-          </>
-        }
-        intro="College E-Cells, startup communities, mentors and industry partners — stronger when connected."
+        eyebrow={c.t("hero.eyebrow")}
+        title={<Rich text={c.t("hero.title")} />}
+        intro={c.t("hero.intro")}
       />
       <section className="section-space">
         <Container>
-          <SectionHead eyebrow="Better together" title="Find your place in the network." />
+          <SectionHead eyebrow={c.t("groups.eyebrow")} title={c.t("groups.title")} />
           <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {[
-              [
-                "College communities",
-                "Build your E-Cell’s reach and connect students with meaningful entrepreneurial experiences.",
-              ],
-              [
-                "Founders & mentors",
-                "Help aspiring founders navigate their next step through practical advice and honest conversations.",
-              ],
-              [
-                "Industry partners",
-                "Collaborate on programmes, share challenges and support emerging entrepreneurial talent.",
-              ],
-            ].map(([t, d]) => (
-              <div key={t} className="panel border border-border bg-surface p-8">
-                <h3 className="text-2xl">{t}</h3>
-                <p className="mt-4 reading-copy">{d}</p>
+            {c.items("groups").map((group, i) => (
+              <div key={i} className="panel border border-border bg-surface p-8">
+                <h3 className="text-2xl">{itemText(group, "title")}</h3>
+                <p className="mt-4 reading-copy">{itemText(group, "body")}</p>
               </div>
             ))}
           </div>
           <div className="mt-16 border-t border-border pt-10">
-            <h2 className="text-2xl">Partner institutions</h2>
-            {PARTNERS.length ? (
+            <h2 className="text-2xl">{c.t("partners.title")}</h2>
+            {partners.length ? (
               <div className="mt-6 grid gap-4 sm:grid-cols-3">
-                {PARTNERS.map((p) => (
-                  <div key={p.name}>
-                    <h3>{p.name}</h3>
+                {partners.map((partner, i) => (
+                  <div key={i}>
+                    <h3>{itemText(partner, "name")}</h3>
                     <p className="text-sm text-muted-foreground">
-                      {p.city} · {p.type}
+                      {[itemText(partner, "city"), itemText(partner, "type")]
+                        .filter(Boolean)
+                        .join(" · ")}
                     </p>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="mt-4 text-muted-foreground">
-                Confirmed partner institutions will be listed here.
-              </p>
+              <p className="mt-4 text-muted-foreground">{c.t("partners.empty")}</p>
             )}
             <Button asChild variant="outline" className="mt-8">
-              <Link to="/contact">Discuss a collaboration</Link>
+              <Link to="/contact">{c.t("partners.cta")}</Link>
             </Button>
           </div>
         </Container>
       </section>
       <FinalCTA />
     </>
-  ),
-});
+  );
+}

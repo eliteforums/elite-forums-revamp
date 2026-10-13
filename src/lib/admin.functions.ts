@@ -3,6 +3,8 @@ import { z } from "zod";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { EventItem } from "./content";
+import { clearSiteContentCache } from "./content.functions";
+import { CONTENT_PAGES, fieldDef, isValidValue, type ContentValue } from "./site-content";
 
 const eventInput = z.object({
   id: z.string().uuid().optional(),
@@ -25,10 +27,7 @@ const eventInput = z.object({
 });
 
 const contentInput = z.object({
-  key: z
-    .string()
-    .trim()
-    .regex(/^[a-z0-9_.-]+$/),
+  key: z.string().refine((key) => CONTENT_PAGES.some((page) => page.id === key), "Unknown page"),
   value: z.record(z.string(), z.unknown()),
 });
 
@@ -80,7 +79,9 @@ export const saveAdminEvent = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => eventInput.parse(data))
   .handler(async ({ data, context }) => {
     assertAdmin(context.claims as Record<string, unknown>);
-    const { id, ...event } = data;
+    const { id, ...fields } = data;
+    // An emptied city must clear the stored one, not leave it behind.
+    const event = { ...fields, city: fields.city || null };
     const query = id
       ? supabaseAdmin.from("admin_events").update(event).eq("id", id)
       : supabaseAdmin.from("admin_events").insert(event);
@@ -104,8 +105,17 @@ export const saveSiteContent = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => contentInput.parse(data))
   .handler(async ({ data, context }) => {
     assertAdmin(context.claims as Record<string, unknown>);
-    const { error } = await supabaseAdmin.from("site_content").upsert(data);
+    // Keep only known fields whose value has the shape that field expects.
+    const value: Record<string, ContentValue> = {};
+    for (const [field, fieldValue] of Object.entries(data.value)) {
+      const def = fieldDef(data.key, field);
+      if (def && isValidValue(def, fieldValue)) value[field] = fieldValue as ContentValue;
+    }
+    const { error } = await supabaseAdmin
+      .from("site_content")
+      .upsert({ key: data.key, value, updated_at: new Date().toISOString() });
     if (error) throw new Error(`Unable to save site content: ${error.message}`);
+    clearSiteContentCache();
     return { ok: true };
   });
 

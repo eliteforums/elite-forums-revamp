@@ -1,12 +1,13 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { Container, PageHero, SampleBadge } from "@/components/site/Blocks";
 import { Button } from "@/components/ui/button";
-import { ARTICLES } from "@/lib/content";
+import { articlesFrom } from "@/lib/content";
+import { getSiteContent } from "@/lib/content.functions";
 import { pageMeta } from "@/lib/metadata";
 
 export const Route = createFileRoute("/resources_/$slug")({
-  loader: ({ params }) => {
-    const article = ARTICLES.find((a) => a.slug === params.slug);
+  loader: async ({ params }) => {
+    const article = articlesFrom(await getSiteContent()).find((a) => a.slug === params.slug);
     if (!article) throw notFound();
     return article;
   },

@@ -3,8 +3,10 @@ import { useState } from "react";
 import { ArrowUpRight, Search } from "lucide-react";
 import { Container, PageHero, SampleBadge } from "@/components/site/Blocks";
 import { Button } from "@/components/ui/button";
-import { ARTICLES } from "@/lib/content";
+import { articlesFrom } from "@/lib/content";
 import { pageMeta } from "@/lib/metadata";
+import { Rich, useContent } from "@/lib/content-context";
+import { Route as RootRoute } from "./__root";
 
 export const Route = createFileRoute("/resources")({
   head: () =>
@@ -17,9 +19,11 @@ export const Route = createFileRoute("/resources")({
 });
 
 function Resources() {
+  const c = useContent("resources");
+  const all = articlesFrom(RootRoute.useLoaderData());
   const [category, setCategory] = useState("All");
   const [search, setSearch] = useState("");
-  const articles = ARTICLES.filter(
+  const articles = all.filter(
     (a) =>
       (category === "All" || a.category === category) &&
       `${a.title} ${a.excerpt}`.toLowerCase().includes(search.toLowerCase()),
@@ -27,21 +31,15 @@ function Resources() {
   return (
     <>
       <PageHero
-        eyebrow="Ideas worth sharing"
-        title={
-          <>
-            Read. Learn.
-            <br />
-            <span className="text-brand">Make your move.</span>
-          </>
-        }
-        intro="Practical perspectives for your first idea, your next build, or the community you’re creating."
+        eyebrow={c.t("hero.eyebrow")}
+        title={<Rich text={c.t("hero.title")} />}
+        intro={c.t("hero.intro")}
       />
       <section className="section-space">
         <Container>
           <div className="mb-12 flex flex-wrap justify-between gap-5">
             <div className="flex flex-wrap gap-2" role="group" aria-label="Resource category">
-              {["All", ...new Set(ARTICLES.map((a) => a.category))].map((c) => (
+              {["All", ...new Set(all.map((a) => a.category))].map((c) => (
                 <Button
                   key={c}
                   variant={category === c ? "brand" : "outline"}
@@ -89,9 +87,7 @@ function Resources() {
             ))}
           </div>
           {articles.length === 0 && (
-            <p className="py-16 text-center text-muted-foreground">
-              No resources match your search.
-            </p>
+            <p className="py-16 text-center text-muted-foreground">{c.t("list.empty")}</p>
           )}
         </Container>
       </section>

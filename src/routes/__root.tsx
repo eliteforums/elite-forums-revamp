@@ -15,6 +15,8 @@ import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { Toaster } from "@/components/ui/sonner";
 import { CookieConsent } from "@/components/site/CookieConsent";
+import { SiteContentProvider } from "@/lib/content-context";
+import { getSiteContent } from "@/lib/content.functions";
 import appCss from "../styles.css?url";
 
 function NotFoundComponent() {
@@ -116,6 +118,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
     ],
   }),
+  // Administrator edits to the site copy; pages fall back to defaults without it.
+  loader: () => getSiteContent(),
+  staleTime: 60_000,
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
@@ -167,25 +172,28 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const overrides = Route.useLoaderData();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const isAdminRoute = pathname === "/admin";
 
   return (
     <QueryClientProvider client={queryClient}>
-      <a
-        href="#main-content"
-        className="sr-only fixed left-4 top-4 z-[100] rounded-md bg-electric px-4 py-2 text-sm font-semibold text-ink focus:not-sr-only"
-      >
-        Skip to main content
-      </a>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      {!isAdminRoute && <Header />}
-      <main id="main-content" tabIndex={-1}>
-        <Outlet />
-      </main>
-      {!isAdminRoute && <Footer />}
-      {!isAdminRoute && <Toaster />}
-      {!isAdminRoute && <CookieConsent />}
+      <SiteContentProvider overrides={overrides}>
+        <a
+          href="#main-content"
+          className="sr-only fixed left-4 top-4 z-[100] rounded-md bg-electric px-4 py-2 text-sm font-semibold text-ink focus:not-sr-only"
+        >
+          Skip to main content
+        </a>
+        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+        {!isAdminRoute && <Header />}
+        <main id="main-content" tabIndex={-1}>
+          <Outlet />
+        </main>
+        {!isAdminRoute && <Footer />}
+        {!isAdminRoute && <Toaster />}
+        {!isAdminRoute && <CookieConsent />}
+      </SiteContentProvider>
     </QueryClientProvider>
   );
 }

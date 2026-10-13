@@ -1,11 +1,6 @@
-/**
- * Site content. Everything marked `sample: true` is illustrative placeholder
- * content for development and must be replaced with verified information
- * before launch.
- */
-import hackathon from "@/assets/hackathon.jpg";
-import students from "@/assets/students.jpg";
-import founder from "@/assets/founder.jpg";
+/** Shared content types. Editable copy itself is declared in `site-content.ts`. */
+import { resolveImage } from "./content-context";
+import { contentReader, itemLines, itemText, type ContentOverrides } from "./site-content";
 
 export type EventItem = {
   slug: string;
@@ -28,7 +23,7 @@ export const isUpcoming = (e: EventItem) => new Date(e.date) >= new Date(new Dat
 export type Article = {
   slug: string;
   sample: boolean;
-  category: "Founder Interview" | "Guide" | "Event Recap" | "Student Story" | "Learning";
+  category: string;
   title: string;
   excerpt: string;
   image: string;
@@ -36,53 +31,19 @@ export type Article = {
   body: string[];
 };
 
-export const ARTICLES: Article[] = [
-  {
-    slug: "how-to-start-an-ecell",
-    sample: true,
-    category: "Guide",
-    title: "How to start an E-Cell that students actually show up for",
-    excerpt:
-      "A practical starting framework for student leaders building an entrepreneurship community from scratch.",
-    image: students,
-    readTime: "6 min",
-    body: [
-      "Most campus clubs start with energy and fade by the second semester. The ones that last share a few habits: a clear reason to exist, a small committed core team, and a rhythm of activities that students can count on.",
-      "Start by talking to twenty students. Ask what they want to learn, build, or meet. Their answers become your first calendar.",
-      "Then pick one recurring format — a fortnightly build night, a monthly founder conversation — and run it consistently before adding anything else.",
-      "Finally, document everything. A simple shared record of what worked lets the next batch of leaders keep the community alive.",
-    ],
-  },
-  {
-    slug: "validating-ideas-as-a-student",
-    sample: true,
-    category: "Learning",
-    title: "Validating a startup idea while you're still in college",
-    excerpt:
-      "Cheap, fast ways to test whether a problem is worth solving — before you write a line of code.",
-    image: founder,
-    readTime: "5 min",
-    body: [
-      "Your biggest advantage as a student is access: to peers, professors, and a campus full of potential early users.",
-      "Write down the problem in one sentence. Find ten people who have it. Ask how they solve it today and what that costs them.",
-      "If nobody is trying to solve it, it may not be painful enough. If everyone is hacking together a workaround, you may have found something.",
-    ],
-  },
-  {
-    slug: "what-a-hackathon-teaches",
-    sample: true,
-    category: "Event Recap",
-    title: "What a weekend hackathon can teach a first-time builder",
-    excerpt:
-      "An illustrative recap format showing how event stories will be presented on Elite Forums.",
-    image: hackathon,
-    readTime: "4 min",
-    body: [
-      "Hackathons compress months of learning into a weekend: scoping, teamwork, shipping, and presenting under pressure.",
-      "This article is placeholder content demonstrating the recap layout. Real recaps will be published after Elite Forums events take place.",
-    ],
-  },
-];
-
-/** Approved partner institutions. Leave empty until partnerships are confirmed. */
-export const PARTNERS: { name: string; city: string; type: string }[] = [];
+/** Articles as edited in the admin console (or the defaults). */
+export function articlesFrom(overrides: ContentOverrides): Article[] {
+  return contentReader("resources", overrides)
+    .items("articles")
+    .filter((item) => itemText(item, "slug") && itemText(item, "title"))
+    .map((item) => ({
+      slug: itemText(item, "slug"),
+      sample: itemText(item, "sample") === "yes",
+      category: itemText(item, "category"),
+      title: itemText(item, "title"),
+      excerpt: itemText(item, "excerpt"),
+      image: resolveImage(itemText(item, "image"), "students"),
+      readTime: itemText(item, "readTime"),
+      body: itemLines(item, "body"),
+    }));
+}
