@@ -4,8 +4,20 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ArrowUpRight } from "lucide-react";
 
-export function Container({ className, children }: { className?: string; children: ReactNode }) {
-  return <div className={cn("mx-auto max-w-7xl px-5 md:px-8", className)}>{children}</div>;
+export function Container({
+  className,
+  children,
+  id,
+}: {
+  className?: string;
+  children: ReactNode;
+  id?: string;
+}) {
+  return (
+    <div id={id} className={cn("mx-auto max-w-7xl px-5 md:px-8", className)}>
+      {children}
+    </div>
+  );
 }
 
 export function PageHero({
