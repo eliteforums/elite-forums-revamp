@@ -88,7 +88,7 @@ export function EventsPanel({
 }) {
   const [draft, setDraft] = useState<Draft | null>(null);
   const [saving, setSaving] = useState(false);
-  const sorted = [...events].sort((a, b) => b.date.localeCompare(a.date));
+  const sorted = [...events].sort((a, b) => a.date.localeCompare(b.date));
 
   async function save() {
     if (!draft) return;

@@ -31,7 +31,12 @@ function Events() {
         (type === "All" || e.type === type) &&
         (period === "All dates" || (period === "Upcoming" ? isUpcoming(e) : !isUpcoming(e))),
     )
-    .sort((a, b) => a.date.localeCompare(b.date));
+    .sort((a, b) => {
+      const aUpcoming = isUpcoming(a);
+      const bUpcoming = isUpcoming(b);
+      if (aUpcoming !== bUpcoming) return aUpcoming ? -1 : 1;
+      return aUpcoming ? a.date.localeCompare(b.date) : b.date.localeCompare(a.date);
+    });
   return (
     <>
       <PageHero
