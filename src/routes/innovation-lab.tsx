@@ -61,6 +61,25 @@ function InnovationLab() {
           </div>
         </Container>
       </section>
+      <section className="section-space border-b border-border bg-surface/40">
+        <Container>
+          <SectionHead
+            eyebrow={c.t("technologies.eyebrow")}
+            title={<Rich text={c.t("technologies.title")} />}
+          />
+          <p className="mt-6 max-w-2xl reading-copy">{c.t("technologies.intro")}</p>
+          <div className="mt-10 flex flex-wrap gap-3">
+            {c.list("technologies").map((technology) => (
+              <span
+                key={technology}
+                className="rounded-full border border-electric/30 bg-background px-4 py-2 text-sm text-foreground"
+              >
+                {technology}
+              </span>
+            ))}
+          </div>
+        </Container>
+      </section>
       <section className="section-space">
         <Container className="grid items-center gap-12 md:grid-cols-2">
           <img

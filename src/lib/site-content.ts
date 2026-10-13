@@ -347,6 +347,25 @@ export const CONTENT_PAGES: PageDef[] = [
       {
         title: "How the lab works",
         fields: {
+          "technologies.eyebrow": text("Technology focus: small label", "Technology focus"),
+          "technologies.title": rich(
+            "Technology focus: title",
+            "We work on ambitious *frontier technologies.*",
+          ),
+          "technologies.intro": area(
+            "Technology focus: introduction",
+            "Our Innovation Lab explores and builds products across emerging technology domains.",
+          ),
+          technologies: lines("Technologies", [
+            "Artificial Intelligence (AI)",
+            "Internet of Things (IoT)",
+            "Software as a Service (SaaS)",
+            "Manufacturing",
+            "Research and Development (R&D)",
+            "Patent Technology",
+            "Machine Learning (ML)",
+            "Chip Design",
+          ]),
           "stages.eyebrow": text("Small label", "How the lab works"),
           "stages.title": rich("Title", "From idea to venture."),
           stages: items("Stages", "Stage", TITLE_BODY, [
