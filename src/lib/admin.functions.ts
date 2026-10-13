@@ -18,7 +18,7 @@ const eventInput = z.object({
   format: z.enum(["Online", "In-person"]),
   city: z.string().trim().max(120).optional(),
   location: z.string().trim().min(1).max(240),
-  summary: z.string().trim().min(1).max(3000),
+  summary: z.string().trim().min(1).max(10000),
   image: z.string().trim().url().or(z.string().startsWith("/")),
   registration_url: z.string().trim().url().optional().or(z.literal("")),
   agenda: z.array(z.object({ time: z.string().max(40), item: z.string().max(240) })).max(30),

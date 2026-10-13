@@ -364,12 +364,13 @@ function EventDrawer({
           <textarea
             className={cn(fieldCls, "leading-6")}
             rows={4}
+            maxLength={10000}
             value={draft.summary}
             placeholder="What the event is and why someone should come."
             onChange={(e) => set("summary", e.target.value)}
           />
           <p className="mt-1 text-right text-xs text-muted-foreground">
-            {draft.summary.length}/3000
+            {draft.summary.length}/10000
           </p>
         </FieldLabel>
         <FieldLabel label="Who can join">
