@@ -10,13 +10,13 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as CampusAmbassadorsRouteImport } from './routes/campus-ambassadors'
 import { Route as CollegesRouteImport } from './routes/colleges'
 import { Route as CommunityRouteImport } from './routes/community'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as EcosystemRouteImport } from './routes/ecosystem'
 import { Route as EventsRouteImport } from './routes/events'
+import { Route as InnovationLabRouteImport } from './routes/innovation-lab'
 import { Route as NetworkRouteImport } from './routes/network'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ResourcesRouteImport } from './routes/resources'
@@ -27,11 +27,6 @@ import { Route as ResourcesSlugRouteImport } from './routes/resources_.$slug'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CampusAmbassadorsRoute = CampusAmbassadorsRouteImport.update({
@@ -62,6 +57,11 @@ const EcosystemRoute = EcosystemRouteImport.update({
 const EventsRoute = EventsRouteImport.update({
   id: '/events',
   path: '/events',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InnovationLabRoute = InnovationLabRouteImport.update({
+  id: '/innovation-lab',
+  path: '/innovation-lab',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NetworkRoute = NetworkRouteImport.update({
@@ -97,13 +97,13 @@ const ResourcesSlugRoute = ResourcesSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/campus-ambassadors': typeof CampusAmbassadorsRoute
   '/colleges': typeof CollegesRoute
   '/community': typeof CommunityRoute
   '/contact': typeof ContactRoute
   '/ecosystem': typeof EcosystemRoute
   '/events': typeof EventsRoute
+  '/innovation-lab': typeof InnovationLabRoute
   '/network': typeof NetworkRoute
   '/privacy': typeof PrivacyRoute
   '/resources': typeof ResourcesRoute
@@ -113,13 +113,13 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/campus-ambassadors': typeof CampusAmbassadorsRoute
   '/colleges': typeof CollegesRoute
   '/community': typeof CommunityRoute
   '/contact': typeof ContactRoute
   '/ecosystem': typeof EcosystemRoute
   '/events': typeof EventsRoute
+  '/innovation-lab': typeof InnovationLabRoute
   '/network': typeof NetworkRoute
   '/privacy': typeof PrivacyRoute
   '/resources': typeof ResourcesRoute
@@ -130,13 +130,13 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/campus-ambassadors': typeof CampusAmbassadorsRoute
   '/colleges': typeof CollegesRoute
   '/community': typeof CommunityRoute
   '/contact': typeof ContactRoute
   '/ecosystem': typeof EcosystemRoute
   '/events': typeof EventsRoute
+  '/innovation-lab': typeof InnovationLabRoute
   '/network': typeof NetworkRoute
   '/privacy': typeof PrivacyRoute
   '/resources': typeof ResourcesRoute
@@ -148,13 +148,13 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/about'
     | '/campus-ambassadors'
     | '/colleges'
     | '/community'
     | '/contact'
     | '/ecosystem'
     | '/events'
+    | '/innovation-lab'
     | '/network'
     | '/privacy'
     | '/resources'
@@ -164,13 +164,13 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/about'
     | '/campus-ambassadors'
     | '/colleges'
     | '/community'
     | '/contact'
     | '/ecosystem'
     | '/events'
+    | '/innovation-lab'
     | '/network'
     | '/privacy'
     | '/resources'
@@ -180,13 +180,13 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/about'
     | '/campus-ambassadors'
     | '/colleges'
     | '/community'
     | '/contact'
     | '/ecosystem'
     | '/events'
+    | '/innovation-lab'
     | '/network'
     | '/privacy'
     | '/resources'
@@ -197,13 +197,13 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
   CampusAmbassadorsRoute: typeof CampusAmbassadorsRoute
   CollegesRoute: typeof CollegesRoute
   CommunityRoute: typeof CommunityRoute
   ContactRoute: typeof ContactRoute
   EcosystemRoute: typeof EcosystemRoute
   EventsRoute: typeof EventsRoute
+  InnovationLabRoute: typeof InnovationLabRoute
   NetworkRoute: typeof NetworkRoute
   PrivacyRoute: typeof PrivacyRoute
   ResourcesRoute: typeof ResourcesRoute
@@ -219,13 +219,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/campus-ambassadors': {
@@ -268,6 +261,13 @@ declare module '@tanstack/react-router' {
       path: '/events'
       fullPath: '/events'
       preLoaderRoute: typeof EventsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/innovation-lab': {
+      id: '/innovation-lab'
+      path: '/innovation-lab'
+      fullPath: '/innovation-lab'
+      preLoaderRoute: typeof InnovationLabRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/network': {
@@ -317,13 +317,13 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
   CampusAmbassadorsRoute: CampusAmbassadorsRoute,
   CollegesRoute: CollegesRoute,
   CommunityRoute: CommunityRoute,
   ContactRoute: ContactRoute,
   EcosystemRoute: EcosystemRoute,
   EventsRoute: EventsRoute,
+  InnovationLabRoute: InnovationLabRoute,
   NetworkRoute: NetworkRoute,
   PrivacyRoute: PrivacyRoute,
   ResourcesRoute: ResourcesRoute,
