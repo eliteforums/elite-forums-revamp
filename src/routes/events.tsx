@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { ArrowUpRight, CalendarDays, MapPin } from "lucide-react";
 import { Container, FinalCTA, PageHero, SampleBadge } from "@/components/site/Blocks";
+import { IlluxusEvents } from "@/components/site/IlluxusEvents";
 import { Button } from "@/components/ui/button";
 import { isUpcoming } from "@/lib/content";
 import { getPublicEvents } from "@/lib/admin.functions";
@@ -41,6 +42,20 @@ function Events() {
         }
         intro="Workshops, build weekends and honest founder conversations. Find the experience that sparks your next step."
       />
+      <section className="section-space border-b border-border">
+        <Container>
+          <div className="mb-8 max-w-2xl">
+            <p className="eyebrow text-electric">Live event calendar</p>
+            <h2 className="display-xl mt-4 text-4xl md:text-5xl">What’s happening next.</h2>
+            <p className="mt-5 reading-copy">
+              Browse upcoming events and register through our event partner.
+            </p>
+          </div>
+          <div className="panel border border-border bg-surface p-4 md:p-8">
+            <IlluxusEvents />
+          </div>
+        </Container>
+      </section>
       <section className="section-space">
         <Container>
           <div className="mb-10 flex flex-wrap items-center justify-between gap-5">
