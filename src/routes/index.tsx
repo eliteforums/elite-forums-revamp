@@ -1,98 +1,31 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Container, FinalCTA, PageHero, SampleBadge, SectionHead } from "@/components/site/Blocks";
-import { ARTICLES, EVENTS, isUpcoming } from "@/lib/content";
+import { Container, FinalCTA } from "@/components/site/Blocks";
+import { EcosystemGrid, JoinPaths, Mission } from "@/components/site/EcosystemSections";
+import { pageMeta } from "@/lib/metadata";
 import students from "@/assets/students.jpg";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Elite Forums — Where student founders begin" },
-      { name: "description", content: "A community connecting college students, E-Cells and founders through workshops, hackathons and founder conversations." },
-      { property: "og:title", content: "Elite Forums — Where student founders begin" },
-      { property: "og:description", content: "Workshops, hackathons and founder conversations for college students." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
-  component: Index,
+  head: () => pageMeta("Elite Forums | Where student ambition meets opportunity", "Elite Forums connects college E-Cells, aspiring founders and student communities through entrepreneurship, collaboration and meaningful experiences."),
+  component: Home,
 });
 
-const PILLARS = [
-  { n: "01", t: "Learn", d: "Practical workshops on problem discovery, validation and building." },
-  { n: "02", t: "Build", d: "Hackathons and build weekends with interdisciplinary student teams." },
-  { n: "03", t: "Connect", d: "Founder conversations and a network of student entrepreneurs across campuses." },
-];
-
-function Index() {
-  const upcoming = EVENTS.filter(isUpcoming).sort((a, b) => a.date.localeCompare(b.date)).slice(0, 3);
-  return (
-    <>
-      <PageHero
-        eyebrow="Student entrepreneurship community"
-        title={<>Where student <span className="bg-brand bg-clip-text text-transparent">founders</span> begin.</>}
-        intro="Elite Forums brings college students, E-Cells and founders together to learn, build and grow startup ideas."
-      >
-        <div className="flex flex-wrap gap-3">
-          <Button asChild variant="brand" size="lg"><Link to="/community">Join the Community</Link></Button>
-          <Button asChild variant="outline" size="lg"><Link to="/colleges">Partner Your College</Link></Button>
-        </div>
-      </PageHero>
-
-      <section className="py-16 md:py-24">
-        <Container>
-          <SectionHead eyebrow="What we do" title="Three ways in." />
-          <div className="mt-12 grid gap-4 md:grid-cols-3">
-            {PILLARS.map((p) => (
-              <div key={p.n} className="panel border border-border p-8">
-                <p className="font-display text-sm text-electric">{p.n}</p>
-                <h3 className="display-xl mt-6 text-3xl">{p.t}</h3>
-                <p className="mt-4 text-muted-foreground">{p.d}</p>
-              </div>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      <section className="py-16 md:py-24">
-        <Container className="grid items-center gap-10 md:grid-cols-2">
-          <img src={students} alt="Students collaborating on a project" className="panel aspect-[4/3] w-full object-cover" loading="lazy" />
-          <div>
-            <SectionHead eyebrow="Upcoming" title="Events" />
-            <ul className="mt-8 divide-y divide-border">
-              {upcoming.map((e) => (
-                <li key={e.slug} className="py-5">
-                  <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                    <span>{new Date(e.date).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</span>
-                    <span>· {e.type} · {e.format}</span>
-                    {e.sample && <SampleBadge />}
-                  </div>
-                  <p className="mt-2 font-display text-lg">{e.title}</p>
-                </li>
-              ))}
-            </ul>
-            <Link to="/events" className="mt-6 inline-flex items-center gap-1 text-sm text-electric">All events <ArrowUpRight className="h-4 w-4" /></Link>
-          </div>
-        </Container>
-      </section>
-
-      <section className="py-16 md:py-24">
-        <Container>
-          <SectionHead eyebrow="Resources" title="Read, then build." />
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {ARTICLES.map((a) => (
-              <article key={a.slug} className="group">
-                <img src={a.image} alt="" className="panel aspect-[16/10] w-full object-cover" loading="lazy" />
-                <p className="mt-4 text-xs text-muted-foreground">{a.category} · {a.readTime}</p>
-                <h3 className="mt-2 font-display text-lg">{a.title}</h3>
-              </article>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      <FinalCTA />
-    </>
-  );
+function Home() {
+  return <>
+    <section className="relative overflow-hidden border-b border-border pb-12 pt-36 md:pb-16 md:pt-44">
+      <img src={students} alt="" className="absolute inset-0 h-full w-full object-cover opacity-15" />
+      <div className="photo-shade absolute inset-0" />
+      <div className="canvas-grid pointer-events-none absolute inset-0 opacity-20" />
+      <Container className="relative">
+        <p className="eyebrow animate-rise text-electric">The entrepreneurship ecosystem</p>
+        <h1 className="display-xl animate-rise mt-7 max-w-5xl text-[2.5rem] sm:text-6xl md:text-7xl lg:text-[5.5rem]">Where <span className="text-brand">student</span><br className="hidden sm:block" /> ambition meets<br className="hidden sm:block" /> <span className="text-brand">opportunity.</span></h1>
+        <p className="animate-rise mt-8 max-w-xl text-base leading-7 text-muted-foreground">Elite Forums connects college E-Cells, aspiring founders, and student communities to create meaningful opportunities for entrepreneurship, collaboration, and growth.</p>
+        <div className="animate-rise mt-9 flex flex-wrap gap-4"><Button asChild variant="brand" size="lg"><Link to="/community">Join the Community <ArrowUpRight /></Link></Button><Button asChild variant="outline" size="lg"><Link to="/colleges">Partner Your College</Link></Button></div>
+        <div className="mt-12 flex items-center gap-3 text-xs text-muted-foreground"><ArrowDown className="h-4 w-4 text-electric" /><span>Ideas start here.</span></div>
+      </Container>
+    </section>
+    <section className="border-b border-border py-8"><Container className="grid gap-8 sm:grid-cols-3">{[["Colleges & E-Cells", "Where communities take shape"], ["Student builders", "Where ambition finds its people"], ["Founders & mentors", "Where experience opens doors"]].map(([t, d]) => <div key={t} className="sm:border-r sm:border-border sm:last:border-0"><p className="text-xl font-medium">{t}</p><p className="mt-2 text-xs text-muted-foreground">{d}</p></div>)}</Container></section>
+    <EcosystemGrid /><Mission /><JoinPaths /><FinalCTA />
+  </>;
 }
