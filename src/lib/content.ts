@@ -32,7 +32,8 @@ export const EVENTS: EventItem[] = [
     date: "2026-12-05",
     format: "Online",
     location: "Live online session",
-    summary: "An illustrative format for a fireside conversation where an early-stage founder walks students through validating an idea and finding first users.",
+    summary:
+      "An illustrative format for a fireside conversation where an early-stage founder walks students through validating an idea and finding first users.",
     image: founder,
     agenda: [
       { time: "18:00", item: "Welcome and context" },
@@ -51,7 +52,8 @@ export const EVENTS: EventItem[] = [
     format: "In-person",
     city: "To be announced",
     location: "Partner campus, to be announced",
-    summary: "A sample 36-hour build weekend concept where interdisciplinary student teams prototype solutions to real campus problems.",
+    summary:
+      "A sample 36-hour build weekend concept where interdisciplinary student teams prototype solutions to real campus problems.",
     image: hackathon,
     agenda: [
       { time: "Day 1", item: "Kick-off, team formation, problem briefs" },
@@ -70,7 +72,8 @@ export const EVENTS: EventItem[] = [
     format: "In-person",
     city: "To be announced",
     location: "Partner campus",
-    summary: "A sample hands-on workshop concept covering problem discovery, customer interviews, and simple prototyping.",
+    summary:
+      "A sample hands-on workshop concept covering problem discovery, customer interviews, and simple prototyping.",
     image: students,
     agenda: [
       { time: "10:00", item: "Problem discovery" },
@@ -101,7 +104,8 @@ export const ARTICLES: Article[] = [
     sample: true,
     category: "Guide",
     title: "How to start an E-Cell that students actually show up for",
-    excerpt: "A practical starting framework for student leaders building an entrepreneurship community from scratch.",
+    excerpt:
+      "A practical starting framework for student leaders building an entrepreneurship community from scratch.",
     image: students,
     readTime: "6 min",
     body: [
@@ -116,7 +120,8 @@ export const ARTICLES: Article[] = [
     sample: true,
     category: "Learning",
     title: "Validating a startup idea while you're still in college",
-    excerpt: "Cheap, fast ways to test whether a problem is worth solving — before you write a line of code.",
+    excerpt:
+      "Cheap, fast ways to test whether a problem is worth solving — before you write a line of code.",
     image: founder,
     readTime: "5 min",
     body: [
@@ -130,7 +135,8 @@ export const ARTICLES: Article[] = [
     sample: true,
     category: "Event Recap",
     title: "What a weekend hackathon can teach a first-time builder",
-    excerpt: "An illustrative recap format showing how event stories will be presented on Elite Forums.",
+    excerpt:
+      "An illustrative recap format showing how event stories will be presented on Elite Forums.",
     image: hackathon,
     readTime: "4 min",
     body: [

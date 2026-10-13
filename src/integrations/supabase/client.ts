@@ -6,16 +6,20 @@ function isNewSupabaseApiKey(value: string): boolean {
   return value.startsWith("sb_publishable_") || value.startsWith("sb_secret_");
 }
 
+/** Server runtime env, accepting either the plain or VITE_-prefixed names. */
+function serverSupabaseEnv() {
+  return {
+    url: process.env["SUPABASE_URL"] ?? process.env["VITE_SUPABASE_URL"],
+    key: process.env["SUPABASE_PUBLISHABLE_KEY"] ?? process.env["VITE_SUPABASE_PUBLISHABLE_KEY"],
+  };
+}
+
 // The public URL can be reachable only from the browser, so server requests go to the runtime URL of the same backend.
 function serverSupabaseUrl(publicUrl: string, supabaseKey: string): string | undefined {
   if (typeof window !== "undefined" || typeof process === "undefined") return undefined;
-  const serverUrl = process.env["SUPABASE_URL"]?.replace(/\/+$/, "");
-  if (
-    !serverUrl ||
-    serverUrl === publicUrl ||
-    process.env["SUPABASE_PUBLISHABLE_KEY"] !== supabaseKey
-  )
-    return undefined;
+  const { url, key } = serverSupabaseEnv();
+  const serverUrl = url?.replace(/\/+$/, "");
+  if (!serverUrl || serverUrl === publicUrl || key !== supabaseKey) return undefined;
   return serverUrl;
 }
 
@@ -65,7 +69,7 @@ function createSupabaseClient() {
       ...(!SUPABASE_URL ? ["SUPABASE_URL"] : []),
       ...(!SUPABASE_PUBLISHABLE_KEY ? ["SUPABASE_PUBLISHABLE_KEY"] : []),
     ];
-    const message = `Missing Supabase environment variable(s): ${missing.join(", ")}. Configure the server environment before using Supabase.`;
+    const message = `Missing Supabase environment variable(s): ${missing.join(", ")}. Add them to the project's .env file.`;
     console.error(`[Supabase] ${message}`);
     throw new Error(message);
   }
@@ -75,7 +79,6 @@ function createSupabaseClient() {
       fetch: createSupabaseFetch(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY),
     },
     auth: {
-      storage: typeof window === "undefined" ? undefined : window.localStorage,
       persistSession: true,
       autoRefreshToken: true,
     },

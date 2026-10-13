@@ -28,7 +28,9 @@ export function Header() {
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-        scrolled || open ? "border-b border-border bg-background/85 backdrop-blur-md" : "bg-transparent",
+        scrolled || open
+          ? "border-b border-border bg-background/85 backdrop-blur-md"
+          : "bg-transparent",
       )}
     >
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-5 md:px-8">
@@ -49,7 +51,9 @@ export function Header() {
           ))}
         </nav>
         <div className="flex items-center gap-2">
-          <Button asChild variant="ghost" size="sm" className="hidden xl:inline-flex"><Link to="/colleges">Partner College</Link></Button>
+          <Button asChild variant="ghost" size="sm" className="hidden xl:inline-flex">
+            <Link to="/colleges">Partner College</Link>
+          </Button>
           <Button asChild variant="brand" size="sm" className="hidden h-9 px-4 sm:inline-flex">
             <Link to="/community">Join Community</Link>
           </Button>
@@ -79,10 +83,14 @@ export function Header() {
           ))}
           <div className="mt-6 flex flex-col gap-3">
             <Button asChild variant="brand" size="lg">
-              <Link to="/community" onClick={() => setOpen(false)}>Join the Community</Link>
+              <Link to="/community" onClick={() => setOpen(false)}>
+                Join the Community
+              </Link>
             </Button>
             <Button asChild variant="outline" size="lg">
-              <Link to="/colleges" onClick={() => setOpen(false)}>Partner Your College</Link>
+              <Link to="/colleges" onClick={() => setOpen(false)}>
+                Partner Your College
+              </Link>
             </Button>
           </div>
         </nav>

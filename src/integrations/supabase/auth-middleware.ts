@@ -33,15 +33,16 @@ function createSupabaseFetch(supabaseKey: string): typeof fetch {
 
 export const requireSupabaseAuth = createMiddleware({ type: "function" }).server(
   async ({ next }) => {
-    const SUPABASE_URL = process.env["SUPABASE_URL"];
-    const SUPABASE_PUBLISHABLE_KEY = process.env["SUPABASE_PUBLISHABLE_KEY"];
+    const SUPABASE_URL = process.env["SUPABASE_URL"] ?? process.env["VITE_SUPABASE_URL"];
+    const SUPABASE_PUBLISHABLE_KEY =
+      process.env["SUPABASE_PUBLISHABLE_KEY"] ?? process.env["VITE_SUPABASE_PUBLISHABLE_KEY"];
 
     if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
       const missing = [
         ...(!SUPABASE_URL ? ["SUPABASE_URL"] : []),
         ...(!SUPABASE_PUBLISHABLE_KEY ? ["SUPABASE_PUBLISHABLE_KEY"] : []),
       ];
-      const message = `Missing Supabase environment variable(s): ${missing.join(", ")}. Configure the server environment before using Supabase.`;
+      const message = `Missing Supabase environment variable(s): ${missing.join(", ")}. Add them to the project's .env file.`;
       console.error(`[Supabase] ${message}`);
       throw new Error(message);
     }

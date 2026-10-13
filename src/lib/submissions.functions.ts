@@ -19,15 +19,25 @@ type Table =
 
 type Result = { ok: true } | { ok: false; error: string };
 
+/** Server runtime env, accepting either the plain or VITE_-prefixed names. */
+function supabaseEnv() {
+  return {
+    url: process.env["SUPABASE_URL"] ?? process.env["VITE_SUPABASE_URL"],
+    key: process.env["SUPABASE_PUBLISHABLE_KEY"] ?? process.env["VITE_SUPABASE_PUBLISHABLE_KEY"],
+  };
+}
+
 async function insertRow(table: Table, row: Record<string, unknown>): Promise<Result> {
-  const url = process.env["SUPABASE_URL"];
-  const key = process.env["SUPABASE_PUBLISHABLE_KEY"];
+  const { url, key } = supabaseEnv();
   if (!url || !key) return { ok: false, error: "Submissions are not configured yet." };
-  const sb = createClient<Database>(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
+  const sb = createClient<Database>(url, key, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { error } = await sb.from(table).insert(row as any);
   if (error) {
-    if (error.code === "23505") return { ok: false, error: "You're already registered with this email." };
+    if (error.code === "23505")
+      return { ok: false, error: "You're already registered with this email." };
     console.error("insert failed", table, error.message);
     return { ok: false, error: "We couldn't save your submission. Please try again." };
   }

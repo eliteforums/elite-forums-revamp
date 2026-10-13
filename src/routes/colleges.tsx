@@ -6,7 +6,11 @@ export const Route = createFileRoute("/colleges")({
   head: () => ({
     meta: [
       { title: "For Colleges — Elite Forums" },
-      { name: "description", content: "Partner your college or E-Cell with Elite Forums for workshops, hackathons and founder sessions." },
+      {
+        name: "description",
+        content:
+          "Partner your college or E-Cell with Elite Forums for workshops, hackathons and founder sessions.",
+      },
       { property: "og:title", content: "For Colleges — Elite Forums" },
       { property: "og:description", content: "Partner your college or E-Cell with Elite Forums." },
     ],
@@ -24,7 +28,11 @@ const OFFER = [
 function Colleges() {
   return (
     <>
-      <PageHero eyebrow="For colleges & E-Cells" title="Bring founders to your campus." intro="We partner with institutions to run entrepreneurship programmes that students actually show up for." />
+      <PageHero
+        eyebrow="For colleges & E-Cells"
+        title="Bring founders to your campus."
+        intro="We partner with institutions to run entrepreneurship programmes that students actually show up for."
+      />
       <section className="py-12">
         <Container>
           <div className="grid gap-4 md:grid-cols-2">
@@ -40,7 +48,9 @@ function Colleges() {
       <section className="py-16 md:py-24">
         <Container className="max-w-3xl">
           <SectionHead eyebrow="Apply" title="Partner your college" />
-          <div className="mt-10"><CollegeForm /></div>
+          <div className="mt-10">
+            <CollegeForm />
+          </div>
         </Container>
       </section>
     </>

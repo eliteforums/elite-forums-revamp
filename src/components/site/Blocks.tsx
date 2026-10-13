@@ -23,15 +23,27 @@ export function PageHero({
     <section className="relative overflow-hidden border-b border-border pb-16 pt-36 md:pb-20 md:pt-44">
       <Container className="relative">
         <p className="eyebrow animate-rise text-electric">{eyebrow}</p>
-        <h1 className="display-xl animate-rise mt-6 max-w-5xl text-[2.5rem] sm:text-6xl md:text-7xl lg:text-[5rem]">{title}</h1>
-        {intro && <p className="animate-rise mt-8 max-w-2xl text-lg text-muted-foreground">{intro}</p>}
+        <h1 className="display-xl animate-rise mt-6 max-w-5xl text-[2.5rem] sm:text-6xl md:text-7xl lg:text-[5rem]">
+          {title}
+        </h1>
+        {intro && (
+          <p className="animate-rise mt-8 max-w-2xl text-lg text-muted-foreground">{intro}</p>
+        )}
         {children && <div className="animate-rise mt-10">{children}</div>}
       </Container>
     </section>
   );
 }
 
-export function SectionHead({ eyebrow, title, className }: { eyebrow: string; title: ReactNode; className?: string }) {
+export function SectionHead({
+  eyebrow,
+  title,
+  className,
+}: {
+  eyebrow: string;
+  title: ReactNode;
+  className?: string;
+}) {
   return (
     <div className={cn("max-w-4xl", className)}>
       <p className="eyebrow text-electric">{eyebrow}</p>
@@ -40,7 +52,11 @@ export function SectionHead({ eyebrow, title, className }: { eyebrow: string; ti
   );
 }
 
-export function FinalCTA({ title = "The next entrepreneurial community could start with you." }: { title?: string }) {
+export function FinalCTA({
+  title = "The next entrepreneurial community could start with you.",
+}: {
+  title?: string;
+}) {
   return (
     <section className="py-16 md:py-24">
       <Container>
@@ -51,7 +67,9 @@ export function FinalCTA({ title = "The next entrepreneurial community could sta
             <h2 className="display-xl max-w-4xl text-4xl sm:text-5xl md:text-6xl">{title}</h2>
             <div className="mt-10 flex flex-wrap gap-3">
               <Button asChild variant="ink" size="lg">
-                <Link to="/community">Join the Community <ArrowUpRight /></Link>
+                <Link to="/community">
+                  Join the Community <ArrowUpRight />
+                </Link>
               </Button>
               <Button asChild variant="ghostInk" size="lg">
                 <Link to="/colleges">Partner Your College</Link>
@@ -66,7 +84,12 @@ export function FinalCTA({ title = "The next entrepreneurial community could sta
 
 export function SampleBadge({ className }: { className?: string }) {
   return (
-    <span className={cn("inline-flex items-center rounded-full border border-current/30 px-2.5 py-1 text-[0.65rem] font-medium uppercase opacity-80", className)}>
+    <span
+      className={cn(
+        "inline-flex items-center rounded-full border border-current/30 px-2.5 py-1 text-[0.65rem] font-medium uppercase opacity-80",
+        className,
+      )}
+    >
       Sample content
     </span>
   );

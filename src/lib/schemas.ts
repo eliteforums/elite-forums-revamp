@@ -23,7 +23,9 @@ export const studentSchema = z.object({
   course_year: opt(120),
   city: req("City", 100),
   interests: z.array(z.string().max(60)).min(1, "Pick at least one interest").max(10),
-  preferred_channel: z.enum(["email", "whatsapp", "phone"], { errorMap: () => ({ message: "Choose a channel" }) }),
+  preferred_channel: z.enum(["email", "whatsapp", "phone"], {
+    errorMap: () => ({ message: "Choose a channel" }),
+  }),
   phone: z
     .string()
     .trim()

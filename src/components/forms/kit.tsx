@@ -54,11 +54,24 @@ export function Honeypot({ name = "website" }: { name?: string }) {
   );
 }
 
-export function Consent({ error, name = "consent", children }: { error?: string | undefined; name?: string; children?: ReactNode }) {
+export function Consent({
+  error,
+  name = "consent",
+  children,
+}: {
+  error?: string | undefined;
+  name?: string;
+  children?: ReactNode;
+}) {
   return (
     <div>
       <label className="flex items-start gap-3 text-sm text-muted-foreground">
-        <input type="checkbox" name={name} className="mt-0.5 h-4 w-4 accent-[var(--electric)]" aria-invalid={!!error} />
+        <input
+          type="checkbox"
+          name={name}
+          className="mt-0.5 h-4 w-4 accent-[var(--electric)]"
+          aria-invalid={!!error}
+        />
         <span>
           {children ?? (
             <>
@@ -71,7 +84,11 @@ export function Consent({ error, name = "consent", children }: { error?: string 
           )}
         </span>
       </label>
-      {error && <p className="mt-1 text-xs text-destructive" role="alert">{error}</p>}
+      {error && (
+        <p className="mt-1 text-xs text-destructive" role="alert">
+          {error}
+        </p>
+      )}
     </div>
   );
 }
@@ -119,16 +136,39 @@ export function useFormSubmit<S extends z.ZodTypeAny>(
   return { errors, state, message, onSubmit };
 }
 
-export function SubmitRow({ state, label, message }: { state: string; label: string; message?: string }) {
+export function SubmitRow({
+  state,
+  label,
+  message,
+}: {
+  state: string;
+  label: string;
+  message?: string;
+}) {
   return (
     <div className="space-y-3">
       {state === "error" && (
-        <p className="rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm" role="alert">
+        <p
+          className="rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm"
+          role="alert"
+        >
           {message}
         </p>
       )}
-      <Button type="submit" variant="brand" size="lg" disabled={state === "loading"} className="w-full sm:w-auto">
-        {state === "loading" ? <><Loader2 className="animate-spin" /> Sending…</> : label}
+      <Button
+        type="submit"
+        variant="brand"
+        size="lg"
+        disabled={state === "loading"}
+        className="w-full sm:w-auto"
+      >
+        {state === "loading" ? (
+          <>
+            <Loader2 className="animate-spin" /> Sending…
+          </>
+        ) : (
+          label
+        )}
       </Button>
     </div>
   );
