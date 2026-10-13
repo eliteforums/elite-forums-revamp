@@ -63,21 +63,7 @@ export function Footer() {
       </div>
       <div className="mx-auto flex max-w-7xl flex-col justify-between gap-2 border-t border-border px-5 py-6 text-xs text-muted-foreground md:flex-row md:px-8">
         <span>© {new Date().getFullYear()} Elite Forums. All rights reserved.</span>
-        <div className="flex flex-wrap items-center gap-4">
-          <Link to="/privacy" className="transition-colors hover:text-electric">
-            Privacy Policy
-          </Link>
-          <Link to="/terms" className="transition-colors hover:text-electric">
-            Terms of Use
-          </Link>
-          <Link to="/refunds" className="transition-colors hover:text-electric">
-            Refunds
-          </Link>
-          <Link to="/cookies" className="transition-colors hover:text-electric">
-            Cookies
-          </Link>
-          <span className="eyebrow">Where ambition meets opportunity</span>
-        </div>
+        <span className="eyebrow">Where ambition meets opportunity</span>
       </div>
     </footer>
   );
