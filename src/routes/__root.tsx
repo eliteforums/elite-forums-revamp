@@ -82,6 +82,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "robots", content: "index, follow, max-image-preview:large" },
+      { name: "googlebot", content: "index, follow, max-image-preview:large" },
       { title: "Elite Forums — Community for Aspiring Founders" },
       {
         name: "description",
@@ -91,7 +93,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://eliteforums.in/" },
       { property: "og:site_name", content: "Elite Forums" },
+      { property: "og:locale", content: "en_IN" },
       { property: "og:image", content: "https://eliteforums.in/og-image.svg" },
+      { property: "og:image:alt", content: "Elite Forums founder and startup ecosystem" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Elite Forums — Community for Aspiring Founders" },
       {

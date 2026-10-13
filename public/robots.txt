@@ -1,5 +1,7 @@
 User-agent: Googlebot
 Allow: /
+Disallow: /admin
+Disallow: /data-deletion
 
 User-agent: Bingbot
 Allow: /
