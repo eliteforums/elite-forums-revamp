@@ -41,11 +41,18 @@ function Community() {
       <section className="border-b border-border bg-surface/40 py-12 md:py-16">
         <Container>
           <SectionHead eyebrow={c.t("stats.eyebrow")} title={c.t("stats.title")} />
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-10 grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {c.items("stats.items").map((stat, i) => (
-              <div key={i} className="panel border border-border bg-background p-6">
-                <p className="display-xl text-4xl text-electric">{itemText(stat, "title")}</p>
-                <p className="mt-3 text-sm font-medium text-foreground">{itemText(stat, "body")}</p>
+              <div
+                key={i}
+                className="panel flex min-h-36 flex-col justify-between border border-border bg-background p-6 md:min-h-40"
+              >
+                <p className="display-xl text-4xl leading-none text-electric sm:text-5xl">
+                  {itemText(stat, "title")}
+                </p>
+                <p className="mt-8 max-w-xs text-sm font-medium leading-6 text-foreground">
+                  {itemText(stat, "body")}
+                </p>
               </div>
             ))}
           </div>
