@@ -236,8 +236,8 @@ function AdminDashboard({ email }: { email: string }) {
           </Button>
         </div>
       </div>
-      <div className="mt-10 grid gap-8 lg:grid-cols-[15rem_1fr]">
-        <nav className="admin-sidebar flex gap-2 overflow-x-auto lg:block lg:space-y-1">
+      <div className="mt-10 grid gap-8 lg:grid-cols-[17rem_minmax(0,1fr)]">
+        <nav className="admin-sidebar">
           <p className="eyebrow mb-3 hidden px-3 text-muted-foreground lg:block">Workspace</p>
           {(
             [

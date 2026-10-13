@@ -334,16 +334,23 @@
     @media (min-width: 1024px) {
       .admin-sidebar {
         display: block;
+        width: 17rem;
         min-width: 0;
       }
 
       .admin-sidebar .admin-nav-item {
         display: flex;
+        width: 100%;
+        margin-bottom: 0.35rem;
       }
     }
 
     @media (max-width: 1023px) {
       .admin-sidebar {
+        display: flex;
+        width: 100%;
+        gap: 0.5rem;
+        overflow-x: auto;
         scrollbar-width: none;
       }
 
@@ -353,6 +360,7 @@
 
       .admin-sidebar .admin-nav-item {
         width: auto;
+        margin-bottom: 0;
         flex: 0 0 auto;
       }
     }
