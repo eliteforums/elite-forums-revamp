@@ -86,8 +86,13 @@ export const saveAdminEvent = createServerFn({ method: "POST" })
     const query = id
       ? supabaseAdmin.from("admin_events").update(event).eq("id", id)
       : supabaseAdmin.from("admin_events").insert(event);
-    const { error } = await query;
+    const { data: saved, error } = await query
+      .select("id, registration_url")
+      .single();
     if (error) throw new Error(`Unable to save event: ${error.message}`);
+    if ((saved.registration_url ?? "") !== (fields.registration_url ?? "")) {
+      throw new Error("The registration URL did not save. Check the Supabase event URL migration.");
+    }
     return { ok: true };
   });
 
@@ -189,6 +194,7 @@ export const getPublicEvents = createServerFn({ method: "GET" }).handler(async (
     sample: false,
     agenda: Array.isArray(event.agenda) ? event.agenda : [],
     city: event.city ?? undefined,
+    registration_url: event.registration_url?.trim() || null,
   })) as EventItem[];
   return managed;
 });

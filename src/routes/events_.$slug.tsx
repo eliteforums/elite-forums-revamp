@@ -31,6 +31,7 @@ function EventDetail() {
   const event = Route.useLoaderData();
   const status = eventStatus(event);
   const ended = status === "Already completed";
+  const registrationUrl = event.registration_url?.trim();
   const date = new Date(event.date + "T12:00:00");
   const place = [event.location, event.city]
     .filter((part, i, all) => part && all.indexOf(part) === i)
@@ -109,7 +110,13 @@ function EventDetail() {
         <Container className="grid items-start gap-10 lg:grid-cols-[minmax(0,1.35fr)_minmax(18rem,0.8fr)] lg:gap-16">
           <aside className="space-y-6 lg:sticky lg:top-28 lg:order-2">
             <div className="rounded-3xl border border-border bg-surface p-6 md:p-7">
-              {event.sample ? (
+              {registrationUrl ? (
+                <Button asChild variant="brand" size="lg" className="w-full">
+                  <a href={registrationUrl}>
+                    Register for this event <ArrowUpRight />
+                  </a>
+                </Button>
+              ) : event.sample ? (
                 <>
                   <h2 className="font-display text-2xl font-medium">
                     A preview of what’s possible.
@@ -138,12 +145,6 @@ function EventDetail() {
                     <Link to="/community">Join the Community</Link>
                   </Button>
                 </>
-              ) : event.registration_url ? (
-                <Button asChild variant="brand" size="lg" className="w-full">
-                  <a href={event.registration_url}>
-                    Register for this event <ArrowUpRight />
-                  </a>
-                </Button>
               ) : (
                 <>
                   <h2 className="font-display text-2xl font-medium">Reserve your spot.</h2>
