@@ -365,6 +365,7 @@ export function ContactForm({ defaultTopic = "" }: { defaultTopic?: string }) {
           <option value="events">Events</option>
           <option value="mentor">Mentors and founders</option>
           <option value="sponsorship">Sponsorship and collaboration</option>
+          <option value="data_deletion">Request data deletion</option>
           <option value="other">Something else</option>
         </select>
       </Field>

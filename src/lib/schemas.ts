@@ -71,7 +71,15 @@ export const ambassadorSchema = z.object({
 export const contactSchema = z.object({
   name: req("Name", 120),
   email,
-  topic: z.enum(["college", "student", "events", "mentor", "sponsorship", "other"]),
+  topic: z.enum([
+    "college",
+    "student",
+    "events",
+    "mentor",
+    "sponsorship",
+    "data_deletion",
+    "other",
+  ]),
   message: req("Message", 4000),
   consent,
   website: honeypot,

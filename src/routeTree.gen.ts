@@ -15,11 +15,14 @@ import { Route as CampusAmbassadorsRouteImport } from './routes/campus-ambassado
 import { Route as CollegesRouteImport } from './routes/colleges'
 import { Route as CommunityRouteImport } from './routes/community'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CookiesRouteImport } from './routes/cookies'
+import { Route as DataDeletionRouteImport } from './routes/data-deletion'
 import { Route as EcosystemRouteImport } from './routes/ecosystem'
 import { Route as EventsRouteImport } from './routes/events'
 import { Route as InnovationLabRouteImport } from './routes/innovation-lab'
 import { Route as NetworkRouteImport } from './routes/network'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as RefundsRouteImport } from './routes/refunds'
 import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as EventsSlugRouteImport } from './routes/events_.$slug'
@@ -55,6 +58,16 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CookiesRoute = CookiesRouteImport.update({
+  id: '/cookies',
+  path: '/cookies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DataDeletionRoute = DataDeletionRouteImport.update({
+  id: '/data-deletion',
+  path: '/data-deletion',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EcosystemRoute = EcosystemRouteImport.update({
   id: '/ecosystem',
   path: '/ecosystem',
@@ -78,6 +91,11 @@ const NetworkRoute = NetworkRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RefundsRoute = RefundsRouteImport.update({
+  id: '/refunds',
+  path: '/refunds',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ResourcesRoute = ResourcesRouteImport.update({
@@ -108,11 +126,14 @@ export interface FileRoutesByFullPath {
   '/colleges': typeof CollegesRoute
   '/community': typeof CommunityRoute
   '/contact': typeof ContactRoute
+  '/cookies': typeof CookiesRoute
+  '/data-deletion': typeof DataDeletionRoute
   '/ecosystem': typeof EcosystemRoute
   '/events': typeof EventsRoute
   '/innovation-lab': typeof InnovationLabRoute
   '/network': typeof NetworkRoute
   '/privacy': typeof PrivacyRoute
+  '/refunds': typeof RefundsRoute
   '/resources': typeof ResourcesRoute
   '/terms': typeof TermsRoute
   '/events/$slug': typeof EventsSlugRoute
@@ -125,11 +146,14 @@ export interface FileRoutesByTo {
   '/colleges': typeof CollegesRoute
   '/community': typeof CommunityRoute
   '/contact': typeof ContactRoute
+  '/cookies': typeof CookiesRoute
+  '/data-deletion': typeof DataDeletionRoute
   '/ecosystem': typeof EcosystemRoute
   '/events': typeof EventsRoute
   '/innovation-lab': typeof InnovationLabRoute
   '/network': typeof NetworkRoute
   '/privacy': typeof PrivacyRoute
+  '/refunds': typeof RefundsRoute
   '/resources': typeof ResourcesRoute
   '/terms': typeof TermsRoute
   '/events/$slug': typeof EventsSlugRoute
@@ -143,11 +167,14 @@ export interface FileRoutesById {
   '/colleges': typeof CollegesRoute
   '/community': typeof CommunityRoute
   '/contact': typeof ContactRoute
+  '/cookies': typeof CookiesRoute
+  '/data-deletion': typeof DataDeletionRoute
   '/ecosystem': typeof EcosystemRoute
   '/events': typeof EventsRoute
   '/innovation-lab': typeof InnovationLabRoute
   '/network': typeof NetworkRoute
   '/privacy': typeof PrivacyRoute
+  '/refunds': typeof RefundsRoute
   '/resources': typeof ResourcesRoute
   '/terms': typeof TermsRoute
   '/events_/$slug': typeof EventsSlugRoute
@@ -162,11 +189,14 @@ export interface FileRouteTypes {
     | '/colleges'
     | '/community'
     | '/contact'
+    | '/cookies'
+    | '/data-deletion'
     | '/ecosystem'
     | '/events'
     | '/innovation-lab'
     | '/network'
     | '/privacy'
+    | '/refunds'
     | '/resources'
     | '/terms'
     | '/events/$slug'
@@ -179,11 +209,14 @@ export interface FileRouteTypes {
     | '/colleges'
     | '/community'
     | '/contact'
+    | '/cookies'
+    | '/data-deletion'
     | '/ecosystem'
     | '/events'
     | '/innovation-lab'
     | '/network'
     | '/privacy'
+    | '/refunds'
     | '/resources'
     | '/terms'
     | '/events/$slug'
@@ -196,11 +229,14 @@ export interface FileRouteTypes {
     | '/colleges'
     | '/community'
     | '/contact'
+    | '/cookies'
+    | '/data-deletion'
     | '/ecosystem'
     | '/events'
     | '/innovation-lab'
     | '/network'
     | '/privacy'
+    | '/refunds'
     | '/resources'
     | '/terms'
     | '/events_/$slug'
@@ -214,11 +250,14 @@ export interface RootRouteChildren {
   CollegesRoute: typeof CollegesRoute
   CommunityRoute: typeof CommunityRoute
   ContactRoute: typeof ContactRoute
+  CookiesRoute: typeof CookiesRoute
+  DataDeletionRoute: typeof DataDeletionRoute
   EcosystemRoute: typeof EcosystemRoute
   EventsRoute: typeof EventsRoute
   InnovationLabRoute: typeof InnovationLabRoute
   NetworkRoute: typeof NetworkRoute
   PrivacyRoute: typeof PrivacyRoute
+  RefundsRoute: typeof RefundsRoute
   ResourcesRoute: typeof ResourcesRoute
   TermsRoute: typeof TermsRoute
   EventsSlugRoute: typeof EventsSlugRoute
@@ -269,6 +308,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cookies': {
+      id: '/cookies'
+      path: '/cookies'
+      fullPath: '/cookies'
+      preLoaderRoute: typeof CookiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/data-deletion': {
+      id: '/data-deletion'
+      path: '/data-deletion'
+      fullPath: '/data-deletion'
+      preLoaderRoute: typeof DataDeletionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/ecosystem': {
       id: '/ecosystem'
       path: '/ecosystem'
@@ -302,6 +355,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/refunds': {
+      id: '/refunds'
+      path: '/refunds'
+      fullPath: '/refunds'
+      preLoaderRoute: typeof RefundsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/resources': {
@@ -342,11 +402,14 @@ const rootRouteChildren: RootRouteChildren = {
   CollegesRoute: CollegesRoute,
   CommunityRoute: CommunityRoute,
   ContactRoute: ContactRoute,
+  CookiesRoute: CookiesRoute,
+  DataDeletionRoute: DataDeletionRoute,
   EcosystemRoute: EcosystemRoute,
   EventsRoute: EventsRoute,
   InnovationLabRoute: InnovationLabRoute,
   NetworkRoute: NetworkRoute,
   PrivacyRoute: PrivacyRoute,
+  RefundsRoute: RefundsRoute,
   ResourcesRoute: ResourcesRoute,
   TermsRoute: TermsRoute,
   EventsSlugRoute: EventsSlugRoute,

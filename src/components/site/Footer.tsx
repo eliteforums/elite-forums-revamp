@@ -26,6 +26,9 @@ const COLS = [
     links: [
       { to: "/privacy", label: "Privacy" },
       { to: "/terms", label: "Terms" },
+      { to: "/refunds", label: "Refund policy" },
+      { to: "/cookies", label: "Cookie policy" },
+      { to: "/data-deletion", label: "Delete my data" },
     ],
   },
 ] as const;
@@ -66,6 +69,12 @@ export function Footer() {
           </Link>
           <Link to="/terms" className="transition-colors hover:text-electric">
             Terms of Use
+          </Link>
+          <Link to="/refunds" className="transition-colors hover:text-electric">
+            Refunds
+          </Link>
+          <Link to="/cookies" className="transition-colors hover:text-electric">
+            Cookies
           </Link>
           <span className="eyebrow">Where ambition meets opportunity</span>
         </div>

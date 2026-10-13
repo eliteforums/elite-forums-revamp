@@ -14,6 +14,7 @@ import type { ReactNode } from "react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { Toaster } from "@/components/ui/sonner";
+import { CookieConsent } from "@/components/site/CookieConsent";
 import appCss from "../styles.css?url";
 
 function NotFoundComponent() {
@@ -131,13 +132,20 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <a
+        href="#main-content"
+        className="sr-only fixed left-4 top-4 z-[100] rounded-md bg-electric px-4 py-2 text-sm font-semibold text-ink focus:not-sr-only"
+      >
+        Skip to main content
+      </a>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       {!isAdminRoute && <Header />}
-      <main>
+      <main id="main-content" tabIndex={-1}>
         <Outlet />
       </main>
       {!isAdminRoute && <Footer />}
       {!isAdminRoute && <Toaster />}
+      {!isAdminRoute && <CookieConsent />}
     </QueryClientProvider>
   );
 }

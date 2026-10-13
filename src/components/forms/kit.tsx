@@ -75,11 +75,16 @@ export function Consent({
         <span>
           {children ?? (
             <>
-              I agree to Elite Forums storing these details to respond to me, as described in the{" "}
+              I consent to Elite Forums collecting and using these details to respond to me, as
+              described in the{" "}
               <Link to="/privacy" className="text-foreground underline underline-offset-2">
                 privacy policy
               </Link>
-              .
+              . I also agree to the{" "}
+              <Link to="/terms" className="text-foreground underline underline-offset-2">
+                terms of service
+              </Link>
+              . .
             </>
           )}
         </span>
