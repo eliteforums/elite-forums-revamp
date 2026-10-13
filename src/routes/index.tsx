@@ -11,6 +11,7 @@ export const Route = createFileRoute("/")({
     pageMeta(
       "Elite Forums | Where founder ambition meets opportunity",
       "Elite Forums is a community for anyone who wants to become a founder. Started in Mumbai and growing across colleges and cities, with a vision to make India a startup hub.",
+      "/",
     ),
   component: Home,
 });

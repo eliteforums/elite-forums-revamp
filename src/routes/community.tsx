@@ -16,7 +16,13 @@ export const Route = createFileRoute("/community")({
         property: "og:description",
         content: "A network of aspiring founders across colleges and cities.",
       },
+      {
+        name: "keywords",
+        content:
+          "startup community India, aspiring founders, student entrepreneurs, founder network",
+      },
     ],
+    links: [{ rel: "canonical", href: "https://eliteforums.in/community" }],
   }),
   component: Community,
 });

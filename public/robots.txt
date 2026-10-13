@@ -12,3 +12,8 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+Disallow: /admin
+Disallow: /data-deletion
+
+Sitemap: https://eliteforums.in/sitemap.xml

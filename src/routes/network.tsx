@@ -9,6 +9,7 @@ export const Route = createFileRoute("/network")({
     pageMeta(
       "Partner Network",
       "Connect your college, startup community or organisation with the Elite Forums entrepreneurship ecosystem.",
+      "/network",
     ),
   component: () => (
     <>

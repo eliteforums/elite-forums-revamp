@@ -8,6 +8,7 @@ export const Route = createFileRoute("/campus-ambassadors")({
     pageMeta(
       "Campus Ambassadors",
       "Apply to represent Elite Forums on your campus and help build a community of student entrepreneurs.",
+      "/campus-ambassadors",
     ),
   component: () => (
     <>

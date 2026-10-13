@@ -8,6 +8,7 @@ export const Route = createFileRoute("/ecosystem")({
     pageMeta(
       "The Ecosystem",
       "Explore a connected ecosystem of aspiring founders, college E-Cells, mentors and industry partners across India.",
+      "/ecosystem",
     ),
   component: () => (
     <>

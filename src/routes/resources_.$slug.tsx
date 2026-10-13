@@ -14,6 +14,7 @@ export const Route = createFileRoute("/resources_/$slug")({
     pageMeta(
       loaderData?.title ?? "Resource unavailable",
       loaderData?.excerpt ?? "Read resources for aspiring founders at Elite Forums.",
+      loaderData ? `/resources/${loaderData.slug}` : "/resources",
     ),
   component: ArticleDetail,
 });

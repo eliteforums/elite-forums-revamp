@@ -10,6 +10,7 @@ export const Route = createFileRoute("/innovation-lab")({
     pageMeta(
       "Innovation Laboratory",
       "The Elite Forums Innovation Laboratory is where we build technology and startups — turning ideas from the community into working products and new ventures.",
+      "/innovation-lab",
     ),
   component: InnovationLab,
 });

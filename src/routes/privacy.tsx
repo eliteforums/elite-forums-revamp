@@ -13,6 +13,7 @@ export const Route = createFileRoute("/privacy")({
       { property: "og:title", content: "Privacy — Elite Forums" },
       { property: "og:description", content: "Privacy at Elite Forums." },
     ],
+    links: [{ rel: "canonical", href: "https://eliteforums.in/privacy" }],
   }),
   component: Privacy,
 });

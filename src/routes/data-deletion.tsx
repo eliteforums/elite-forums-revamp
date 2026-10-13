@@ -10,7 +10,9 @@ export const Route = createFileRoute("/data-deletion")({
         name: "description",
         content: "Request access, correction or deletion of your Elite Forums personal data.",
       },
+      { name: "robots", content: "noindex, nofollow" },
     ],
+    links: [{ rel: "canonical", href: "https://eliteforums.in/data-deletion" }],
   }),
   component: DataDeletion,
 });

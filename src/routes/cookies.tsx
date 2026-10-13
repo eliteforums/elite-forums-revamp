@@ -11,6 +11,7 @@ export const Route = createFileRoute("/cookies")({
         content: "How Elite Forums uses cookies and essential browser storage.",
       },
     ],
+    links: [{ rel: "canonical", href: "https://eliteforums.in/cookies" }],
   }),
   component: Cookies,
 });

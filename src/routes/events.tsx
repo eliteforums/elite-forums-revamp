@@ -14,6 +14,7 @@ export const Route = createFileRoute("/events")({
     pageMeta(
       "Events",
       "Explore workshops, hackathons and founder conversations for aspiring founders at Elite Forums.",
+      "/events",
     ),
   component: Events,
 });

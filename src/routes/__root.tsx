@@ -86,7 +86,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "Elite Forums is a community for anyone who wants to become a founder. Started in Mumbai, growing across India through colleges, workshops and hackathons.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://eliteforums.in/" },
+      { property: "og:site_name", content: "Elite Forums" },
+      { property: "og:image", content: "https://eliteforums.in/favicon.png" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Elite Forums — Community for Aspiring Founders" },
+      {
+        name: "twitter:description",
+        content:
+          "A startup community connecting aspiring founders, students, colleges, E-Cells and mentors across India.",
+      },
+      { name: "twitter:image", content: "https://eliteforums.in/favicon.png" },
       { name: "theme-color", content: "#0a0a0a" },
     ],
     links: [
@@ -97,6 +107,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "icon", href: "/favicon.ico", sizes: "any" },
       { rel: "icon", href: "/favicon.png", type: "image/png" },
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+      { rel: "manifest", href: "/site.webmanifest" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
@@ -118,6 +129,35 @@ function RootShell({ children }: { children: ReactNode }) {
         <HeadContent />
       </head>
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "Organization",
+                  "@id": "https://eliteforums.in/#organization",
+                  name: "Elite Forums",
+                  url: "https://eliteforums.in/",
+                  logo: "https://eliteforums.in/favicon.png",
+                  description:
+                    "A community for aspiring founders, students, colleges, E-Cells and mentors across India.",
+                  areaServed: "IN",
+                  sameAs: [],
+                },
+                {
+                  "@type": "WebSite",
+                  "@id": "https://eliteforums.in/#website",
+                  name: "Elite Forums",
+                  url: "https://eliteforums.in/",
+                  publisher: { "@id": "https://eliteforums.in/#organization" },
+                  inLanguage: "en-IN",
+                },
+              ],
+            }),
+          }}
+        />
         {children}
         <Scripts />
       </body>

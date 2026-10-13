@@ -13,7 +13,13 @@ export const Route = createFileRoute("/colleges")({
       },
       { property: "og:title", content: "For Colleges — Elite Forums" },
       { property: "og:description", content: "Partner your college or E-Cell with Elite Forums." },
+      {
+        name: "keywords",
+        content:
+          "college E-Cell partnerships India, campus entrepreneurship, college startup programs",
+      },
     ],
+    links: [{ rel: "canonical", href: "https://eliteforums.in/colleges" }],
   }),
   component: Colleges,
 });

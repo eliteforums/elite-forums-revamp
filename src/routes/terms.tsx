@@ -13,6 +13,7 @@ export const Route = createFileRoute("/terms")({
       { property: "og:title", content: "Terms — Elite Forums" },
       { property: "og:description", content: "Terms at Elite Forums." },
     ],
+    links: [{ rel: "canonical", href: "https://eliteforums.in/terms" }],
   }),
   component: Terms,
 });

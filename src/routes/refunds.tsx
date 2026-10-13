@@ -11,6 +11,7 @@ export const Route = createFileRoute("/refunds")({
         content: "Refunds, cancellations and event changes for Elite Forums programmes.",
       },
     ],
+    links: [{ rel: "canonical", href: "https://eliteforums.in/refunds" }],
   }),
   component: Refunds,
 });

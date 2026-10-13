@@ -15,6 +15,7 @@ export const Route = createFileRoute("/events_/$slug")({
     pageMeta(
       loaderData?.title ?? "Event unavailable",
       loaderData?.summary ?? "Explore entrepreneurship events at Elite Forums.",
+      loaderData ? `/events/${loaderData.slug}` : "/events",
     ),
   component: EventDetail,
 });

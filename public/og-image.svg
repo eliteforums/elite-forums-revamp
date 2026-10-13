@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#0a0a0a"/>
+  <path d="M0 500h1200M0 130h1200" stroke="#1d2527" stroke-width="1"/>
+  <path d="M100 0v630M300 0v630M500 0v630M700 0v630M900 0v630M1100 0v630" stroke="#151c1e" stroke-width="1"/>
+  <text x="90" y="190" fill="#00e878" font-family="Arial, sans-serif" font-size="26" letter-spacing="5">ELITE FORUMS</text>
+  <text x="90" y="315" fill="#f7f8f8" font-family="Arial, sans-serif" font-size="72" font-weight="700">WHERE FOUNDER</text>
+  <text x="90" y="400" fill="#00e878" font-family="Arial, sans-serif" font-size="72" font-weight="700">AMBITION MEETS</text>
+  <text x="90" y="485" fill="#f7f8f8" font-family="Arial, sans-serif" font-size="72" font-weight="700">OPPORTUNITY.</text>
+</svg>
