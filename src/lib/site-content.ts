@@ -519,6 +519,31 @@ export const CONTENT_PAGES: PageDef[] = [
           "form.title": text("Title", "Your details"),
         },
       },
+      {
+        title: "Community network",
+        fields: {
+          "stats.eyebrow": text("Small label", "The network"),
+          "stats.title": text("Title", "A growing ecosystem of people and places."),
+          "stats.items": items("Network figures", "Figure", TITLE_BODY, [
+            {
+              title: "500+",
+              body: "Founders",
+            },
+            {
+              title: "50+",
+              body: "Angel investors",
+            },
+            {
+              title: "10+",
+              body: "VCs",
+            },
+            {
+              title: "10+",
+              body: "Incubation centre connections",
+            },
+          ]),
+        },
+      },
     ],
   },
   {
