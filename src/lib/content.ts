@@ -19,7 +19,23 @@ export type EventItem = {
   organizer: string;
 };
 
-export const isUpcoming = (e: EventItem) => new Date(e.date) >= new Date(new Date().toDateString());
+const todayIso = () => {
+  const now = new Date();
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(
+    now.getDate(),
+  ).padStart(2, "0")}`;
+};
+
+export type EventStatus = "Upcoming" | "Happening today" | "Already completed";
+
+export function eventStatus(event: Pick<EventItem, "date">): EventStatus {
+  const today = todayIso();
+  if (event.date > today) return "Upcoming";
+  if (event.date === today) return "Happening today";
+  return "Already completed";
+}
+
+export const isUpcoming = (e: EventItem) => eventStatus(e) !== "Already completed";
 
 export type Article = {
   slug: string;

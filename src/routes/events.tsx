@@ -4,7 +4,7 @@ import { ArrowUpRight, CalendarDays, MapPin } from "lucide-react";
 import { Container, FinalCTA, PageHero, SampleBadge } from "@/components/site/Blocks";
 import { IlluxusEvents } from "@/components/site/IlluxusEvents";
 import { Button } from "@/components/ui/button";
-import { isUpcoming } from "@/lib/content";
+import { eventStatus, isUpcoming } from "@/lib/content";
 import { getPublicEvents } from "@/lib/admin.functions";
 import { pageMeta } from "@/lib/metadata";
 import { Rich, useContent } from "@/lib/content-context";
@@ -101,6 +101,17 @@ function Events() {
                 <div className="flex flex-1 flex-col p-7">
                   <div className="flex flex-wrap items-center gap-3">
                     <p className="eyebrow text-electric">{e.type}</p>
+                    <span
+                      className={`rounded-full border px-3 py-1 text-[0.65rem] font-medium ${
+                        eventStatus(e) === "Already completed"
+                          ? "border-border text-muted-foreground"
+                          : eventStatus(e) === "Happening today"
+                            ? "border-electric/40 bg-electric/10 text-electric"
+                            : "border-turquoise/40 bg-turquoise/10 text-turquoise"
+                      }`}
+                    >
+                      {eventStatus(e)}
+                    </span>
                     {e.sample && <SampleBadge />}
                   </div>
                   <h2 className="mt-5 text-2xl">

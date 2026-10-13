@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { deleteAdminEvent, saveAdminEvent, uploadEventPoster } from "@/lib/admin.functions";
 import { cn } from "@/lib/utils";
+import { eventStatus } from "@/lib/content";
 import { Card, Drawer, Empty, FieldLabel, PanelHeader, Pill, errorMessage, fieldCls } from "./ui";
 
 export type AdminEvent = {
@@ -71,7 +72,6 @@ const slugify = (title: string) =>
     .replace(/^-+|-+$/g, "")
     .slice(0, 80);
 
-const today = () => new Date().toISOString().slice(0, 10);
 const longDate = (date: string) =>
   new Date(date + "T12:00:00").toLocaleDateString("en-IN", {
     day: "numeric",
@@ -179,7 +179,9 @@ export function EventsPanel({
                 </p>
               </button>
               <div className="flex items-center gap-2">
-                {event.date < today() && <Pill tone="closed">Past</Pill>}
+                <Pill tone={eventStatus(event) === "Already completed" ? "closed" : "live"}>
+                  {eventStatus(event)}
+                </Pill>
                 <Pill tone={event.published ? "live" : "draft"}>
                   {event.published ? "Live" : "Draft"}
                 </Pill>

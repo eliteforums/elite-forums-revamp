@@ -4,6 +4,7 @@ import { EventRegisterForm } from "@/components/forms/Forms";
 import { Button } from "@/components/ui/button";
 import { getPublicEvents } from "@/lib/admin.functions";
 import { pageMeta } from "@/lib/metadata";
+import { eventStatus } from "@/lib/content";
 
 export const Route = createFileRoute("/events_/$slug")({
   loader: async ({ params }) => {
@@ -25,7 +26,12 @@ function EventDetail() {
   return (
     <>
       <PageHero eyebrow={event.type} title={event.title} intro={event.summary}>
-        {event.sample && <SampleBadge />}
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="rounded-full border border-electric/40 bg-electric/10 px-3 py-1 text-xs font-medium text-electric">
+            {eventStatus(event)}
+          </span>
+          {event.sample && <SampleBadge />}
+        </div>
       </PageHero>
       <section className="section-space">
         <Container className="grid items-start gap-12 lg:grid-cols-[1.6fr_1fr]">
