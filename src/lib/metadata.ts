@@ -16,11 +16,11 @@ export function pageMeta(title: string, description: string, path = "/") {
       { property: "og:type", content: "website" },
       { property: "og:url", content: `${SITE_URL}${path}` },
       { property: "og:site_name", content: "Elite Forums" },
-      { property: "og:image", content: `${SITE_URL}/favicon.png` },
+      { property: "og:image", content: `${SITE_URL}/og-image.svg` },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: fullTitle },
       { name: "twitter:description", content: description },
-      { name: "twitter:image", content: `${SITE_URL}/favicon.png` },
+      { name: "twitter:image", content: `${SITE_URL}/og-image.svg` },
     ],
     links: [{ rel: "canonical", href: `${SITE_URL}${path}` }],
   };

@@ -59,9 +59,18 @@ SUPABASE_URL=...
 SUPABASE_PUBLISHABLE_KEY=...
 VITE_SUPABASE_URL=...
 VITE_SUPABASE_PUBLISHABLE_KEY=...
+VITE_GOOGLE_SITE_VERIFICATION=...
 ```
 
 The `VITE_` variables are read in the browser, the unprefixed ones by server code.
+Set `VITE_GOOGLE_SITE_VERIFICATION` to the exact token supplied by Google Search
+Console; the verification meta tag is omitted when it is unset. Google Analytics
+uses measurement ID `G-RZY47VR9T3` and only loads after the visitor accepts
+optional cookies.
+
+The static `public/_redirects` file contains the small set of legacy entry-point
+redirects currently known to the project. Add verified old-to-new URL mappings
+there before deploying additional migrations; do not redirect unknown URLs.
 
 ## Structure
 

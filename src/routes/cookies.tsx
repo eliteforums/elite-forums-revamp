@@ -43,17 +43,16 @@ function Cookies() {
                 disabled without breaking that feature.
               </p>
               <p>
-                We do not currently activate advertising cookies, behavioural tracking cookies or
-                third-party analytics cookies through this public website. If that changes, this
-                policy and the consent controls will be updated before optional technologies are
-                activated where consent is required.
+                We do not activate advertising or behavioural tracking cookies. Google Analytics is
+                an optional measurement service and loads only after you choose “Accept optional
+                cookies”; it is not loaded when you choose essential-only storage.
               </p>
             </PolicySection>
             <PolicySection title="3. Consent choices">
               <p>
                 The cookie banner allows you to choose optional cookies or essential-only storage.
-                At present, “Accept optional cookies” does not activate an advertising or analytics
-                service because none is configured. Your choice is saved locally as
+                “Accept optional cookies” enables Google Analytics measurement, while “Essential
+                only” keeps analytics disabled. Your choice is saved locally as
                 <code className="mx-1 rounded bg-muted px-1">elite-forums-cookie-consent</code>.
               </p>
               <p>

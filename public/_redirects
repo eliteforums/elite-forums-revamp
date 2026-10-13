@@ -1,0 +1,6 @@
+# Keep legacy public entry points discoverable after the route migration.
+# Add any campaign-specific legacy URLs here before publishing a new redirect.
+/home / 301
+/index.html / 301
+/events.html /events 301
+/contact.html /contact 301

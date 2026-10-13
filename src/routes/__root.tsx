@@ -16,6 +16,7 @@ import { Footer } from "@/components/site/Footer";
 import { Toaster } from "@/components/ui/sonner";
 import { CookieConsent } from "@/components/site/CookieConsent";
 import { SiteContentProvider } from "@/lib/content-context";
+import { Analytics } from "@/components/site/Analytics";
 import { getSiteContent } from "@/lib/content.functions";
 import appCss from "../styles.css?url";
 
@@ -23,8 +24,8 @@ function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
+        <p className="eyebrow text-electric">404 · Lost in the ecosystem</p>
+        <h1 className="display-xl mt-5 text-6xl text-foreground">Page not found</h1>
         <p className="mt-2 text-sm text-muted-foreground">
           The page you're looking for doesn't exist or has been moved.
         </p>
@@ -90,7 +91,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://eliteforums.in/" },
       { property: "og:site_name", content: "Elite Forums" },
-      { property: "og:image", content: "https://eliteforums.in/favicon.png" },
+      { property: "og:image", content: "https://eliteforums.in/og-image.svg" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Elite Forums — Community for Aspiring Founders" },
       {
@@ -98,8 +99,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "A startup community connecting aspiring founders, students, colleges, E-Cells and mentors across India.",
       },
-      { name: "twitter:image", content: "https://eliteforums.in/favicon.png" },
+      { name: "twitter:image", content: "https://eliteforums.in/og-image.svg" },
       { name: "theme-color", content: "#0a0a0a" },
+      ...(import.meta.env.VITE_GOOGLE_SITE_VERIFICATION
+        ? [
+            {
+              name: "google-site-verification",
+              content: import.meta.env.VITE_GOOGLE_SITE_VERIFICATION,
+            },
+          ]
+        : []),
     ],
     links: [
       {
@@ -193,6 +202,7 @@ function RootComponent() {
         {!isAdminRoute && <Footer />}
         {!isAdminRoute && <Toaster />}
         {!isAdminRoute && <CookieConsent />}
+        {!isAdminRoute && <Analytics />}
       </SiteContentProvider>
     </QueryClientProvider>
   );

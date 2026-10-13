@@ -69,6 +69,8 @@ function Resources() {
                     <img
                       src={a.image}
                       alt={a.title}
+                      loading="lazy"
+                      decoding="async"
                       className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                   </div>

@@ -145,9 +145,10 @@ function Privacy() {
             <PolicySection title="8. Cookies and similar technologies">
               <p>
                 The website may use essential storage, session technologies and security mechanisms
-                needed for authentication, routing and form operation. We may use limited analytics
-                or diagnostic technologies in the future. Where consent is required, we will request
-                it before using non-essential technologies.
+                needed for authentication, routing and form operation. If you accept optional
+                cookies, Google Analytics may process pseudonymous usage data such as page views,
+                browser details and approximate location to help us improve the website. Analytics
+                is not loaded when you choose essential-only storage.
               </p>
             </PolicySection>
             <PolicySection title="9. Retention and security">

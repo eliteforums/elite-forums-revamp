@@ -88,6 +88,8 @@ function Events() {
                   <img
                     src={e.image}
                     alt={e.title}
+                    loading="lazy"
+                    decoding="async"
                     className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 </Link>

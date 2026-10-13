@@ -13,6 +13,7 @@ export function CookieConsent() {
 
   function saveChoice(choice: "accepted" | "essential-only") {
     window.localStorage.setItem(STORAGE_KEY, choice);
+    window.dispatchEvent(new Event("elite-forums-cookie-consent"));
     setVisible(false);
   }
 
@@ -26,8 +27,8 @@ export function CookieConsent() {
       <p className="eyebrow text-electric">Your privacy choices</p>
       <h2 className="mt-2 text-lg text-foreground">Cookies on Elite Forums</h2>
       <p className="mt-2 text-sm leading-6 text-muted-foreground">
-        We use essential browser storage for security, authentication and form operation. We do not
-        currently activate advertising or analytics cookies. Read our{" "}
+        We use essential browser storage for security, authentication and form operation. Optional
+        analytics help us understand page usage. Read our{" "}
         <Link to="/cookies" className="text-foreground underline underline-offset-2">
           Cookie Policy
         </Link>{" "}

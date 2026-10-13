@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ArrowUpRight } from "lucide-react";
 import { useContent } from "@/lib/content-context";
+import { Breadcrumbs } from "./Breadcrumbs";
 
 export function Container({
   className,
@@ -34,6 +35,7 @@ export function PageHero({
 }) {
   return (
     <section className="relative overflow-hidden border-b border-border pb-16 pt-36 md:pb-20 md:pt-44">
+      <Breadcrumbs />
       <Container className="relative">
         <p className="eyebrow animate-rise text-electric">{eyebrow}</p>
         <h1 className="display-xl animate-rise mt-6 max-w-5xl text-[2.5rem] sm:text-6xl md:text-7xl lg:text-[5rem]">

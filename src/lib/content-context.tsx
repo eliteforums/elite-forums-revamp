@@ -1,8 +1,8 @@
 import { Fragment, createContext, useContext, useMemo, type ReactNode } from "react";
 import { contentReader, type ContentOverrides, type ContentReader } from "./site-content";
-import founder from "@/assets/founder.jpg";
-import hackathon from "@/assets/hackathon.jpg";
-import students from "@/assets/students.jpg";
+import founder from "@/assets/founder.webp";
+import hackathon from "@/assets/hackathon.webp";
+import students from "@/assets/students.webp";
 
 const ContentContext = createContext<ContentOverrides>({});
 
