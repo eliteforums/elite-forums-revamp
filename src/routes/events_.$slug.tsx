@@ -74,12 +74,24 @@ function EventDetail() {
             </span>
             {event.sample && <SampleBadge />}
           </div>
-          <h1 className="animate-rise mt-6 max-w-4xl text-balance font-display text-4xl font-medium leading-[1.08] tracking-tight sm:text-5xl lg:text-7xl">
-            {event.title}
-          </h1>
-          <p className="animate-rise mt-6 max-w-2xl text-base leading-7 text-muted-foreground md:text-lg md:leading-8">
-            {descriptionLead(event.summary, event.title)}
-          </p>
+          <div className="mt-6 grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_minmax(15rem,0.55fr)] md:gap-12">
+            <div className="min-w-0">
+              <h1 className="animate-rise max-w-4xl text-balance font-display text-4xl font-medium leading-[1.08] tracking-tight sm:text-5xl lg:text-6xl">
+                {event.title}
+              </h1>
+              <p className="animate-rise mt-6 max-w-2xl text-base leading-7 text-muted-foreground md:text-lg md:leading-8">
+                {descriptionLead(event.summary, event.title)}
+              </p>
+            </div>
+            <div className="overflow-hidden rounded-3xl border border-border bg-muted/40 p-3 md:p-4">
+              <img
+                src={event.image}
+                alt={`${event.title} poster`}
+                className="mx-auto aspect-[4/5] max-h-[34rem] w-full rounded-2xl object-contain"
+                decoding="async"
+              />
+            </div>
+          </div>
           <dl className="animate-rise mt-10 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
             {facts.map(({ icon: Icon, label, value }) => (
               <div key={label} className="min-w-0 bg-background p-5 md:p-6">
@@ -147,15 +159,6 @@ function EventDetail() {
                   <EventRegisterForm slug={event.slug} title={event.title} />
                 </>
               )}
-            </div>
-            <div className="overflow-hidden rounded-3xl border border-border bg-muted/40 p-3 md:p-4">
-              <img
-                src={event.image}
-                alt={`${event.title} poster`}
-                className="mx-auto aspect-[4/5] max-h-[42rem] w-full rounded-2xl object-contain"
-                loading="lazy"
-                decoding="async"
-              />
             </div>
           </aside>
           <div className="min-w-0 lg:order-1">
