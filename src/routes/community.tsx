@@ -42,7 +42,7 @@ function Community() {
         <Container>
           <SectionHead eyebrow={c.t("stats.eyebrow")} title={c.t("stats.title")} />
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {c.items("stats").map((stat, i) => (
+            {c.items("stats.items").map((stat, i) => (
               <div key={i} className="panel border border-border bg-background p-6">
                 <p className="display-xl text-4xl text-electric">{itemText(stat, "title")}</p>
                 <p className="mt-3 text-sm font-medium text-foreground">{itemText(stat, "body")}</p>

@@ -531,7 +531,7 @@ export const CONTENT_PAGES: PageDef[] = [
             },
             {
               title: "50+",
-              body: "Angel investors",
+              body: "Angel Investors",
             },
             {
               title: "10+",
