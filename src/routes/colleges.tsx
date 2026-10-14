@@ -33,25 +33,6 @@ function Colleges() {
         title={<Rich text={c.t("hero.title")} />}
         intro={c.t("hero.intro")}
       />
-      <section className="py-12">
-        <Container>
-          <div className="grid gap-4 md:grid-cols-2">
-            {offers.map((offer, i) => (
-              <div
-                key={i}
-                className={`panel border border-border p-8${
-                  i === offers.length - 1 && offers.length % 2 === 1
-                    ? " md:col-span-2 md:mx-auto md:w-1/2"
-                    : ""
-                }`}
-              >
-                <h3 className="display-xl text-2xl">{itemText(offer, "title")}</h3>
-                <p className="mt-3 text-muted-foreground">{itemText(offer, "body")}</p>
-              </div>
-            ))}
-          </div>
-        </Container>
-      </section>
       <section className="section-space border-y border-border bg-surface/40">
         <Container>
           <SectionHead
@@ -102,6 +83,25 @@ function Colleges() {
             ))}
           </div>
           <p className="mt-8 text-xs text-muted-foreground">{c.t("programmes.footnote")}</p>
+        </Container>
+      </section>
+      <section className="py-12">
+        <Container>
+          <div className="grid gap-4 md:grid-cols-2">
+            {offers.map((offer, i) => (
+              <div
+                key={i}
+                className={`panel border border-border p-8${
+                  i === offers.length - 1 && offers.length % 2 === 1
+                    ? " md:col-span-2 md:mx-auto md:w-1/2"
+                    : ""
+                }`}
+              >
+                <h3 className="display-xl text-2xl">{itemText(offer, "title")}</h3>
+                <p className="mt-3 text-muted-foreground">{itemText(offer, "body")}</p>
+              </div>
+            ))}
+          </div>
         </Container>
       </section>
       <section className="py-16 md:py-24">
