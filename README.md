@@ -65,8 +65,8 @@ VITE_GOOGLE_SITE_VERIFICATION=...
 The `VITE_` variables are read in the browser, the unprefixed ones by server code.
 Set `VITE_GOOGLE_SITE_VERIFICATION` to the exact token supplied by Google Search
 Console; the verification meta tag is omitted when it is unset. Google Analytics
-uses measurement ID `G-RZY47VR9T3` and only loads after the visitor accepts
-optional cookies.
+uses measurement ID `G-RZY47VR9T3`; the tag loads with consent denied and only enables
+measurement after the visitor accepts optional cookies.
 
 The static `public/_redirects` file contains the small set of legacy entry-point
 redirects currently known to the project. Add verified old-to-new URL mappings

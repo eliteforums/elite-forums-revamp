@@ -9,6 +9,7 @@ declare global {
     dataLayer: unknown[];
     gtag?: (...args: unknown[]) => void;
     eliteForumsAnalyticsConfigured?: boolean;
+    eliteForumsAnalyticsConsentGranted?: boolean;
   }
 }
 
@@ -30,30 +31,17 @@ export function Analytics() {
 }
 
 function loadAnalytics(pathname: string) {
-  const scriptId = "google-analytics-gtag";
+  if (!window.gtag) {
+    console.error("Google Analytics was not initialized in the document head.");
+    return;
+  }
 
-  window.dataLayer = window.dataLayer || [];
-  window.gtag =
-    window.gtag ||
-    function gtag() {
-      window.dataLayer.push(arguments);
-    };
-
-  if (!document.getElementById(scriptId)) {
-    const script = document.createElement("script");
-    script.id = scriptId;
-    script.async = true;
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${MEASUREMENT_ID}`;
-    script.addEventListener(
-      "error",
-      () => console.error("Google Analytics failed to load. Check network or content blockers."),
-      { once: true },
-    );
-    document.head.appendChild(script);
+  if (!window.eliteForumsAnalyticsConsentGranted) {
+    window.gtag("consent", "update", { analytics_storage: "granted" });
+    window.eliteForumsAnalyticsConsentGranted = true;
   }
 
   if (!window.eliteForumsAnalyticsConfigured) {
-    window.gtag("js", new Date());
     window.gtag("config", MEASUREMENT_ID, { send_page_view: false });
     window.eliteForumsAnalyticsConfigured = true;
   }

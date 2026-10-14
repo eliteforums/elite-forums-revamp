@@ -40,9 +40,10 @@ function Cookies() {
                 disabled without breaking that feature.
               </p>
               <p>
-                We do not activate advertising or behavioural tracking cookies. Google Analytics is
-                an optional measurement service and loads only after you choose “Accept optional
-                cookies”; it is not loaded when you choose essential-only storage.
+                We do not activate advertising or behavioural tracking cookies. The Google tag
+                loads with analytics and advertising storage denied by default. Google Analytics
+                measurement and analytics storage are enabled only after you choose “Accept
+                optional cookies”; choosing essential-only keeps analytics measurement disabled.
               </p>
             </PolicySection>
             <PolicySection title="3. Consent choices">
