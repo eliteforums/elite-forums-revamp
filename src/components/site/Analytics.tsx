@@ -8,6 +8,7 @@ declare global {
   interface Window {
     dataLayer: unknown[];
     gtag?: (...args: unknown[]) => void;
+    eliteForumsAnalyticsConfigured?: boolean;
   }
 }
 
@@ -30,22 +31,33 @@ export function Analytics() {
 
 function loadAnalytics(pathname: string) {
   const scriptId = "google-analytics-gtag";
+
+  window.dataLayer = window.dataLayer || [];
+  window.gtag =
+    window.gtag ||
+    function gtag() {
+      window.dataLayer.push(arguments);
+    };
+
   if (!document.getElementById(scriptId)) {
     const script = document.createElement("script");
     script.id = scriptId;
     script.async = true;
     script.src = `https://www.googletagmanager.com/gtag/js?id=${MEASUREMENT_ID}`;
+    script.addEventListener(
+      "error",
+      () => console.error("Google Analytics failed to load. Check network or content blockers."),
+      { once: true },
+    );
     document.head.appendChild(script);
   }
 
-  window.dataLayer = window.dataLayer || [];
-  window.gtag =
-    window.gtag ||
-    ((...args: unknown[]) => {
-      window.dataLayer.push(args);
-    });
-  window.gtag("js", new Date());
-  window.gtag("config", MEASUREMENT_ID, { send_page_view: false });
+  if (!window.eliteForumsAnalyticsConfigured) {
+    window.gtag("js", new Date());
+    window.gtag("config", MEASUREMENT_ID, { send_page_view: false });
+    window.eliteForumsAnalyticsConfigured = true;
+  }
+
   window.gtag("event", "page_view", {
     page_path: pathname,
     page_location: window.location.href,
