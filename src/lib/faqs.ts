@@ -32,12 +32,12 @@ export const FAQS: Faq[] = [
   {
     question: "What is included in Coworking Space Membership?",
     answer:
-      "Coworking Space Membership provides desk space for up to two founders or a startup team, conference-room discounts, Wi-Fi, charging access, pantry access, an air-conditioned professional workspace and guidance from startup mentors or the Elite Forums Innovation Lab team.",
+      "Weekend workspace access for all plans follows the same hours: Saturdays from 3:00 PM onward and Sundays from 9:00 AM onward. The shared coworking plan starts at INR 7,000 per month for a minimum team of 5 people. Dedicated coworking space costs INR 15,000 per month and includes weekday access for 4 days per week. Workspace also includes conference-room discounts, Wi-Fi, charging access, pantry access, an air-conditioned professional environment and guidance from startup mentors or the Elite Forums Innovation Lab team.",
   },
   {
     question: "How much do the Elite Forums programmes cost?",
     answer:
-      "The listed programme price is INR 5,000 plus applicable taxes. Final inclusions, availability and programme terms should be confirmed with Elite Forums before enrollment.",
+      "The Startup Cohort and Incubation Program fees are INR 5,000 plus applicable taxes. Shared coworking starts at INR 7,000 per month for a minimum team of 5 people; dedicated coworking is INR 15,000 per month with weekday access for 4 days per week. Confirm applicable taxes and availability with Elite Forums before booking.",
   },
   {
     question: "How can a college or E-Cell partner with Elite Forums?",

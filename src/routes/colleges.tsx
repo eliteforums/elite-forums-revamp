@@ -53,7 +53,8 @@ function Colleges() {
                 <div className="flex items-start justify-between gap-4">
                   <Icon className="h-9 w-9 text-electric" aria-hidden="true" />
                   <span className="eyebrow rounded-full border border-electric/30 px-3 py-1 text-electric">
-                    {c.t("programmes.price")}
+                    {itemText(copy, "price") ||
+                      (id === "coworking" ? "Monthly options" : "INR 5,000 + taxes*")}
                   </span>
                 </div>
                 <p className="eyebrow mt-10 text-muted-foreground">{itemText(copy, "eyebrow")}</p>

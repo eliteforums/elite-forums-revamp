@@ -461,13 +461,13 @@ export const CONTENT_PAGES: PageDef[] = [
             "Introduction",
             "Choose the facility that fits your stage. Every programme is designed to bring founders closer to mentorship, execution support, workspace and the wider startup ecosystem.",
           ),
-          "programmes.price": text("Price badge", "INR 5,000 + taxes*"),
           programmes: items(
             "Programmes",
             "Programme",
             {
               eyebrow: { type: "text", label: "Small label" },
               title: { type: "text", label: "Name" },
+              price: { type: "text", label: "Price badge" },
               intro: { type: "textarea", label: "Introduction" },
               benefits: { type: "lines", label: "Benefits (one per line)" },
             },
@@ -475,6 +475,7 @@ export const CONTENT_PAGES: PageDef[] = [
               {
                 eyebrow: "For founders building from zero",
                 title: "Startup Cohort Program",
+                price: "INR 5,000 + taxes*",
                 intro:
                   "A structured 90-day journey for selected founders and startup teams who want practical support from idea validation to a stronger launch-ready foundation.",
                 benefits: [
@@ -485,7 +486,7 @@ export const CONTENT_PAGES: PageDef[] = [
                   "Pitch deck preparation and investor readiness",
                   "Guidance on fundraising and government grants",
                   "Access to the Elite Forums Innovation Lab and its IT team for the full cohort",
-                  "Weekend office-space access for focused building and collaboration",
+                  "Workspace access: Saturdays from 3:00 PM onward and Sundays from 9:00 AM onward",
                   "Guidance on market research, customer discovery and product building",
                   "Additional founder learning, connections and programme opportunities",
                 ],
@@ -493,6 +494,7 @@ export const CONTENT_PAGES: PageDef[] = [
               {
                 eyebrow: "For startups ready to accelerate",
                 title: "Incubation Program",
+                price: "INR 5,000 + taxes*",
                 intro:
                   "Everything included in the Startup Cohort experience, with a focused incubation environment for founders who want consistent access to people, space and execution support.",
                 benefits: [
@@ -500,7 +502,7 @@ export const CONTENT_PAGES: PageDef[] = [
                   "All core Startup Cohort Program benefits",
                   "Latest updates about relevant startup events",
                   "Regular founder's connect opportunities",
-                  "Co-working space access at the incubation centre",
+                  "Workspace access: Saturdays from 3:00 PM onward and Sundays from 9:00 AM onward",
                   "Mentorship from our experts whenever the founder team is present",
                   "Discounts on coworking space and meeting-room bookings",
                   "Legal aid and assistance for startup-related needs",
@@ -511,12 +513,15 @@ export const CONTENT_PAGES: PageDef[] = [
                 ],
               },
               {
-                eyebrow: "For two founders or a startup team",
+                eyebrow: "For teams looking for flexible workspace",
                 title: "Coworking Space Membership",
+                price: "From INR 7,000/month*",
                 intro:
                   "A professional, founder-friendly workspace with the practical facilities teams need to work consistently and stay connected to the startup ecosystem.",
                 benefits: [
-                  "Desk access for up to two founders or a startup team",
+                  "Weekend access: Saturdays from 3:00 PM onward and Sundays from 9:00 AM onward",
+                  "Shared monthly coworking starts at INR 7,000 for a minimum team of 5 people",
+                  "Dedicated coworking space: INR 15,000 per month with weekday access for 4 days per week",
                   "Discounts on additional coworking space and meeting-room bookings",
                   "Wi-Fi access for the team",
                   "Dedicated charging ports",
@@ -536,7 +541,7 @@ export const CONTENT_PAGES: PageDef[] = [
           "programmes.link": text("Card link text", "Apply for this programme"),
           "programmes.footnote": area(
             "Footnote",
-            "*Programme charges are INR 5,000 plus applicable taxes per the applicable programme terms. Final inclusions, duration, availability, taxes, cancellation terms and onboarding requirements will be confirmed before enrolment.",
+            "*Startup Cohort and Incubation Program fees are INR 5,000 plus applicable taxes. Shared coworking starts at INR 7,000 per month for a team of at least 5; dedicated coworking is INR 15,000 per month with weekday access for 4 days per week. Confirm applicable taxes, availability and booking terms before enrolment.",
           ),
         },
       },
