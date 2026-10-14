@@ -1,7 +1,10 @@
 import { useEffect } from "react";
 import { useRouterState } from "@tanstack/react-router";
+import {
+  GOOGLE_TAG_ID,
+  GOOGLE_TAG_MANAGER_ID,
+} from "@/lib/analytics-config";
 
-const MEASUREMENT_ID = "G-RZY47VR9T3";
 const CONSENT_KEY = "elite-forums-cookie-consent";
 
 declare global {
@@ -32,7 +35,7 @@ export function Analytics() {
 
 function loadAnalytics(pathname: string) {
   if (!window.gtag) {
-    console.error("Google Analytics was not initialized in the document head.");
+    console.error("Google Analytics or Tag Manager was not initialized in the document head.");
     return;
   }
 
@@ -41,14 +44,21 @@ function loadAnalytics(pathname: string) {
     window.eliteForumsAnalyticsConsentGranted = true;
   }
 
-  if (!window.eliteForumsAnalyticsConfigured) {
-    window.gtag("config", MEASUREMENT_ID, { send_page_view: false });
-    window.eliteForumsAnalyticsConfigured = true;
-  }
-
-  window.gtag("event", "page_view", {
+  const pageView = {
     page_path: pathname,
     page_location: window.location.href,
     page_title: document.title,
-  });
+  };
+
+  if (GOOGLE_TAG_MANAGER_ID) {
+    window.dataLayer.push({ event: "page_view", ...pageView });
+    return;
+  }
+
+  if (!window.eliteForumsAnalyticsConfigured) {
+    window.gtag("config", GOOGLE_TAG_ID, { send_page_view: false });
+    window.eliteForumsAnalyticsConfigured = true;
+  }
+
+  window.gtag("event", "page_view", pageView);
 }

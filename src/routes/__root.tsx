@@ -18,6 +18,10 @@ import { CookieConsent } from "@/components/site/CookieConsent";
 import { SiteContentProvider } from "@/lib/content-context";
 import { Analytics } from "@/components/site/Analytics";
 import { getSiteContent } from "@/lib/content.functions";
+import {
+  GOOGLE_TAG_ID,
+  GOOGLE_TAG_MANAGER_ID,
+} from "@/lib/analytics-config";
 import appCss from "../styles.css?url";
 
 function NotFoundComponent() {
@@ -153,28 +157,66 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: ReactNode }) {
+  const analyticsBootstrap = GOOGLE_TAG_MANAGER_ID
+    ? `
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function() { window.dataLayer.push(arguments); };
+        window.gtag("consent", "default", {
+          ad_storage: "denied",
+          ad_user_data: "denied",
+          ad_personalization: "denied",
+          analytics_storage: "denied"
+        });
+        (function(w, d, s, l, i) {
+          w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+          var firstScript = d.getElementsByTagName(s)[0];
+          var gtmScript = d.createElement(s);
+          var dataLayerParam = l !== "dataLayer" ? "&l=" + l : "";
+          gtmScript.async = true;
+          gtmScript.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dataLayerParam;
+          firstScript.parentNode.insertBefore(gtmScript, firstScript);
+        })(window, document, "script", "dataLayer", "${GOOGLE_TAG_MANAGER_ID}");
+      `
+    : `
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function() { window.dataLayer.push(arguments); };
+        window.gtag("consent", "default", {
+          ad_storage: "denied",
+          ad_user_data: "denied",
+          ad_personalization: "denied",
+          analytics_storage: "denied"
+        });
+        window.gtag("js", new Date());
+      `;
+
   return (
     <html lang="en">
       <head>
-        <HeadContent />
         <script
           dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              window.gtag = function() { window.dataLayer.push(arguments); };
-              window.gtag("consent", "default", {
-                ad_storage: "denied",
-                ad_user_data: "denied",
-                ad_personalization: "denied",
-                analytics_storage: "denied"
-              });
-              window.gtag("js", new Date());
-            `,
+            __html: analyticsBootstrap,
           }}
         />
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-RZY47VR9T3"></script>
+        <HeadContent />
+        {!GOOGLE_TAG_MANAGER_ID && (
+          <script
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_TAG_ID}`}
+          />
+        )}
       </head>
       <body>
+        {GOOGLE_TAG_MANAGER_ID && (
+          <noscript>
+            <iframe
+              title="Google Tag Manager"
+              src={`https://www.googletagmanager.com/ns.html?id=${GOOGLE_TAG_MANAGER_ID}`}
+              height="0"
+              width="0"
+              style={{ display: "none", visibility: "hidden" }}
+            />
+          </noscript>
+        )}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

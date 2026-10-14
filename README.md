@@ -60,13 +60,22 @@ SUPABASE_PUBLISHABLE_KEY=...
 VITE_SUPABASE_URL=...
 VITE_SUPABASE_PUBLISHABLE_KEY=...
 VITE_GOOGLE_SITE_VERIFICATION=...
+VITE_GTM_ID=GTM-...
 ```
 
 The `VITE_` variables are read in the browser, the unprefixed ones by server code.
 Set `VITE_GOOGLE_SITE_VERIFICATION` to the exact token supplied by Google Search
-Console; the verification meta tag is omitted when it is unset. Google Analytics
-uses measurement ID `G-RZY47VR9T3`; the tag loads with consent denied and only enables
-measurement after the visitor accepts optional cookies.
+Console; the verification meta tag is omitted when it is unset. Google Analytics uses
+measurement ID `G-RZY47VR9T3` and Google tag ID `GT-TWR922VZ`. Without `VITE_GTM_ID`,
+the site loads the Google tag directly and sends data to its connected GA4 destination.
+When a valid `GTM-...` ID is set, the site loads the Tag Manager web container instead,
+includes its no-JavaScript iframe, and pushes consent-gated page-view events to the data
+layer. In Tag Manager, create a Google tag for `GT-TWR922VZ`. Since the app sends its own
+`page_view` data-layer event after consent, turn off the Google tag's automatic page-view
+on load and add an event tag for the `G-RZY47VR9T3` destination named `page_view` with a
+Custom Event trigger also named `page_view`. Preview and publish the container. Google
+consent defaults to denied; accepting optional cookies grants analytics consent. Set
+`VITE_GTM_ID` in the environment used for the production build as well as locally.
 
 The static `public/_redirects` file contains the small set of legacy entry-point
 redirects currently known to the project. Add verified old-to-new URL mappings
