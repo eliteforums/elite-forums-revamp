@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Container, PageHero, SectionHead } from "@/components/site/Blocks";
+import { CountUp } from "@/components/site/CountUp";
 import { StudentForm } from "@/components/forms/Forms";
 import { Rich, useContent } from "@/lib/content-context";
 import { pageMeta } from "@/lib/metadata";
@@ -33,9 +34,7 @@ function Community() {
                 key={i}
                 className="panel flex min-h-36 flex-col justify-between border border-border bg-background p-6 md:min-h-40"
               >
-                <p className="display-xl text-4xl leading-none text-electric sm:text-5xl">
-                  {itemText(stat, "title")}
-                </p>
+                <CountUp value={itemText(stat, "title")} index={i} />
                 <p className="mt-8 max-w-xs text-sm font-medium leading-6 text-foreground">
                   {itemText(stat, "body")}
                 </p>

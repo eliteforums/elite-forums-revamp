@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowUpRight, Cpu, Rocket } from "lucide-react";
 import { Container, FinalCTA, PageHero, SectionHead } from "@/components/site/Blocks";
 import { Button } from "@/components/ui/button";
+import { CountUp } from "@/components/site/CountUp";
 import { pageMeta } from "@/lib/metadata";
 import { Rich, resolveImage, useContent } from "@/lib/content-context";
 import { itemText } from "@/lib/site-content";
@@ -47,9 +48,7 @@ function InnovationLab() {
                 key={i}
                 className="panel flex min-h-36 flex-col justify-between border border-border bg-background p-6 md:min-h-40"
               >
-                <p className="display-xl text-4xl leading-none text-electric sm:text-5xl">
-                  {itemText(stat, "title")}
-                </p>
+                <CountUp value={itemText(stat, "title")} index={i} />
                 <p className="mt-8 max-w-xs text-sm font-medium leading-6 text-foreground">
                   {itemText(stat, "body")}
                 </p>
