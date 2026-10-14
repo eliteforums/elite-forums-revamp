@@ -498,7 +498,7 @@ export const CONTENT_PAGES: PageDef[] = [
                   "Regular founder's connect opportunities",
                   "Co-working space access at the incubation centre",
                   "Mentorship from our experts whenever the founder team is present",
-                  "Discounted rates on services such as desk space and conference rooms",
+                  "Discounts on coworking space and meeting-room bookings",
                   "Special IT project-development pricing, advertised at up to 4x cheaper than typical market cost",
                   "Cloud credits to help reduce infrastructure costs for your startup, subject to provider eligibility and availability",
                   "Practical support through the Elite Forums Innovation Lab team",
@@ -511,7 +511,7 @@ export const CONTENT_PAGES: PageDef[] = [
                   "A professional, founder-friendly workspace with the practical facilities teams need to work consistently and stay connected to the startup ecosystem.",
                 benefits: [
                   "Desk access for up to two founders or a startup team",
-                  "Discounts on conference-room bookings",
+                  "Discounts on additional coworking space and meeting-room bookings",
                   "Wi-Fi access for the team",
                   "Dedicated charging ports",
                   "Pantry access",
