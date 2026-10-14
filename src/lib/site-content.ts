@@ -445,6 +445,10 @@ export const CONTENT_PAGES: PageDef[] = [
               title: "Technical support",
               body: "Student startup teams can get technical guidance and product-building support from the Elite Forums Innovation Lab.",
             },
+            {
+              title: "Coworking and meeting room discounts",
+              body: "Student founders can access discounted rates for coworking space and meeting-room bookings through our programmes.",
+            },
           ]),
         },
       },
