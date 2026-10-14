@@ -22,6 +22,7 @@ export function pageMeta(
   const fullTitle = `${title} — Elite Forums`;
   const canonical = absoluteUrl(path);
   const image = absoluteUrl(options.image ?? "/og-image.png");
+  const usesDefaultImage = options.image === undefined;
   const imageAlt = options.imageAlt ?? "Elite Forums founder and startup ecosystem";
   const robots = options.noIndex
     ? options.noFollow
@@ -43,7 +44,15 @@ export function pageMeta(
       { property: "og:url", content: canonical },
       { property: "og:site_name", content: "Elite Forums" },
       { property: "og:image", content: image },
+      { property: "og:image:secure_url", content: image },
       { property: "og:image:alt", content: imageAlt },
+      ...(usesDefaultImage
+        ? [
+            { property: "og:image:width", content: "1200" },
+            { property: "og:image:height", content: "630" },
+            { property: "og:image:type", content: "image/png" },
+          ]
+        : []),
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: fullTitle },
       { name: "twitter:description", content: description },

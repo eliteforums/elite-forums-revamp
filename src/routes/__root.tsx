@@ -92,7 +92,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:url", content: "https://eliteforums.in/" },
       { property: "og:site_name", content: "Elite Forums" },
       { property: "og:locale", content: "en_IN" },
+      {
+        property: "og:title",
+        content: "Startup Community in India for Aspiring Founders — Elite Forums",
+      },
+      {
+        property: "og:description",
+        content:
+          "Join Elite Forums, an India-focused startup community for aspiring founders and student entrepreneurs. Explore founder programmes, events, college partnerships and practical resources.",
+      },
       { property: "og:image", content: "https://eliteforums.in/og-image.png" },
+      { property: "og:image:secure_url", content: "https://eliteforums.in/og-image.png" },
       { property: "og:image:alt", content: "Elite Forums founder and startup ecosystem" },
       { name: "twitter:card", content: "summary_large_image" },
       {
@@ -105,6 +115,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "Join an India-focused community for aspiring founders, student entrepreneurs, colleges and E-Cells.",
       },
       { name: "twitter:image", content: "https://eliteforums.in/og-image.png" },
+      { name: "twitter:image:alt", content: "Elite Forums founder and startup ecosystem" },
       { name: "theme-color", content: "#0a0a0a" },
       ...(import.meta.env.VITE_GOOGLE_SITE_VERIFICATION
         ? [
