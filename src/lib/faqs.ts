@@ -27,7 +27,7 @@ export const FAQS: Faq[] = [
   {
     question: "What is included in the Startup Incubation Program?",
     answer:
-      "The Startup Incubation Program includes the core cohort support, startup-event updates, founder connections, coworking access, discounted workspace and meeting-room rates, expert mentorship when the founder team is present, and discounted IT project-development support.",
+      "The Startup Incubation Program includes the core cohort support, startup-event updates, founder connections, coworking access, discounted workspace and meeting-room rates, expert mentorship when the founder team is present, legal aid and assistance, guidance connecting with bank and NBFC loan options (subject to lender eligibility and approval), and discounted IT project-development support.",
   },
   {
     question: "What is included in Coworking Space Membership?",
