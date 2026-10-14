@@ -410,7 +410,7 @@ export const CONTENT_PAGES: PageDef[] = [
         fields: hero(
           "For colleges & E-Cells",
           "Bring founders to your campus.",
-          "We partner with institutions to run entrepreneurship programmes that students actually show up for.",
+          "We help colleges set up and run incubation centres, bring founders to campus for practical sessions, and provide mentoring to student startup teams.",
         ),
       },
       {
@@ -427,11 +427,23 @@ export const CONTENT_PAGES: PageDef[] = [
             },
             {
               title: "Founder sessions",
-              body: "Conversations with early-stage founders, online or in person.",
+              body: "Conversations with early-stage founders, online or in person, paired with practical mentoring for student startup teams.",
             },
             {
               title: "E-Cell support",
               body: "Formats and playbooks to help your student community grow.",
+            },
+            {
+              title: "Incubation centre setup",
+              body: "We help colleges plan and establish an incubation centre with a clear model for supporting student founders.",
+            },
+            {
+              title: "Incubation centre operations",
+              body: "We help colleges run their incubation centre through founder programming and ongoing support for student startups.",
+            },
+            {
+              title: "Technical support",
+              body: "Student startup teams can get technical guidance and product-building support from the Elite Forums Innovation Lab.",
             },
           ]),
         },

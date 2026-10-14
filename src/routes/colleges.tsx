@@ -10,7 +10,7 @@ export const Route = createFileRoute("/colleges")({
   head: () =>
     pageMeta(
       "Startup Programs for Colleges and E-Cells",
-      "Explore founder education, startup incubation and coworking programmes for colleges, campus E-Cells and student startup teams in India.",
+      "Explore incubation-centre setup and operations, founder sessions, mentoring and entrepreneurship programmes for colleges and student startup teams in India.",
       "/colleges",
     ),
   component: Colleges,
@@ -24,6 +24,7 @@ const PROGRAMMES = [
 
 function Colleges() {
   const c = useContent("colleges");
+  const offers = c.items("offer");
   const programmes = c.items("programmes");
   return (
     <>
@@ -35,8 +36,15 @@ function Colleges() {
       <section className="py-12">
         <Container>
           <div className="grid gap-4 md:grid-cols-2">
-            {c.items("offer").map((offer, i) => (
-              <div key={i} className="panel border border-border p-8">
+            {offers.map((offer, i) => (
+              <div
+                key={i}
+                className={`panel border border-border p-8${
+                  i === offers.length - 1 && offers.length % 2 === 1
+                    ? " md:col-span-2 md:mx-auto md:w-1/2"
+                    : ""
+                }`}
+              >
                 <h3 className="display-xl text-2xl">{itemText(offer, "title")}</h3>
                 <p className="mt-3 text-muted-foreground">{itemText(offer, "body")}</p>
               </div>
