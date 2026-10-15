@@ -22,12 +22,12 @@ export const FAQS: Faq[] = [
   {
     question: "What is included in the Startup Cohort Program?",
     answer:
-      "The Startup Cohort Program includes a structured 90-day incubation commitment, mentorship, startup ecosystem connections, product development and research guidance, pitch-deck preparation, fundraising guidance, government-grant guidance, founder connections and access to Elite Forums Innovation Lab and its IT team during the cohort.",
+      "The Startup Cohort Program includes a structured 90-day incubation commitment, mentorship, startup ecosystem connections, product development and research guidance, legal aid and assistance for startup-related needs, pitch-deck and investor-readiness support, fundraising and government-grant guidance, and access to the Elite Forums Innovation Lab and its IT team during the cohort. For bank and NBFC finance, founders can get help preparing a business plan, cash-flow projections and loan documents, understanding application steps, and exploring lender options; the lender decides eligibility, approval and terms. For private fundraising, founders can refine their funding ask and pitch, prepare for due diligence, and explore introductions to relevant private or angel investors when available. Loans and investments are not guaranteed.",
   },
   {
     question: "What is included in the Startup Incubation Program?",
     answer:
-      "The Startup Incubation Program includes the core cohort support, startup-event updates, founder connections, coworking access, discounted workspace and meeting-room rates, expert mentorship when the founder team is present, legal aid and assistance, guidance connecting with bank and NBFC loan options (subject to lender eligibility and approval), and discounted IT project-development support.",
+      "The Startup Incubation Program includes all core Startup Cohort support, startup-event updates, founder connections, coworking access, discounted workspace and meeting-room rates, expert mentorship when the founder team is present, and discounted IT project-development support.",
   },
   {
     question: "What is included in Coworking Space Membership?",
