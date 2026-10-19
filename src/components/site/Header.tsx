@@ -5,21 +5,17 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useContent } from "@/lib/content-context";
 import { Logo } from "./Logo";
-
-export const NAV = [
-  { to: "/", label: "Home" },
-  { to: "/innovation-lab", label: "Innovation Lab" },
-  { to: "/ecosystem", label: "Ecosystem" },
-  { to: "/colleges", label: "For Colleges" },
-  { to: "/events", label: "Events" },
-  { to: "/community", label: "Community" },
-] as const;
+import { SmartLink } from "./SmartLink";
+import { itemText } from "@/lib/site-content";
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const c = useContent("global");
-  const labels = c.list("nav.labels");
+  const nav = c
+    .items("nav.items")
+    .map((item) => ({ label: itemText(item, "label"), link: itemText(item, "link") }))
+    .filter((item) => item.label && item.link);
   useEffect(() => {
     let frame = 0;
     const update = () => {
@@ -73,24 +69,23 @@ export function Header() {
           <Logo />
         </Link>
         <nav className="hidden items-center gap-1 lg:flex" aria-label="Main">
-          {NAV.map((n, i) => (
-            <Link
-              key={n.to}
-              to={n.to}
-              activeOptions={{ exact: n.to === "/" }}
+          {nav.map((n) => (
+            <SmartLink
+              key={n.label + n.link}
+              href={n.link}
               className="px-2.5 py-2 text-xs text-muted-foreground transition-colors hover:text-foreground"
-              activeProps={{ className: "text-electric" }}
+              activeClassName="text-electric"
             >
-              {labels[i] || n.label}
-            </Link>
+              {n.label}
+            </SmartLink>
           ))}
         </nav>
         <div className="flex items-center gap-2">
           <Button asChild variant="ghost" size="sm" className="hidden xl:inline-flex">
-            <Link to="/colleges">{c.t("header.partner")}</Link>
+            <SmartLink href={c.t("header.partnerLink")}>{c.t("header.partner")}</SmartLink>
           </Button>
           <Button asChild variant="brand" size="sm" className="hidden h-9 px-4 sm:inline-flex">
-            <Link to="/community">{c.t("header.join")}</Link>
+            <SmartLink href={c.t("header.joinLink")}>{c.t("header.join")}</SmartLink>
           </Button>
           <Button
             variant="ghost"
@@ -111,26 +106,26 @@ export function Header() {
           className="max-h-[calc(100dvh-5rem)] overflow-y-auto overscroll-contain border-t border-border px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-2 lg:hidden"
           aria-label="Mobile"
         >
-          {NAV.map((n, i) => (
-            <Link
-              key={n.to}
-              to={n.to}
+          {nav.map((n) => (
+            <SmartLink
+              key={n.label + n.link}
+              href={n.link}
               onClick={() => setOpen(false)}
               className="block min-h-14 border-b border-border py-4 font-display text-2xl font-medium uppercase"
             >
-              {labels[i] || n.label}
-            </Link>
+              {n.label}
+            </SmartLink>
           ))}
           <div className="mt-6 flex flex-col gap-3">
             <Button asChild variant="brand" size="lg">
-              <Link to="/community" onClick={() => setOpen(false)}>
+              <SmartLink href={c.t("header.joinLink")} onClick={() => setOpen(false)}>
                 {c.t("header.mobileJoin")}
-              </Link>
+              </SmartLink>
             </Button>
             <Button asChild variant="outline" size="lg">
-              <Link to="/colleges" onClick={() => setOpen(false)}>
+              <SmartLink href={c.t("header.partnerLink")} onClick={() => setOpen(false)}>
                 {c.t("header.mobilePartner")}
-              </Link>
+              </SmartLink>
             </Button>
           </div>
         </nav>

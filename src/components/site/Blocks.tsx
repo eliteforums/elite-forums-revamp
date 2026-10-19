@@ -1,10 +1,10 @@
-import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ArrowUpRight } from "lucide-react";
 import { useContent } from "@/lib/content-context";
 import { Breadcrumbs } from "./Breadcrumbs";
+import { SmartLink } from "./SmartLink";
 
 export function Container({
   className,
@@ -81,12 +81,12 @@ export function FinalCTA({ title }: { title?: string }) {
             </h2>
             <div className="mt-10 flex flex-wrap gap-3">
               <Button asChild variant="ink" size="lg">
-                <Link to="/community">
+                <SmartLink href={c.t("cta.primaryLink")}>
                   {c.t("cta.primary")} <ArrowUpRight />
-                </Link>
+                </SmartLink>
               </Button>
               <Button asChild variant="ghostInk" size="lg">
-                <Link to="/colleges">{c.t("cta.secondary")}</Link>
+                <SmartLink href={c.t("cta.secondaryLink")}>{c.t("cta.secondary")}</SmartLink>
               </Button>
             </div>
           </div>

@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container, FinalCTA } from "@/components/site/Blocks";
@@ -8,6 +8,7 @@ import { itemText } from "@/lib/site-content";
 import { FaqSection } from "@/components/site/FaqSection";
 
 import { contentMeta } from "@/lib/seo";
+import { SmartLink } from "@/components/site/SmartLink";
 export const Route = createFileRoute("/")({
   head: ({ matches }) => contentMeta(matches, "home"),
   component: Home,
@@ -35,12 +36,12 @@ function Home() {
           </p>
           <div className="animate-rise mt-9 flex flex-wrap gap-4">
             <Button asChild variant="brand" size="lg">
-              <Link to="/community">
+              <SmartLink href={c.t("hero.primaryLink")}>
                 {c.t("hero.primary")} <ArrowUpRight />
-              </Link>
+              </SmartLink>
             </Button>
             <Button asChild variant="outline" size="lg">
-              <Link to="/colleges">{c.t("hero.secondary")}</Link>
+              <SmartLink href={c.t("hero.secondaryLink")}>{c.t("hero.secondary")}</SmartLink>
             </Button>
           </div>
           <div className="mt-12 flex items-center gap-3 text-xs text-muted-foreground">

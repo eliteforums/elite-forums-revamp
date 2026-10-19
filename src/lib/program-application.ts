@@ -1,8 +1,7 @@
-import { z } from "zod";
-
 /**
- * Single source of truth for the programme admission form: the questions, their
- * validation, and the labels the admin console shows next to each answer.
+ * Default questions of the programme application. They seed the "Programme
+ * application" form in `forms.ts`; once edited in the admin console, the saved
+ * version is used instead.
  */
 
 export const PROGRAMS = [
@@ -620,77 +619,3 @@ export const ACKNOWLEDGEMENTS = [
       "I consent to the use of my application data for admissions and program administration, as described in the privacy notice.",
   },
 ] as const;
-
-const COMMON_QUESTIONS = COMMON_SECTIONS.flatMap((s) => s.questions);
-export const COMMON_KEYS = COMMON_QUESTIONS.map((q) => q.key);
-
-const questionsFor = (program: ProgramId) => PROGRAM_SECTIONS[program].flatMap((s) => s.questions);
-
-/** Question text for a programme-specific answer key, for the admin console. */
-export function answerLabel(program: string, key: string): string {
-  const sections = PROGRAM_SECTIONS[program as ProgramId] ?? [];
-  return sections.flatMap((s) => s.questions).find((q) => q.key === key)?.label ?? key;
-}
-
-export const programLabel = (id: string) => PROGRAMS.find((p) => p.id === id)?.label ?? id;
-
-function fieldSchema(q: Question): z.ZodTypeAny {
-  const required = "This question is required";
-  if (q.type === "multi") {
-    const list = z.array(z.enum(q.options as [string, ...string[]])).max(q.options!.length);
-    return q.optional ? list : list.min(1, "Pick at least one option");
-  }
-  if (q.type === "select") {
-    const choice = z.enum(q.options as [string, ...string[]], {
-      errorMap: () => ({ message: "Choose an option" }),
-    });
-    return q.optional ? choice.optional().or(z.literal("")) : choice;
-  }
-  let text: z.ZodString = z.string().trim();
-  if (q.type === "email") text = text.email("Enter a valid email").max(255);
-  else if (q.type === "url") text = text.url("Enter a full link starting with https://").max(300);
-  else if (q.type === "tel") text = text.regex(/^[+0-9 ()-]{7,20}$/, "Enter a valid number");
-  else if (q.type === "date") text = text.date("Choose a date");
-  else text = text.max(q.type === "textarea" ? 3000 : 200, "This answer is too long");
-  return q.optional ? text.optional().or(z.literal("")) : text.min(1, required);
-}
-
-const shape = (questions: Question[]) =>
-  Object.fromEntries(questions.map((q) => [q.key, fieldSchema(q)]));
-
-const accepted = z.literal(true, { errorMap: () => ({ message: "Please confirm to continue" }) });
-
-const commonShape = {
-  ...shape(COMMON_QUESTIONS),
-  ...Object.fromEntries(ACKNOWLEDGEMENTS.map((a) => [a.key, accepted])),
-  website: z.string().max(0).optional(),
-};
-
-const programSchema = <P extends ProgramId>(program: P) =>
-  z.object({ program: z.literal(program), ...commonShape, ...shape(questionsFor(program)) });
-
-export const programApplicationSchema = z.discriminatedUnion(
-  "program",
-  [programSchema("cohort"), programSchema("incubation"), programSchema("coworking")],
-  { errorMap: () => ({ message: "Choose the program you are applying for" }) },
-);
-
-/** Read every question for the chosen programme out of the submitted form. */
-export function applicationValues(fd: FormData): Record<string, unknown> {
-  const program = String(fd.get("program") ?? "");
-  const questions = [
-    ...COMMON_QUESTIONS,
-    ...(program in PROGRAM_SECTIONS ? questionsFor(program as ProgramId) : []),
-  ];
-  return {
-    program,
-    ...Object.fromEntries(
-      questions.map((q) => [
-        q.key,
-        q.type === "multi" ? fd.getAll(q.key).map(String) : String(fd.get(q.key) ?? ""),
-      ]),
-    ),
-    ...Object.fromEntries(ACKNOWLEDGEMENTS.map((a) => [a.key, fd.get(a.key) === "on"])),
-    website: String(fd.get("website") ?? ""),
-  };
-}

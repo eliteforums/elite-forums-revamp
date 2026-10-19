@@ -6,7 +6,8 @@ type HeadMatch = { routeId: string; loaderData?: unknown };
 /** Administrator content edits, loaded once by the root route. */
 export function overridesFrom(matches: readonly HeadMatch[]): ContentOverrides {
   const root = matches.find((match) => match.routeId === "__root__");
-  return (root?.loaderData ?? {}) as ContentOverrides;
+  return ((root?.loaderData as { content?: ContentOverrides } | undefined)?.content ??
+    {}) as ContentOverrides;
 }
 
 /**

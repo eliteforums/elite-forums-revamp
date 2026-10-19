@@ -1,10 +1,11 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { Container, FinalCTA, PageHero, SectionHead } from "@/components/site/Blocks";
 import { Button } from "@/components/ui/button";
 import { Rich, useContent } from "@/lib/content-context";
 import { itemText } from "@/lib/site-content";
 
 import { contentMeta } from "@/lib/seo";
+import { SmartLink } from "@/components/site/SmartLink";
 export const Route = createFileRoute("/network")({
   head: ({ matches }) => contentMeta(matches, "network"),
   component: NetworkPage,
@@ -55,7 +56,7 @@ function NetworkPage() {
                 <p className="mt-4 text-muted-foreground">{c.t("partners.empty")}</p>
               )}
               <Button asChild variant="outline" className="mt-8">
-                <Link to="/contact">{c.t("partners.cta")}</Link>
+                <SmartLink href={c.t("partners.ctaLink")}>{c.t("partners.cta")}</SmartLink>
               </Button>
             </div>
           )}

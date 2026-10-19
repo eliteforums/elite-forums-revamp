@@ -21,6 +21,8 @@ import { getPublicEvents } from "@/lib/admin.functions";
 import { absoluteUrl, pageMeta, SITE_URL } from "@/lib/metadata";
 import { eventStatus } from "@/lib/content";
 import { cn } from "@/lib/utils";
+import { useContent } from "@/lib/content-context";
+import { SmartLink } from "@/components/site/SmartLink";
 import { tagOutboundLink } from "@/lib/utm";
 
 export const Route = createFileRoute("/events_/$slug")({
@@ -55,6 +57,7 @@ export const Route = createFileRoute("/events_/$slug")({
 
 function EventDetail() {
   const event = Route.useLoaderData();
+  const c = useContent("events");
   const status = eventStatus(event);
   const ended = status === "Already completed";
   const registrationUrl = event.registration_url?.trim();
@@ -65,7 +68,7 @@ function EventDetail() {
   const facts = [
     {
       icon: CalendarDays,
-      label: "Date",
+      label: c.t("detail.date"),
       value: date.toLocaleDateString("en-IN", {
         weekday: "long",
         day: "numeric",
@@ -73,16 +76,20 @@ function EventDetail() {
         year: "numeric",
       }),
     },
-    ...(event.time_label ? [{ icon: Clock, label: "Time", value: event.time_label }] : []),
+    ...(event.time_label
+      ? [{ icon: Clock, label: c.t("detail.time"), value: event.time_label }]
+      : []),
     {
       icon: MapPin,
-      label: "Format & location",
+      label: c.t("detail.where"),
       value: [event.format, place].filter(Boolean).join(" · "),
     },
-    ...(event.entry_fee ? [{ icon: Ticket, label: "Entry", value: event.entry_fee }] : []),
-    ...(event.seats ? [{ icon: Armchair, label: "Seats", value: event.seats }] : []),
-    { icon: Users, label: "Who can join", value: event.eligibility },
-    { icon: Building2, label: "Organised by", value: event.organizer },
+    ...(event.entry_fee
+      ? [{ icon: Ticket, label: c.t("detail.entry"), value: event.entry_fee }]
+      : []),
+    ...(event.seats ? [{ icon: Armchair, label: c.t("detail.seats"), value: event.seats }] : []),
+    { icon: Users, label: c.t("detail.who"), value: event.eligibility },
+    { icon: Building2, label: c.t("detail.organiser"), value: event.organizer },
   ].slice(0, 6);
   // Partner registration pages get the visitor's campaign tags once the page is in the browser.
   const [registerHref, setRegisterHref] = useState(registrationUrl ?? "");
@@ -154,7 +161,7 @@ function EventDetail() {
                   : "border-electric/40 bg-electric/10 text-electric",
               )}
             >
-              {ended ? "Event completed" : status}
+              {ended ? c.t("detail.completed") : status}
             </span>
             {event.sample && <SampleBadge />}
           </div>
@@ -213,40 +220,43 @@ function EventDetail() {
                 </>
               ) : ended ? (
                 <>
-                  <h2 className="font-display text-2xl font-medium">This event has taken place.</h2>
+                  <h2 className="font-display text-2xl font-medium">{c.t("detail.endedTitle")}</h2>
                   <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                    Registration is closed. See what’s coming up next, or join the community to hear
-                    about new events first.
+                    {c.t("detail.endedBody")}
                   </p>
                   <Button asChild variant="brand" className="mt-6 w-full">
-                    <Link to="/events">
-                      See upcoming events <ArrowUpRight />
-                    </Link>
+                    <SmartLink href={c.t("detail.endedPrimaryLink")}>
+                      {c.t("detail.endedPrimary")} <ArrowUpRight />
+                    </SmartLink>
                   </Button>
                   <Button asChild variant="outline" className="mt-3 w-full">
-                    <Link to="/community">Join the Community</Link>
+                    <SmartLink href={c.t("detail.endedSecondaryLink")}>
+                      {c.t("detail.endedSecondary")}
+                    </SmartLink>
                   </Button>
                 </>
               ) : registrationUrl ? (
                 <>
-                  <h2 className="font-display text-2xl font-medium">Reserve your spot.</h2>
+                  <h2 className="font-display text-2xl font-medium">
+                    {c.t("detail.reserveTitle")}
+                  </h2>
                   <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                    Registration is handled by our event partner.
+                    {c.t("detail.partnerBody")}
                     {event.entry_fee && ` Entry: ${event.entry_fee}.`}
                   </p>
                   <Button asChild variant="brand" size="lg" className="mt-6 w-full">
                     <a href={registerHref} target="_blank" rel="noopener">
-                      Register for this event <ArrowUpRight />
+                      {c.t("detail.registerButton")} <ArrowUpRight />
                     </a>
                   </Button>
                 </>
               ) : (
                 <>
                   <h2 id="register" className="scroll-mt-28 font-display text-2xl font-medium">
-                    Reserve your spot.
+                    {c.t("detail.reserveTitle")}
                   </h2>
                   <p className="mb-6 mt-3 text-sm leading-6 text-muted-foreground">
-                    Joining details are emailed to you before the event.
+                    {c.t("detail.reserveBody")}
                   </p>
                   <EventRegisterForm slug={event.slug} title={event.title} />
                 </>
@@ -254,12 +264,12 @@ function EventDetail() {
             </div>
           </aside>
           <div className="min-w-0 lg:order-1">
-            <h2 className="eyebrow mb-7 text-electric">About this event</h2>
+            <h2 className="eyebrow mb-7 text-electric">{c.t("detail.about")}</h2>
             <EventDescription text={event.summary} title={event.title} />
             {event.agenda.length > 0 && (
               <>
                 <h2 className="mt-14 border-t border-border pt-8 font-display text-xl font-medium md:text-2xl">
-                  Agenda
+                  {c.t("detail.agenda")}
                 </h2>
                 <ol className="mt-6 space-y-3">
                   {event.agenda.map((a) => (
@@ -276,7 +286,7 @@ function EventDetail() {
             )}
             <Button asChild variant="link" className="mt-12 px-0">
               <Link to="/events">
-                <ArrowLeft /> Back to all events
+                <ArrowLeft /> {c.t("detail.back")}
               </Link>
             </Button>
           </div>
@@ -288,11 +298,11 @@ function EventDetail() {
           <Button asChild variant="brand" className="w-full">
             {registrationUrl ? (
               <a href={registerHref} target="_blank" rel="noopener">
-                Register for this event <ArrowUpRight />
+                {c.t("detail.registerButton")} <ArrowUpRight />
               </a>
             ) : (
               <a href="#register">
-                Reserve your spot <ArrowUpRight />
+                {c.t("detail.mobileButton")} <ArrowUpRight />
               </a>
             )}
           </Button>

@@ -31,7 +31,7 @@ export const Route = createFileRoute("/sitemap.xml")({
     handlers: {
       GET: async () => {
         const [events, content] = await Promise.all([getPublicEvents(), getSiteContent()]);
-        const articlePaths = articlesFrom(content)
+        const articlePaths = articlesFrom(content.content)
           .filter((article) => !article.sample)
           .map((article) => `/resources/${encodeURIComponent(article.slug)}`);
         const eventPaths = events.map((event) => `/events/${encodeURIComponent(event.slug)}`);

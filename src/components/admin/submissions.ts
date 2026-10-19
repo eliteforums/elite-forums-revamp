@@ -1,4 +1,21 @@
-import { answerLabel, programLabel } from "@/lib/program-application";
+import {
+  FORM_IDS,
+  FORM_META,
+  questionLabels,
+  resolveForm,
+  type FormConfig,
+  type FormOverrides,
+} from "@/lib/forms";
+
+/** Form settings as saved, so answers show under the question text people saw. */
+let configs = new Map<string, FormConfig>();
+export function setFormSettings(forms: FormOverrides) {
+  configs = new Map(FORM_IDS.map((id) => [FORM_META[id].table, resolveForm(id, forms)]));
+}
+const programLabel = (id: string) =>
+  configs.get("program_applications")?.programmes?.find((p) => p.id === id)?.label ?? id;
+const labelFor = (table: string, key: string) =>
+  configs.get(table) ? questionLabels(configs.get(table)!).get(key) : undefined;
 
 export type Row = Record<string, unknown>;
 
@@ -98,7 +115,10 @@ export function rowSource(row: Row): string {
 }
 
 /** Labelled answers for one submission, split into the main form and programme-specific answers. */
-export function rowDetails(row: Row): {
+export function rowDetails(
+  row: Row,
+  table: string,
+): {
   main: [string, string][];
   answers: [string, string][];
   source: [string, string][];
@@ -115,13 +135,13 @@ export function rowDetails(row: Row): {
               timeStyle: "short",
             })
           : showValue(value);
-    if (shown) main.push([pretty(key), shown]);
+    if (shown) main.push([labelFor(table, key) ?? pretty(key), shown]);
   }
   const raw = row["answers"];
   const answers: [string, string][] =
     raw && typeof raw === "object" && !Array.isArray(raw)
       ? Object.entries(raw).map(([key, value]) => [
-          answerLabel(String(row["program"]), key),
+          labelFor(table, key) ?? pretty(key),
           showValue(value),
         ])
       : [];
@@ -137,7 +157,7 @@ const csvCell = (value: string) => `"${value.replaceAll('"', '""')}"`;
 export function downloadCsv(table: string, rows: Row[]) {
   const columns: string[] = [];
   const records = rows.map((row) => {
-    const { main, answers, source } = rowDetails(row);
+    const { main, answers, source } = rowDetails(row, table);
     const record = new Map<string, string>([
       ...main,
       ...answers,

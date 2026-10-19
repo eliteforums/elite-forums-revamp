@@ -9,7 +9,7 @@ import {
   useRouterState,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
@@ -17,9 +17,10 @@ import { Toaster } from "@/components/ui/sonner";
 import { CookieConsent } from "@/components/site/CookieConsent";
 import { SiteContentProvider, useContent } from "@/lib/content-context";
 import { Analytics } from "@/components/site/Analytics";
-import { getSiteContent } from "@/lib/content.functions";
+import { getSiteContent, type SiteData } from "@/lib/content.functions";
 import { GOOGLE_TAG_ID, GOOGLE_TAG_MANAGER_ID } from "@/lib/analytics-config";
 import { captureAttribution } from "@/lib/utm";
+import { isStaleBuildError, reloadForNewBuild } from "@/lib/stale-build";
 import appCss from "../styles.css?url";
 
 function NotFoundComponent() {
@@ -43,9 +44,23 @@ function NotFoundComponent() {
   );
 }
 
+let lastContent: SiteData = { content: {}, forms: {} };
+
 function ErrorComponent({ error, reset }: ErrorComponentProps) {
-  console.error(error);
   const router = useRouter();
+  const staleBuild = isStaleBuildError(error);
+  const [reloading, setReloading] = useState(staleBuild);
+  useEffect(() => {
+    if (!staleBuild) console.error(error);
+    else if (!reloadForNewBuild()) setReloading(false);
+  }, [error, staleBuild]);
+
+  if (reloading)
+    return (
+      <div className="flex min-h-svh items-center justify-center bg-background px-4">
+        <p className="text-sm text-muted-foreground">Loading the latest version…</p>
+      </div>
+    );
 
   return (
     <div className="flex min-h-svh items-center justify-center bg-background px-4">
@@ -145,7 +160,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
   }),
   // Administrator edits to the site copy; pages fall back to defaults without it.
-  loader: () => getSiteContent(),
+  // If the content request fails (a dropped connection, a deploy in progress),
+  // keep the last copy rather than failing the whole navigation.
+  loader: async () => {
+    try {
+      lastContent = (await getSiteContent()) as SiteData;
+    } catch (error) {
+      console.error("Unable to refresh site content", error);
+    }
+    return lastContent;
+  },
   staleTime: 60_000,
   shellComponent: RootShell,
   component: RootComponent,
@@ -260,10 +284,18 @@ function RootComponent() {
   useEffect(() => {
     if (!isAdminRoute) captureAttribution();
   }, [pathname, isAdminRoute]);
+  useEffect(() => {
+    // Vite reports a page file that failed to load (usually a newer deploy).
+    const onPreloadError = (event: Event) => {
+      if (reloadForNewBuild()) event.preventDefault();
+    };
+    window.addEventListener("vite:preloadError", onPreloadError);
+    return () => window.removeEventListener("vite:preloadError", onPreloadError);
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
-      <SiteContentProvider overrides={overrides}>
+      <SiteContentProvider overrides={overrides.content} forms={overrides.forms}>
         <a
           href="#main-content"
           className="sr-only fixed left-4 top-4 z-[100] rounded-md bg-electric px-4 py-2 text-sm font-semibold text-ink focus:not-sr-only"

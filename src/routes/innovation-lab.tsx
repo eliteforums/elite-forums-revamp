@@ -1,5 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowUpRight, Cpu, Rocket } from "lucide-react";
+import { createFileRoute } from "@tanstack/react-router";
+import { ArrowUpRight } from "lucide-react";
 import { Container, FinalCTA, PageHero, SectionHead } from "@/components/site/Blocks";
 import { Button } from "@/components/ui/button";
 import { CountUp } from "@/components/site/CountUp";
@@ -7,12 +7,12 @@ import { Rich, resolveImage, useContent } from "@/lib/content-context";
 import { itemText } from "@/lib/site-content";
 
 import { contentMeta } from "@/lib/seo";
+import { SmartLink } from "@/components/site/SmartLink";
+import { CardIcon } from "@/components/site/CardIcon";
 export const Route = createFileRoute("/innovation-lab")({
   head: ({ matches }) => contentMeta(matches, "lab"),
   component: InnovationLab,
 });
-
-const TRACK_ICONS = [Cpu, Rocket];
 
 function InnovationLab() {
   const c = useContent("lab");
@@ -25,12 +25,12 @@ function InnovationLab() {
       >
         <div className="flex flex-wrap gap-4">
           <Button asChild variant="brand" size="lg">
-            <Link to="/contact">
+            <SmartLink href={c.t("hero.primaryLink")}>
               {c.t("hero.primary")} <ArrowUpRight />
-            </Link>
+            </SmartLink>
           </Button>
           <Button asChild variant="outline" size="lg">
-            <Link to="/community">{c.t("hero.secondary")}</Link>
+            <SmartLink href={c.t("hero.secondaryLink")}>{c.t("hero.secondary")}</SmartLink>
           </Button>
         </div>
       </PageHero>
@@ -63,12 +63,11 @@ function InnovationLab() {
             />
             <div className="mt-12 grid gap-6 md:grid-cols-2">
               {c.items("tracks").map((track, i) => {
-                const Icon = TRACK_ICONS[i % TRACK_ICONS.length] ?? Cpu;
                 return (
                   <div key={i} className="panel border border-border bg-surface p-7 md:p-10">
                     <div className="flex items-center justify-between">
                       <p className="eyebrow text-electric">{itemText(track, "tag")}</p>
-                      <Icon className="h-6 w-6 text-turquoise" />
+                      <CardIcon name={itemText(track, "icon")} className="h-6 w-6 text-turquoise" />
                     </div>
                     <h3 className="mt-7 text-3xl font-medium">{itemText(track, "title")}</h3>
                     <p className="mt-5 reading-copy">{itemText(track, "body")}</p>

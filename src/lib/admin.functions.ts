@@ -3,8 +3,8 @@ import { z } from "zod";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { EventItem } from "./content";
-import { clearSiteContentCache } from "./content.functions";
 import { CONTENT_PAGES, fieldDef, isValidValue, type ContentValue } from "./site-content";
+import { FORM_IDS, formConfigInput, normaliseForm } from "./forms";
 
 const eventInput = z.object({
   id: z.string().uuid().optional(),
@@ -80,6 +80,8 @@ export const getAdminDashboard = createServerFn({ method: "GET" })
         supabaseAdmin.from(table).select("*").order("created_at", { ascending: false }).limit(200),
       ),
     ]);
+    // Migration 0006 adds `answers` to every form table; until then, added questions can't be saved.
+    const probe = await supabaseAdmin.from("student_registrations").select("answers").limit(1);
     const submissionGroups = Object.fromEntries(
       submissionTables.map((table, index) => [table, submissionResults[index]?.data ?? []]),
     );
@@ -87,6 +89,7 @@ export const getAdminDashboard = createServerFn({ method: "GET" })
       events: events.data ?? [],
       content: content.data ?? [],
       submissions: submissionGroups,
+      schema: { formAnswers: !probe.error },
     };
   });
 
@@ -195,7 +198,43 @@ export const saveSiteContent = createServerFn({ method: "POST" })
       .from("site_content")
       .upsert({ key: data.key, value, updated_at: new Date().toISOString() });
     if (error) throw new Error(`Unable to save site content: ${error.message}`);
-    clearSiteContentCache();
+    const { clearSiteDataCache } = await import("./site-data.server");
+    clearSiteDataCache();
+    return { ok: true };
+  });
+
+export const saveFormConfig = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: unknown) =>
+    z.object({ form: z.enum(FORM_IDS), config: formConfigInput }).parse(data),
+  )
+  .handler(async ({ data, context }) => {
+    assertAdmin(context.claims as Record<string, unknown>);
+    // Store the form as the site will use it, with the column rules applied.
+    const config = normaliseForm(data.form, data.config);
+    const { error } = await supabaseAdmin.from("site_content").upsert({
+      key: `form.${data.form}`,
+      value: config as never,
+      updated_at: new Date().toISOString(),
+    });
+    if (error) throw new Error(`Unable to save the form: ${error.message}`);
+    const { clearSiteDataCache } = await import("./site-data.server");
+    clearSiteDataCache();
+    return { ok: true };
+  });
+
+export const resetFormConfig = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: unknown) => z.object({ form: z.enum(FORM_IDS) }).parse(data))
+  .handler(async ({ data, context }) => {
+    assertAdmin(context.claims as Record<string, unknown>);
+    const { error } = await supabaseAdmin
+      .from("site_content")
+      .delete()
+      .eq("key", `form.${data.form}`);
+    if (error) throw new Error(`Unable to reset the form: ${error.message}`);
+    const { clearSiteDataCache } = await import("./site-data.server");
+    clearSiteDataCache();
     return { ok: true };
   });
 

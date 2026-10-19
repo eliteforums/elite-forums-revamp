@@ -9,7 +9,9 @@ import { absoluteUrl, pageMeta, SITE_URL } from "@/lib/metadata";
 
 export const Route = createFileRoute("/resources_/$slug")({
   loader: async ({ params }) => {
-    const article = articlesFrom(await getSiteContent()).find((a) => a.slug === params.slug);
+    const article = articlesFrom((await getSiteContent()).content).find(
+      (a) => a.slug === params.slug,
+    );
     if (!article) throw notFound();
     return article;
   },

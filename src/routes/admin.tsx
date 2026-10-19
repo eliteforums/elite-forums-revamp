@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import {
   ArrowUpRight,
   CalendarDays,
+  ClipboardList,
   ExternalLink,
   FileText,
   Inbox,
@@ -16,10 +17,12 @@ import {
 import { toast } from "sonner";
 import { CampaignsPanel } from "@/components/admin/CampaignsPanel";
 import { ContentPanel } from "@/components/admin/ContentPanel";
+import { FormsPanel } from "@/components/admin/FormsPanel";
+import type { FormOverrides } from "@/lib/forms";
 import { EventsPanel, type AdminEvent } from "@/components/admin/EventsPanel";
 import { OverviewPanel } from "@/components/admin/OverviewPanel";
 import { SubmissionsPanel } from "@/components/admin/SubmissionsPanel";
-import { FORMS, type FormTable, type Row } from "@/components/admin/submissions";
+import { FORMS, setFormSettings, type FormTable, type Row } from "@/components/admin/submissions";
 import { errorMessage, fieldCls } from "@/components/admin/ui";
 import { Logo } from "@/components/site/Logo";
 import { Button } from "@/components/ui/button";
@@ -36,13 +39,14 @@ export const Route = createFileRoute("/admin")({
 });
 
 type Dashboard = Awaited<ReturnType<typeof getAdminDashboard>>;
-type Tab = "overview" | "submissions" | "events" | "content" | "campaigns";
+type Tab = "overview" | "submissions" | "events" | "content" | "forms" | "campaigns";
 
 const TABS = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
   { id: "submissions", label: "Submissions", icon: Inbox },
   { id: "events", label: "Events", icon: CalendarDays },
   { id: "content", label: "Site content", icon: FileText },
+  { id: "forms", label: "Forms", icon: ClipboardList },
   { id: "campaigns", label: "Campaigns", icon: Megaphone },
 ] as const;
 
@@ -226,13 +230,21 @@ function AdminDashboard({ email }: { email: string }) {
       total + (submissions[form.table] ?? []).filter((row) => row["status"] === "new").length,
     0,
   );
+  const forms = Object.fromEntries(
+    dashboard.content
+      .filter((row) => row.key.startsWith("form."))
+      .map((row) => [row.key.slice(5), row.value]),
+  ) as FormOverrides;
+  setFormSettings(forms);
   const saved = Object.fromEntries(
-    dashboard.content.map((row) => [
-      row.key,
-      row.value && typeof row.value === "object" && !Array.isArray(row.value)
-        ? (row.value as Record<string, unknown>)
-        : {},
-    ]),
+    dashboard.content
+      .filter((row) => !row.key.startsWith("form."))
+      .map((row) => [
+        row.key,
+        row.value && typeof row.value === "object" && !Array.isArray(row.value)
+          ? (row.value as Record<string, unknown>)
+          : {},
+      ]),
   );
   const editedPages = Object.values(saved).filter((value) => Object.keys(value).length > 0).length;
 
@@ -348,8 +360,22 @@ function AdminDashboard({ email }: { email: string }) {
             }}
           />
         )}
+        {tab === "forms" && (
+          <FormsPanel
+            saved={forms}
+            migrated={dashboard.schema?.formAnswers ?? false}
+            onSaved={async () => {
+              await refresh();
+              await router.invalidate();
+            }}
+          />
+        )}
         {tab === "campaigns" && (
-          <CampaignsPanel events={dashboard.events as AdminEvent[]} submissions={submissions} />
+          <CampaignsPanel
+            events={dashboard.events as AdminEvent[]}
+            submissions={submissions}
+            forms={forms}
+          />
         )}
       </div>
     </div>

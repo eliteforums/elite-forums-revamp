@@ -8,7 +8,7 @@ import { itemText } from "@/lib/site-content";
 import { contentMeta } from "@/lib/seo";
 export const Route = createFileRoute("/apply")({
   validateSearch: z.object({
-    program: z.enum(["cohort", "incubation", "coworking"]).optional().catch(undefined),
+    program: z.string().max(60).optional().catch(undefined),
   }),
   head: ({ matches }) => contentMeta(matches, "apply"),
   component: Apply,

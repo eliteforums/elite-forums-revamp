@@ -190,6 +190,7 @@ export function SubmissionsPanel({
       {open && (
         <SubmissionDrawer
           row={open}
+          table={table}
           hasStatus={hasStatus}
           saving={saving}
           onStatus={(next) => void changeStatus(open, next)}
@@ -202,18 +203,20 @@ export function SubmissionsPanel({
 
 function SubmissionDrawer({
   row,
+  table,
   hasStatus,
   saving,
   onStatus,
   onClose,
 }: {
   row: Row;
+  table: string;
   hasStatus: boolean;
   saving: boolean;
   onStatus: (status: string) => void;
   onClose: () => void;
 }) {
-  const { main, answers, source } = rowDetails(row);
+  const { main, answers, source } = rowDetails(row, table);
   const email = String(row["email"] ?? "");
   return (
     <Drawer

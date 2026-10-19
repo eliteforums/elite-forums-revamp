@@ -1,19 +1,33 @@
 import { Fragment, createContext, useContext, useMemo, type ReactNode } from "react";
+import { resolveForm, type FormConfig, type FormId, type FormOverrides } from "./forms";
 import { contentReader, type ContentOverrides, type ContentReader } from "./site-content";
 import founder from "@/assets/founder.webp";
 import hackathon from "@/assets/hackathon.webp";
 import students from "@/assets/students.webp";
 
 const ContentContext = createContext<ContentOverrides>({});
+const FormsContext = createContext<FormOverrides>({});
 
 export function SiteContentProvider({
   overrides,
+  forms = {},
   children,
 }: {
   overrides: ContentOverrides;
+  forms?: FormOverrides;
   children: ReactNode;
 }) {
-  return <ContentContext.Provider value={overrides}>{children}</ContentContext.Provider>;
+  return (
+    <ContentContext.Provider value={overrides}>
+      <FormsContext.Provider value={forms}>{children}</FormsContext.Provider>
+    </ContentContext.Provider>
+  );
+}
+
+/** A form's questions and messages as configured in the admin console. */
+export function useFormConfig(form: FormId): FormConfig {
+  const forms = useContext(FormsContext);
+  return useMemo(() => resolveForm(form, forms), [form, forms]);
 }
 
 /** Editable copy for one page, as declared in `site-content.ts`. */

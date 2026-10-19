@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowUpRight, Building2, FlaskConical, Rocket } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
+import { CardIcon } from "@/components/site/CardIcon";
 import { Container, PageHero, SectionHead } from "@/components/site/Blocks";
 import { CollegeForm } from "@/components/forms/Forms";
 import { Rich, useContent } from "@/lib/content-context";
@@ -10,12 +11,6 @@ export const Route = createFileRoute("/colleges")({
   head: ({ matches }) => contentMeta(matches, "colleges"),
   component: Colleges,
 });
-
-const PROGRAMMES = [
-  { icon: Rocket, id: "cohort" },
-  { icon: FlaskConical, id: "incubation" },
-  { icon: Building2, id: "coworking" },
-] as const;
 
 function Colleges() {
   const c = useContent("colleges");
@@ -37,47 +32,49 @@ function Colleges() {
             />
             <p className="mt-6 max-w-2xl reading-copy">{c.t("programmes.intro")}</p>
             <div className="mt-12 grid gap-6 lg:grid-cols-3">
-              {PROGRAMMES.map(({ icon: Icon, id }, i) => ({
-                Icon,
-                id,
-                copy: programmes[i] ?? {},
-              })).map(({ Icon, id, copy }) => (
-                <article
-                  key={id}
-                  className="panel flex flex-col border border-border bg-background p-7"
-                >
-                  <div className="flex items-start justify-between gap-4">
-                    <Icon className="h-9 w-9 text-electric" aria-hidden="true" />
-                    <span className="eyebrow rounded-full border border-electric/30 px-3 py-1 text-electric">
-                      {itemText(copy, "price") ||
-                        (id === "coworking" ? "Monthly options" : "INR 5,000 + taxes*")}
-                    </span>
-                  </div>
-                  <p className="eyebrow mt-10 text-muted-foreground">{itemText(copy, "eyebrow")}</p>
-                  <h2 className="display-xl mt-3 text-3xl">{itemText(copy, "title")}</h2>
-                  <p className="mt-5 text-sm leading-7 text-muted-foreground">
-                    {itemText(copy, "intro")}
-                  </p>
-                  <ul className="mt-7 space-y-3 border-t border-border pt-6">
-                    {itemLines(copy, "benefits").map((benefit) => (
-                      <li
-                        key={benefit}
-                        className="flex gap-3 text-sm leading-6 text-muted-foreground"
-                      >
-                        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-electric" />
-                        <span>{benefit}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <Link
-                    to="/apply"
-                    search={{ program: id }}
-                    className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-electric hover:text-foreground"
+              {programmes.map((copy, i) => {
+                const id = itemText(copy, "programme");
+                return (
+                  <article
+                    key={`${id}-${i}`}
+                    className="panel flex flex-col border border-border bg-background p-7"
                   >
-                    {c.t("programmes.link")} <ArrowUpRight className="h-4 w-4" />
-                  </Link>
-                </article>
-              ))}
+                    <div className="flex items-start justify-between gap-4">
+                      <CardIcon name={itemText(copy, "icon")} className="h-9 w-9 text-electric" />
+                      {(itemText(copy, "price") || c.t("programmes.price")) && (
+                        <span className="eyebrow rounded-full border border-electric/30 px-3 py-1 text-electric">
+                          {itemText(copy, "price") || c.t("programmes.price")}
+                        </span>
+                      )}
+                    </div>
+                    <p className="eyebrow mt-10 text-muted-foreground">
+                      {itemText(copy, "eyebrow")}
+                    </p>
+                    <h2 className="display-xl mt-3 text-3xl">{itemText(copy, "title")}</h2>
+                    <p className="mt-5 text-sm leading-7 text-muted-foreground">
+                      {itemText(copy, "intro")}
+                    </p>
+                    <ul className="mt-7 space-y-3 border-t border-border pt-6">
+                      {itemLines(copy, "benefits").map((benefit) => (
+                        <li
+                          key={benefit}
+                          className="flex gap-3 text-sm leading-6 text-muted-foreground"
+                        >
+                          <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-electric" />
+                          <span>{benefit}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <Link
+                      to="/apply"
+                      search={id ? { program: id } : {}}
+                      className="mt-auto inline-flex items-center gap-2 pt-8 text-sm font-medium text-electric hover:text-foreground"
+                    >
+                      {c.t("programmes.link")} <ArrowUpRight className="h-4 w-4" />
+                    </Link>
+                  </article>
+                );
+              })}
             </div>
             <p className="mt-8 text-xs text-muted-foreground">{c.t("programmes.footnote")}</p>
           </Container>

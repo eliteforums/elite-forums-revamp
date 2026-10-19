@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { PROGRAMS } from "@/lib/program-application";
+import { resolveForm, type FormOverrides } from "@/lib/forms";
 import { CONTENT_PAGES } from "@/lib/site-content";
 import { buildUtmUrl, campaignSlug } from "@/lib/utm";
 import { cn } from "@/lib/utils";
@@ -15,10 +15,13 @@ const CUSTOM = "__custom__";
 export function CampaignsPanel({
   events,
   submissions,
+  forms,
 }: {
   events: AdminEvent[];
   submissions: Record<string, Row[]>;
+  forms: FormOverrides;
 }) {
+  const programmes = useMemo(() => resolveForm("programme", forms).programmes ?? [], [forms]);
   const targets = useMemo<Target[]>(
     () => [
       ...[...events]
@@ -29,7 +32,7 @@ export function CampaignsPanel({
           campaign: `event-${event.slug}`.slice(0, 60),
           group: "Events",
         })),
-      ...PROGRAMS.map((program) => ({
+      ...programmes.map((program) => ({
         path: `/apply?program=${program.id}`,
         label: `Apply — ${program.label}`,
         campaign: `programme-${program.id}`,
@@ -42,7 +45,7 @@ export function CampaignsPanel({
         group: "Pages",
       })),
     ],
-    [events],
+    [events, programmes],
   );
   const [targetPath, setTargetPath] = useState(targets[0]?.path ?? "/");
   const target = targets.find((t) => t.path === targetPath) ?? targets[0];

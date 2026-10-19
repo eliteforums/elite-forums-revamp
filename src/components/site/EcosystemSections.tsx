@@ -1,8 +1,9 @@
-import { Link } from "@tanstack/react-router";
-import { ArrowUpRight, Check, MoveUpRight, Network, Sparkles } from "lucide-react";
+import { ArrowUpRight, Check, MoveUpRight, Network } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container, SectionHead } from "./Blocks";
 import { LogoMark } from "./Logo";
+import { SmartLink } from "./SmartLink";
+import { CardIcon } from "./CardIcon";
 import { Rich, resolveImage, useContent } from "@/lib/content-context";
 import { itemLines, itemText } from "@/lib/site-content";
 
@@ -14,9 +15,9 @@ export function EcosystemGrid() {
         <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
           <SectionHead eyebrow={c.t("grid.eyebrow")} title={<Rich text={c.t("grid.title")} />} />
           <Button asChild variant="link">
-            <Link to="/ecosystem">
+            <SmartLink href={c.t("grid.linkTo")}>
               {c.t("grid.link")} <ArrowUpRight />
-            </Link>
+            </SmartLink>
           </Button>
         </div>
         <div className="grid auto-rows-[260px] gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -66,7 +67,7 @@ export function EcosystemGrid() {
               ))}
             </div>
           </div>
-          <Link to="/events" className="panel group relative">
+          <SmartLink href={c.t("grid.founder.link")} className="panel group relative">
             <img
               src={resolveImage(c.t("grid.founder.image"), "founder")}
               alt="Founder sharing experience with the community"
@@ -81,9 +82,9 @@ export function EcosystemGrid() {
                 <ArrowUpRight className="inline h-6 w-6" />
               </p>
             </div>
-          </Link>
-          <Link
-            to="/community"
+          </SmartLink>
+          <SmartLink
+            href={c.t("grid.next.link")}
             className="panel flex flex-col justify-between bg-brand p-7 text-ink sm:col-span-2"
           >
             <div className="flex justify-between">
@@ -93,7 +94,7 @@ export function EcosystemGrid() {
             <p className="display-xl max-w-md text-4xl">
               <Rich text={c.t("grid.next.title")} />
             </p>
-          </Link>
+          </SmartLink>
         </div>
       </Container>
     </section>
@@ -130,11 +131,6 @@ export function Mission() {
   );
 }
 
-const PATHS = [
-  { to: "/community", icon: Sparkles },
-  { to: "/colleges", icon: Network },
-] as const;
-
 export function JoinPaths() {
   const c = useContent("sections");
   const paths = c.items("join.paths");
@@ -143,37 +139,41 @@ export function JoinPaths() {
       <Container>
         <SectionHead eyebrow={c.t("join.eyebrow")} title={<Rich text={c.t("join.title")} />} />
         <div className="mt-12 grid gap-6 md:grid-cols-2">
-          {PATHS.map((path, i) => ({ ...path, copy: paths[i] ?? {} })).map((path, i) => (
-            <div
-              key={path.to}
-              className="panel flex flex-col border border-border bg-surface p-7 md:p-10"
-            >
-              <div className="flex items-center justify-between">
-                <p className="eyebrow text-electric">{itemText(path.copy, "tag")}</p>
-                <path.icon className="h-6 w-6 text-turquoise" />
-              </div>
-              <h3 className="mt-7 min-h-24 text-3xl font-medium">{itemText(path.copy, "title")}</h3>
-              <ul className="my-8 space-y-4">
-                {itemLines(path.copy, "benefits").map((item) => (
-                  <li key={item} className="flex gap-3 text-sm text-muted-foreground">
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-electric" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <Button
-                asChild
-                size="lg"
-                variant={i === 0 ? "brand" : "outline"}
-                className="mt-auto self-start"
+          {paths
+            .map((copy, i) => ({ copy }))
+            .map((path, i) => (
+              <div
+                key={i}
+                className="panel flex flex-col border border-border bg-surface p-7 md:p-10"
               >
-                <Link to={path.to}>
-                  {itemText(path.copy, "label")}
-                  <ArrowUpRight />
-                </Link>
-              </Button>
-            </div>
-          ))}
+                <div className="flex items-center justify-between">
+                  <p className="eyebrow text-electric">{itemText(path.copy, "tag")}</p>
+                  <CardIcon name={itemText(path.copy, "icon")} className="h-6 w-6 text-turquoise" />
+                </div>
+                <h3 className="mt-7 min-h-24 text-3xl font-medium">
+                  {itemText(path.copy, "title")}
+                </h3>
+                <ul className="my-8 space-y-4">
+                  {itemLines(path.copy, "benefits").map((item) => (
+                    <li key={item} className="flex gap-3 text-sm text-muted-foreground">
+                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-electric" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <Button
+                  asChild
+                  size="lg"
+                  variant={i === 0 ? "brand" : "outline"}
+                  className="mt-auto self-start"
+                >
+                  <SmartLink href={itemText(path.copy, "link") || "/community"}>
+                    {itemText(path.copy, "label")}
+                    <ArrowUpRight />
+                  </SmartLink>
+                </Button>
+              </div>
+            ))}
         </div>
       </Container>
     </section>

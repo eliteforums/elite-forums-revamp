@@ -1,42 +1,12 @@
-import { Link } from "@tanstack/react-router";
 import { useContent } from "@/lib/content-context";
 import { Logo } from "./Logo";
+import { SmartLink } from "./SmartLink";
+import { itemText } from "@/lib/site-content";
 
-const COLS = [
-  {
-    id: "explore",
-    title: "Explore",
-    links: [
-      { to: "/innovation-lab", label: "Innovation Lab" },
-      { to: "/ecosystem", label: "Ecosystem" },
-      { to: "/events", label: "Events" },
-      { to: "/resources", label: "Resources" },
-      { to: "/faqs", label: "FAQs" },
-      { to: "/network", label: "Partner Network" },
-    ],
-  },
-  {
-    id: "involved",
-    title: "Get involved",
-    links: [
-      { to: "/community", label: "Join the Community" },
-      { to: "/apply", label: "Apply to a Program" },
-      { to: "/colleges", label: "Partner Your College" },
-      { to: "/campus-ambassadors", label: "Campus Ambassadors" },
-      { to: "/contact", label: "Contact" },
-    ],
-  },
-  {
-    id: "legal",
-    title: "Legal",
-    links: [
-      { to: "/privacy", label: "Privacy" },
-      { to: "/terms", label: "Terms" },
-      { to: "/refunds", label: "Refund policy" },
-      { to: "/cookies", label: "Cookie policy" },
-      { to: "/data-deletion", label: "Delete my data" },
-    ],
-  },
+const COLUMNS = [
+  { id: "explore", name: "Column 1" },
+  { id: "involved", name: "Column 2" },
+  { id: "legal", name: "Column 3" },
 ] as const;
 
 export function Footer() {
@@ -48,25 +18,31 @@ export function Footer() {
           <Logo />
           <p className="mt-5 max-w-xs text-sm text-muted-foreground">{c.t("footer.tagline")}</p>
         </div>
-        {COLS.map((col) => (
-          <div key={col.id}>
-            <p className="eyebrow text-muted-foreground">
-              {c.t(`footer.${col.id}.title`) || col.title}
-            </p>
-            <ul className="mt-4 space-y-2.5">
-              {col.links.map((l, i) => (
-                <li key={l.to}>
-                  <Link
-                    to={l.to}
-                    className="text-sm text-foreground/80 transition-colors hover:text-electric"
-                  >
-                    {c.list(`footer.${col.id}.links`)[i] || l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+        {COLUMNS.map((col) => {
+          const links = c
+            .items("footer.links")
+            .filter((item) => itemText(item, "column") === col.name)
+            .map((item) => ({ label: itemText(item, "label"), link: itemText(item, "link") }))
+            .filter((item) => item.label && item.link);
+          if (!links.length) return null;
+          return (
+            <div key={col.id}>
+              <p className="eyebrow text-muted-foreground">{c.t(`footer.${col.id}.title`)}</p>
+              <ul className="mt-4 space-y-2.5">
+                {links.map((l) => (
+                  <li key={l.label + l.link}>
+                    <SmartLink
+                      href={l.link}
+                      className="text-sm text-foreground/80 transition-colors hover:text-electric"
+                    >
+                      {l.label}
+                    </SmartLink>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        })}
       </div>
       <div className="mx-auto flex max-w-7xl flex-col justify-between gap-2 border-t border-border px-5 py-6 text-xs text-muted-foreground md:flex-row md:px-8">
         <span>

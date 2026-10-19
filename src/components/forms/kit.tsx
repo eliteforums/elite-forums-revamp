@@ -1,11 +1,8 @@
 import { CheckCircle2, Loader2 } from "lucide-react";
-import { useRef, useState, type ReactNode } from "react";
-import type { z } from "zod";
+import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { flatten, type FieldErrors } from "@/lib/schemas";
-import { currentAttribution } from "@/lib/utm";
 
 export const inputCls =
   "min-h-11 w-full rounded-xl border border-input bg-background/60 px-4 py-3 text-base text-foreground placeholder:text-muted-foreground/70 transition-colors focus:border-turquoise focus:outline-none focus:ring-2 focus:ring-ring/30 aria-[invalid=true]:border-destructive md:text-sm";
@@ -97,51 +94,6 @@ export function Consent({
       )}
     </div>
   );
-}
-
-type Submit = (args: { data: never }) => Promise<{ ok: boolean; error?: string }>;
-
-/** Shared submission lifecycle: client validation, duplicate-submit lock, server call. */
-export function useFormSubmit<S extends z.ZodTypeAny>(
-  schema: S,
-  submit: unknown,
-  toValues: (fd: FormData) => Record<string, unknown>,
-) {
-  const [errors, setErrors] = useState<FieldErrors>({});
-  const [state, setState] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [message, setMessage] = useState("");
-  const lock = useRef(false);
-
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (lock.current) return;
-    const parsed = schema.safeParse(toValues(new FormData(e.currentTarget)));
-    if (!parsed.success) {
-      setErrors(flatten(parsed.error));
-      const first = e.currentTarget.querySelector<HTMLElement>("[aria-invalid=true]");
-      first?.focus();
-      return;
-    }
-    setErrors({});
-    lock.current = true;
-    setState("loading");
-    try {
-      const res = await (submit as Submit)({
-        data: { ...(parsed.data as object), utm: currentAttribution() } as never,
-      });
-      if (res.ok) setState("success");
-      else {
-        setState("error");
-        setMessage(res.error ?? "Something went wrong.");
-      }
-    } catch {
-      setState("error");
-      setMessage("We couldn't reach the server. Check your connection and try again.");
-    } finally {
-      lock.current = false;
-    }
-  }
-  return { errors, state, message, onSubmit };
 }
 
 export function SubmitRow({

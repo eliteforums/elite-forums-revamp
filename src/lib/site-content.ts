@@ -102,6 +102,25 @@ const items = (
   options: { fixed?: boolean; hint?: string } = {},
 ): FieldDef => ({ type: "items", label, itemName, fields, default: value, ...options });
 
+/** Icons a card can show; pages map these names to drawings. */
+export const ICON_NAMES = [
+  "Rocket",
+  "Flask",
+  "Building",
+  "Users",
+  "Sparkles",
+  "Network",
+  "Briefcase",
+  "Lightbulb",
+  "Cpu",
+  "Graduation cap",
+];
+
+const LINK_FIELDS = {
+  label: { type: "text", label: "Label" },
+  link: { type: "text", label: "Link" },
+} as const;
+
 const TITLE_BODY = {
   title: { type: "text", label: "Title" },
   body: { type: "textarea", label: "Description" },
@@ -121,13 +140,28 @@ const BASE_PAGES: PageDef[] = [
       {
         title: "Header",
         fields: {
-          "nav.labels": lines(
-            "Navigation labels",
-            ["Home", "Innovation Lab", "Ecosystem", "For Colleges", "Events", "Community"],
-            "One per line, in menu order. The links themselves are fixed.",
+          "nav.items": items(
+            "Menu",
+            "Menu link",
+            LINK_FIELDS,
+            [
+              { label: "Home", link: "/" },
+              { label: "Innovation Lab", link: "/innovation-lab" },
+              { label: "Ecosystem", link: "/ecosystem" },
+              { label: "For Colleges", link: "/colleges" },
+              { label: "Events", link: "/events" },
+              { label: "Community", link: "/community" },
+            ],
+            {
+              hint:
+                "Links: " +
+                "A page path such as /events or /apply?program=cohort, or a full https:// link.",
+            },
           ),
-          "header.partner": text("Partner button", "Partner College"),
-          "header.join": text("Join button", "Join Community"),
+          "header.partner": text("Second button", "Partner College"),
+          "header.partnerLink": text("Second button link", "/colleges"),
+          "header.join": text("Main button", "Join Community"),
+          "header.joinLink": text("Main button link", "/community"),
           "header.mobileJoin": text("Mobile menu: join button", "Join the Community"),
           "header.mobilePartner": text("Mobile menu: partner button", "Partner Your College"),
         },
@@ -140,28 +174,48 @@ const BASE_PAGES: PageDef[] = [
             "A community for aspiring founders. Started in Mumbai, building for all of India.",
           ),
           "footer.explore.title": text("Column 1 title", "Explore"),
-          "footer.explore.links": lines(
-            "Column 1 link labels",
-            ["Innovation Lab", "Ecosystem", "Events", "Resources", "FAQs", "Partner Network"],
-            "One per line, in order. The links themselves are fixed.",
-          ),
           "footer.involved.title": text("Column 2 title", "Get involved"),
-          "footer.involved.links": lines(
-            "Column 2 link labels",
-            [
-              "Join the Community",
-              "Apply to a Program",
-              "Partner Your College",
-              "Campus Ambassadors",
-              "Contact",
-            ],
-            "One per line, in order. The links themselves are fixed.",
-          ),
           "footer.legal.title": text("Column 3 title", "Legal"),
-          "footer.legal.links": lines(
-            "Column 3 link labels",
-            ["Privacy", "Terms", "Refund policy", "Cookie policy", "Delete my data"],
-            "One per line, in order. The links themselves are fixed.",
+          "footer.links": items(
+            "Footer links",
+            "Footer link",
+            {
+              column: {
+                type: "select",
+                label: "Column",
+                options: ["Column 1", "Column 2", "Column 3"],
+              },
+              ...LINK_FIELDS,
+            },
+            [
+              ...[
+                ["Innovation Lab", "/innovation-lab"],
+                ["Ecosystem", "/ecosystem"],
+                ["Events", "/events"],
+                ["Resources", "/resources"],
+                ["FAQs", "/faqs"],
+                ["Partner Network", "/network"],
+              ].map(([label, link]) => ({ column: "Column 1", label: label!, link: link! })),
+              ...[
+                ["Join the Community", "/community"],
+                ["Apply to a Program", "/apply"],
+                ["Partner Your College", "/colleges"],
+                ["Campus Ambassadors", "/campus-ambassadors"],
+                ["Contact", "/contact"],
+              ].map(([label, link]) => ({ column: "Column 2", label: label!, link: link! })),
+              ...[
+                ["Privacy", "/privacy"],
+                ["Terms", "/terms"],
+                ["Refund policy", "/refunds"],
+                ["Cookie policy", "/cookies"],
+                ["Delete my data", "/data-deletion"],
+              ].map(([label, link]) => ({ column: "Column 3", label: label!, link: link! })),
+            ],
+            {
+              hint:
+                "Links: " +
+                "A page path such as /events or /apply?program=cohort, or a full https:// link.",
+            },
           ),
           "footer.copyright": text("Copyright line", "Elite Forums. All rights reserved."),
           "footer.strapline": text("Strapline", "Where ambition meets opportunity"),
@@ -174,6 +228,16 @@ const BASE_PAGES: PageDef[] = [
           "cta.title": area("Title", "The next entrepreneurial community could start with you."),
           "cta.primary": text("Main button", "Join the Community"),
           "cta.secondary": text("Second button", "Partner Your College"),
+          "cta.primaryLink": text(
+            "Main button link",
+            "/community",
+            "A page path such as /events, or a full https:// link.",
+          ),
+          "cta.secondaryLink": text(
+            "Second button link",
+            "/colleges",
+            "A page path such as /events, or a full https:// link.",
+          ),
         },
       },
       {
@@ -223,6 +287,16 @@ const BASE_PAGES: PageDef[] = [
           ),
           "hero.primary": text("Main button", "Join the Community"),
           "hero.secondary": text("Second button", "Partner Your College"),
+          "hero.primaryLink": text(
+            "Main button link",
+            "/community",
+            "A page path such as /events, or a full https:// link.",
+          ),
+          "hero.secondaryLink": text(
+            "Second button link",
+            "/colleges",
+            "A page path such as /events, or a full https:// link.",
+          ),
           "hero.scroll": text("Scroll hint", "Ideas start here."),
           "hero.image": image("Background photo"),
         },
@@ -281,6 +355,11 @@ const BASE_PAGES: PageDef[] = [
           "grid.eyebrow": text("Small label", "The ecosystem"),
           "grid.title": rich("Title", "A world of *possibility.*"),
           "grid.link": text("Link text", "Explore the ecosystem"),
+          "grid.linkTo": text(
+            "Link destination",
+            "/ecosystem",
+            "A page path such as /events, or a full https:// link.",
+          ),
           "grid.brand.tagline": text("Logo tile: tagline", "Ideas. People. Possibilities."),
           "grid.network.title": rich("Network tile: title", "From Mumbai.\nTo all of India."),
           "grid.network.body": text(
@@ -299,9 +378,19 @@ const BASE_PAGES: PageDef[] = [
           ]),
           "grid.founder.eyebrow": text("Founder tile: small label", "Conversations that matter"),
           "grid.founder.title": rich("Founder tile: title", "Founder\nconnect"),
+          "grid.founder.link": text(
+            "Founder tile: link",
+            "/events",
+            "A page path such as /events, or a full https:// link.",
+          ),
           "grid.founder.image": image("Founder tile: photo"),
           "grid.next.eyebrow": text("Green tile: small label", "Your next chapter"),
           "grid.next.title": rich("Green tile: title", "Your idea.\nYour city.\nYour next move."),
+          "grid.next.link": text(
+            "Green tile: link",
+            "/community",
+            "A page path such as /events, or a full https:// link.",
+          ),
         },
       },
       {
@@ -354,6 +443,8 @@ const BASE_PAGES: PageDef[] = [
               title: { type: "text", label: "Title" },
               benefits: { type: "lines", label: "Benefits (one per line)" },
               label: { type: "text", label: "Button" },
+              link: { type: "text", label: "Button link (e.g. /community)" },
+              icon: { type: "select", label: "Icon", options: ICON_NAMES },
             },
             [
               {
@@ -367,6 +458,8 @@ const BASE_PAGES: PageDef[] = [
                   "Discover opportunities beyond your own circle",
                 ],
                 label: "Explore the Community",
+                link: "/community",
+                icon: "Sparkles",
               },
               {
                 tag: "For colleges & E-Cells",
@@ -379,12 +472,10 @@ const BASE_PAGES: PageDef[] = [
                   "Support your next generation of student leaders",
                 ],
                 label: "Become a Partner",
+                link: "/colleges",
+                icon: "Network",
               },
             ],
-            {
-              fixed: true,
-              hint: "The first path links to Community, the second to For Colleges.",
-            },
           ),
         },
       },
@@ -410,6 +501,16 @@ const BASE_PAGES: PageDef[] = [
           ),
           "hero.primary": text("Main button", "Build with us"),
           "hero.secondary": text("Second button", "Join the Community"),
+          "hero.primaryLink": text(
+            "Main button link",
+            "/contact",
+            "A page path such as /events, or a full https:// link.",
+          ),
+          "hero.secondaryLink": text(
+            "Second button link",
+            "/community",
+            "A page path such as /events, or a full https:// link.",
+          ),
         },
       },
       {
@@ -435,17 +536,20 @@ const BASE_PAGES: PageDef[] = [
             "Tracks",
             "Track",
             {
+              icon: { type: "select", label: "Icon", options: ICON_NAMES },
               tag: { type: "text", label: "Small label" },
               title: { type: "text", label: "Title" },
               body: { type: "textarea", label: "Description" },
             },
             [
               {
+                icon: "Cpu",
                 tag: "Technology",
                 title: "We build technology.",
                 body: "Ideas become prototypes and prototypes become products. The lab is where builders get hands-on and ship real technology.",
               },
               {
+                icon: "Rocket",
                 tag: "Startups",
                 title: "We build startups.",
                 body: "Strong ideas and committed teams are shaped into ventures — from the first problem statement to a company that can stand on its own.",
@@ -585,6 +689,11 @@ const BASE_PAGES: PageDef[] = [
             {
               eyebrow: { type: "text", label: "Small label" },
               title: { type: "text", label: "Name" },
+              programme: {
+                type: "text",
+                label: "Application programme code (from Forms → Programme application)",
+              },
+              icon: { type: "select", label: "Icon", options: ICON_NAMES },
               price: { type: "text", label: "Price badge" },
               intro: { type: "textarea", label: "Introduction" },
               benefits: { type: "lines", label: "Benefits (one per line)" },
@@ -593,6 +702,8 @@ const BASE_PAGES: PageDef[] = [
               {
                 eyebrow: "For founders building from zero",
                 title: "Startup Cohort Program",
+                programme: "cohort",
+                icon: "Rocket",
                 price: "INR 5,000 + taxes*",
                 intro:
                   "A structured 90-day journey for selected founders and startup teams who want practical support from idea validation to a stronger launch-ready foundation.",
@@ -615,6 +726,8 @@ const BASE_PAGES: PageDef[] = [
               {
                 eyebrow: "For startups ready to accelerate",
                 title: "Incubation Program",
+                programme: "incubation",
+                icon: "Flask",
                 price: "INR 5,000 + taxes*",
                 intro:
                   "Everything included in the Startup Cohort experience, with a focused incubation environment for founders who want consistent access to people, space and execution support.",
@@ -634,6 +747,8 @@ const BASE_PAGES: PageDef[] = [
               {
                 eyebrow: "For teams looking for flexible workspace",
                 title: "Coworking Space Membership",
+                programme: "coworking",
+                icon: "Building",
                 price: "From INR 7,000/month*",
                 intro:
                   "A professional, founder-friendly workspace with the practical facilities teams need to work consistently and stay connected to the startup ecosystem.",
@@ -653,8 +768,7 @@ const BASE_PAGES: PageDef[] = [
               },
             ],
             {
-              fixed: true,
-              hint: "In order: Cohort, Incubation, Coworking. Each card links to its application form.",
+              hint: "Each card's button opens the application form for its programme code.",
             },
           ),
           "programmes.link": text("Card link text", "Apply for this programme"),
@@ -871,6 +985,43 @@ const BASE_PAGES: PageDef[] = [
         note: "Its words are edited under Header, footer & banner.",
         fields: {},
       },
+      {
+        title: "Event detail pages",
+        note: "Wording shared by every event's own page. Each event's details are edited under Events.",
+        fields: {
+          "detail.about": text("Description heading", "About this event"),
+          "detail.agenda": text("Agenda heading", "Agenda"),
+          "detail.back": text("Back link", "Back to all events"),
+          "detail.completed": text("Badge on past events", "Event completed"),
+          "detail.date": text("Fact label: date", "Date"),
+          "detail.time": text("Fact label: time", "Time"),
+          "detail.where": text("Fact label: format and location", "Format & location"),
+          "detail.entry": text("Fact label: entry", "Entry"),
+          "detail.seats": text("Fact label: seats", "Seats"),
+          "detail.who": text("Fact label: who can join", "Who can join"),
+          "detail.organiser": text("Fact label: organiser", "Organised by"),
+          "detail.reserveTitle": text("Registration box title", "Reserve your spot."),
+          "detail.reserveBody": text(
+            "Registration box text (form on page)",
+            "Joining details are emailed to you before the event.",
+          ),
+          "detail.partnerBody": text(
+            "Registration box text (partner link)",
+            "Registration is handled by our event partner.",
+          ),
+          "detail.registerButton": text("Partner registration button", "Register for this event"),
+          "detail.mobileButton": text("Phone register bar button", "Reserve your spot"),
+          "detail.endedTitle": text("Past event title", "This event has taken place."),
+          "detail.endedBody": area(
+            "Past event text",
+            "Registration is closed. See what\u2019s coming up next, or join the community to hear about new events first.",
+          ),
+          "detail.endedPrimary": text("Past event: main button", "See upcoming events"),
+          "detail.endedPrimaryLink": text("Past event: main button link", "/events"),
+          "detail.endedSecondary": text("Past event: second button", "Join the Community"),
+          "detail.endedSecondaryLink": text("Past event: second button link", "/community"),
+        },
+      },
     ],
   },
   {
@@ -1041,6 +1192,11 @@ const BASE_PAGES: PageDef[] = [
             "Confirmed partner institutions will be listed here.",
           ),
           "partners.cta": text("Button", "Discuss a collaboration"),
+          "partners.ctaLink": text(
+            "Button link",
+            "/contact",
+            "A page path such as /events, or a full https:// link.",
+          ),
         },
       },
       {
