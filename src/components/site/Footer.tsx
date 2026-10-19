@@ -1,6 +1,7 @@
 import { useContent } from "@/lib/content-context";
 import { Logo } from "./Logo";
 import { SmartLink } from "./SmartLink";
+import { ContactDetails, SocialLinks } from "./Socials";
 import { itemText } from "@/lib/site-content";
 
 const COLUMNS = [
@@ -17,6 +18,8 @@ export function Footer() {
         <div>
           <Logo />
           <p className="mt-5 max-w-xs text-sm text-muted-foreground">{c.t("footer.tagline")}</p>
+          <ContactDetails compact className="mt-6" />
+          <SocialLinks className="mt-6" />
         </div>
         {COLUMNS.map((col) => {
           const links = c

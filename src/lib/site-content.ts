@@ -18,6 +18,19 @@ import {
   TERMS_DEFAULTS,
 } from "./legal-defaults";
 
+/** Official channels; also used in the site's structured data. Editable under Socials & contact. */
+export const SOCIALS = {
+  instagram: "https://www.instagram.com/eliteforums/",
+  linkedin: "https://www.linkedin.com/company/eliteforums/",
+  whatsapp: "https://chat.whatsapp.com/CQpXqdTHh6p8UnzSzdjfTj",
+};
+export const CONTACT = {
+  email: "admin@eliteforums.in",
+  founderEmail: "harsh.tambade@eliteforums.in",
+  phone: "+91 93225 10601",
+};
+const WHATSAPP_COMMUNITY = SOCIALS.whatsapp;
+
 export type Item = Record<string, string | string[]>;
 
 type ItemFieldDef = {
@@ -161,9 +174,27 @@ const BASE_PAGES: PageDef[] = [
           "header.partner": text("Second button", "Partner College"),
           "header.partnerLink": text("Second button link", "/colleges"),
           "header.join": text("Main button", "Join Community"),
-          "header.joinLink": text("Main button link", "/community"),
+          "header.joinLink": text("Main button link", WHATSAPP_COMMUNITY),
           "header.mobileJoin": text("Mobile menu: join button", "Join the Community"),
           "header.mobilePartner": text("Mobile menu: partner button", "Partner Your College"),
+        },
+      },
+      {
+        title: "Socials & contact",
+        note: "Shown in the footer, on the Contact page and to search engines. Leave a field empty to hide it.",
+        fields: {
+          "social.instagram": text("Instagram", SOCIALS.instagram),
+          "social.linkedin": text("LinkedIn", SOCIALS.linkedin),
+          "social.whatsapp": text(
+            "WhatsApp community",
+            SOCIALS.whatsapp,
+            "“Join the Community” buttons link here by default.",
+          ),
+          "contact.email": text("General email", CONTACT.email),
+          "contact.founderEmail": text("Founder's email", CONTACT.founderEmail),
+          "contact.founderLabel": text("Founder's email label", "Founder"),
+          "contact.phone": text("Phone number", CONTACT.phone, "Shown as written; calls dial it."),
+          "contact.heading": text("Contact page: details heading", "Reach us directly"),
         },
       },
       {
@@ -197,7 +228,7 @@ const BASE_PAGES: PageDef[] = [
                 ["Partner Network", "/network"],
               ].map(([label, link]) => ({ column: "Column 1", label: label!, link: link! })),
               ...[
-                ["Join the Community", "/community"],
+                ["Join the Community", WHATSAPP_COMMUNITY],
                 ["Apply to a Program", "/apply"],
                 ["Partner Your College", "/colleges"],
                 ["Campus Ambassadors", "/campus-ambassadors"],
@@ -230,7 +261,7 @@ const BASE_PAGES: PageDef[] = [
           "cta.secondary": text("Second button", "Partner Your College"),
           "cta.primaryLink": text(
             "Main button link",
-            "/community",
+            WHATSAPP_COMMUNITY,
             "A page path such as /events, or a full https:// link.",
           ),
           "cta.secondaryLink": text(
@@ -289,7 +320,7 @@ const BASE_PAGES: PageDef[] = [
           "hero.secondary": text("Second button", "Partner Your College"),
           "hero.primaryLink": text(
             "Main button link",
-            "/community",
+            WHATSAPP_COMMUNITY,
             "A page path such as /events, or a full https:// link.",
           ),
           "hero.secondaryLink": text(
@@ -457,8 +488,8 @@ const BASE_PAGES: PageDef[] = [
                   "Get closer to founders and mentors",
                   "Discover opportunities beyond your own circle",
                 ],
-                label: "Explore the Community",
-                link: "/community",
+                label: "Join the Community",
+                link: WHATSAPP_COMMUNITY,
                 icon: "Sparkles",
               },
               {
@@ -508,7 +539,7 @@ const BASE_PAGES: PageDef[] = [
           ),
           "hero.secondaryLink": text(
             "Second button link",
-            "/community",
+            WHATSAPP_COMMUNITY,
             "A page path such as /events, or a full https:// link.",
           ),
         },
@@ -1019,7 +1050,7 @@ const BASE_PAGES: PageDef[] = [
           "detail.endedPrimary": text("Past event: main button", "See upcoming events"),
           "detail.endedPrimaryLink": text("Past event: main button link", "/events"),
           "detail.endedSecondary": text("Past event: second button", "Join the Community"),
-          "detail.endedSecondaryLink": text("Past event: second button link", "/community"),
+          "detail.endedSecondaryLink": text("Past event: second button link", WHATSAPP_COMMUNITY),
         },
       },
     ],

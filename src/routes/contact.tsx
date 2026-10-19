@@ -5,6 +5,7 @@ import { Rich, useContent } from "@/lib/content-context";
 import { itemText } from "@/lib/site-content";
 
 import { contentMeta } from "@/lib/seo";
+import { ContactDetails, SocialLinks } from "@/components/site/Socials";
 export const Route = createFileRoute("/contact")({
   head: ({ matches }) => contentMeta(matches, "contact"),
   component: ContactPage,
@@ -12,6 +13,7 @@ export const Route = createFileRoute("/contact")({
 
 function ContactPage() {
   const c = useContent("contact");
+  const global = useContent("global");
   return (
     <>
       <PageHero
@@ -24,6 +26,11 @@ function ContactPage() {
           <div>
             <SectionHead eyebrow={c.t("side.eyebrow")} title={c.t("side.title")} />
             <p className="mt-6 reading-copy">{c.t("side.intro")}</p>
+            <div className="mt-8 rounded-2xl border border-border bg-surface p-6">
+              <h3 className="text-lg">{global.t("contact.heading")}</h3>
+              <ContactDetails className="mt-5" />
+              <SocialLinks className="mt-6" />
+            </div>
             <div className="mt-10 space-y-6">
               {c.items("topics").map((topic, i) => (
                 <div key={i} className="border-t border-border pt-5">

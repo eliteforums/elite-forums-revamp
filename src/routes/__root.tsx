@@ -21,6 +21,7 @@ import { getSiteContent, type SiteData } from "@/lib/content.functions";
 import { GOOGLE_TAG_ID, GOOGLE_TAG_MANAGER_ID } from "@/lib/analytics-config";
 import { captureAttribution } from "@/lib/utm";
 import { isStaleBuildError, reloadForNewBuild } from "@/lib/stale-build";
+import { CONTACT, SOCIALS } from "@/lib/site-content";
 import appCss from "../styles.css?url";
 
 function NotFoundComponent() {
@@ -250,6 +251,19 @@ function RootShell({ children }: { children: ReactNode }) {
                   description:
                     "A community for aspiring founders, students, colleges, E-Cells and mentors across India.",
                   areaServed: "IN",
+                  sameAs: [SOCIALS.instagram, SOCIALS.linkedin],
+                  email: CONTACT.email,
+                  telephone: CONTACT.phone.replace(/\s/g, ""),
+                  contactPoint: [
+                    {
+                      "@type": "ContactPoint",
+                      contactType: "customer support",
+                      email: CONTACT.email,
+                      telephone: CONTACT.phone.replace(/\s/g, ""),
+                      areaServed: "IN",
+                      availableLanguage: ["en", "hi"],
+                    },
+                  ],
                   knowsAbout: [
                     "Student entrepreneurship",
                     "Startup incubation",
