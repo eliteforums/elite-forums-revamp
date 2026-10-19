@@ -1,9 +1,6 @@
 import { useEffect } from "react";
 import { useRouterState } from "@tanstack/react-router";
-import {
-  GOOGLE_TAG_ID,
-  GOOGLE_TAG_MANAGER_ID,
-} from "@/lib/analytics-config";
+import { GOOGLE_TAG_ID, GOOGLE_TAG_MANAGER_ID } from "@/lib/analytics-config";
 
 const CONSENT_KEY = "elite-forums-cookie-consent";
 

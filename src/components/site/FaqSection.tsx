@@ -1,10 +1,18 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
 import { Container, SectionHead } from "./Blocks";
-import { FAQS } from "@/lib/faqs";
+import { useContent } from "@/lib/content-context";
+import { itemText } from "@/lib/site-content";
 
 export function FaqSection({ preview = false }: { preview?: boolean }) {
-  const faqs = preview ? FAQS.slice(0, 5) : FAQS;
+  const c = useContent("faqs");
+  const all = c
+    .items("faqs")
+    .map((faq) => ({ question: itemText(faq, "question"), answer: itemText(faq, "answer") }))
+    .filter((faq) => faq.question && faq.answer);
+  const previewCount = Number.parseInt(c.t("list.previewCount"), 10);
+  const faqs = preview ? all.slice(0, Number.isFinite(previewCount) ? previewCount : 5) : all;
+  if (faqs.length === 0) return null;
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -22,8 +30,8 @@ export function FaqSection({ preview = false }: { preview?: boolean }) {
     <section className="section-space border-y border-border bg-surface/40">
       <Container className="max-w-5xl">
         <SectionHead
-          eyebrow="Answers for founders"
-          title={preview ? "Frequently asked questions." : "Clear answers before you begin."}
+          eyebrow={c.t("list.eyebrow")}
+          title={preview ? c.t("list.previewTitle") : c.t("list.title")}
         />
         <div className="mt-10 divide-y divide-border border-y border-border">
           {faqs.map((faq) => (
@@ -37,7 +45,7 @@ export function FaqSection({ preview = false }: { preview?: boolean }) {
                   +
                 </span>
               </summary>
-              <p className="mt-4 max-w-3xl reading-copy">{faq.answer}</p>
+              <p className="mt-4 max-w-3xl whitespace-pre-line reading-copy">{faq.answer}</p>
             </details>
           ))}
         </div>
@@ -46,7 +54,7 @@ export function FaqSection({ preview = false }: { preview?: boolean }) {
             to="/faqs"
             className="mt-8 inline-flex items-center gap-2 text-sm text-electric hover:underline"
           >
-            View all FAQs <ArrowUpRight className="h-4 w-4" />
+            {c.t("list.more")} <ArrowUpRight className="h-4 w-4" />
           </Link>
         )}
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>

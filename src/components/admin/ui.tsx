@@ -117,7 +117,7 @@ export function Drawer({
         className="absolute inset-0 cursor-default bg-black/60 backdrop-blur-sm"
         onClick={onClose}
       />
-      <div className="relative flex h-[100dvh] w-full max-w-xl flex-col border-l border-border bg-background pb-[env(safe-area-inset-bottom)] shadow-2xl">
+      <div className="relative flex h-[100dvh] w-full max-w-2xl flex-col border-l border-border bg-background pb-[env(safe-area-inset-bottom)] shadow-2xl">
         <div className="flex items-start justify-between gap-4 border-b border-border px-4 py-4 sm:px-6 sm:py-5">
           <div className="min-w-0">
             <h2 className="truncate font-display text-xl font-semibold">{title}</h2>
@@ -131,7 +131,9 @@ export function Drawer({
             <X className="h-4 w-4" />
           </button>
         </div>
-        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-5 sm:px-6 sm:py-6">{children}</div>
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-5 sm:px-6 sm:py-6">
+          {children}
+        </div>
         {footer && <div className="border-t border-border px-4 py-4 sm:px-6">{footer}</div>}
       </div>
     </div>
@@ -157,3 +159,34 @@ export function timeAgo(iso: unknown): string {
 
 export const errorMessage = (error: unknown, fallback: string) =>
   error instanceof Error ? error.message : fallback;
+
+export function Switch({
+  checked,
+  onChange,
+  label,
+}: {
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+  label: string;
+}) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={checked}
+      aria-label={label}
+      onClick={() => onChange(!checked)}
+      className={cn(
+        "relative inline-flex h-6 w-11 shrink-0 items-center rounded-full border transition-colors",
+        checked ? "border-electric bg-electric" : "border-border bg-muted",
+      )}
+    >
+      <span
+        className={cn(
+          "inline-block h-4 w-4 rounded-full bg-background shadow transition-transform",
+          checked ? "translate-x-6" : "translate-x-1",
+        )}
+      />
+    </button>
+  );
+}

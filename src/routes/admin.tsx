@@ -10,9 +10,11 @@ import {
   LayoutDashboard,
   Loader2,
   LogOut,
+  Megaphone,
   RefreshCw,
 } from "lucide-react";
 import { toast } from "sonner";
+import { CampaignsPanel } from "@/components/admin/CampaignsPanel";
 import { ContentPanel } from "@/components/admin/ContentPanel";
 import { EventsPanel, type AdminEvent } from "@/components/admin/EventsPanel";
 import { OverviewPanel } from "@/components/admin/OverviewPanel";
@@ -34,13 +36,14 @@ export const Route = createFileRoute("/admin")({
 });
 
 type Dashboard = Awaited<ReturnType<typeof getAdminDashboard>>;
-type Tab = "overview" | "submissions" | "events" | "content";
+type Tab = "overview" | "submissions" | "events" | "content" | "campaigns";
 
 const TABS = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
   { id: "submissions", label: "Submissions", icon: Inbox },
   { id: "events", label: "Events", icon: CalendarDays },
   { id: "content", label: "Site content", icon: FileText },
+  { id: "campaigns", label: "Campaigns", icon: Megaphone },
 ] as const;
 
 function AdminPage() {
@@ -344,6 +347,9 @@ function AdminDashboard({ email }: { email: string }) {
               await router.invalidate();
             }}
           />
+        )}
+        {tab === "campaigns" && (
+          <CampaignsPanel events={dashboard.events as AdminEvent[]} submissions={submissions} />
         )}
       </div>
     </div>

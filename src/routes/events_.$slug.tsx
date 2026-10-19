@@ -1,5 +1,16 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ArrowLeft, ArrowUpRight, CalendarDays, MapPin, Users, Building2 } from "lucide-react";
+import {
+  Armchair,
+  ArrowLeft,
+  ArrowUpRight,
+  Building2,
+  CalendarDays,
+  Clock,
+  MapPin,
+  Ticket,
+  Users,
+} from "lucide-react";
+import { useEffect, useState } from "react";
 import { Container, SampleBadge } from "@/components/site/Blocks";
 import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 import { EventDescription, descriptionLead } from "@/components/site/EventDescription";
@@ -10,6 +21,7 @@ import { getPublicEvents } from "@/lib/admin.functions";
 import { absoluteUrl, pageMeta, SITE_URL } from "@/lib/metadata";
 import { eventStatus } from "@/lib/content";
 import { cn } from "@/lib/utils";
+import { tagOutboundLink } from "@/lib/utm";
 
 export const Route = createFileRoute("/events_/$slug")({
   loader: async ({ params }) => {
@@ -17,17 +29,27 @@ export const Route = createFileRoute("/events_/$slug")({
     if (!event) throw notFound();
     return event;
   },
-  head: ({ loaderData }) =>
-    pageMeta(
-      loaderData?.title ?? "Event unavailable",
-      loaderData
-        ? descriptionLead(loaderData.summary, loaderData.title)
-        : "Explore entrepreneurship events at Elite Forums.",
-      loaderData ? `/events/${loaderData.slug}` : "/events",
-      loaderData
-        ? { image: loaderData.image, imageAlt: `${loaderData.title} event poster` }
-        : {},
-    ),
+  head: ({ loaderData: event }) => {
+    if (!event)
+      return pageMeta(
+        "Event unavailable",
+        "Explore entrepreneurship events at Elite Forums.",
+        "/events",
+      );
+    const seo = event.seo ?? {};
+    return pageMeta(
+      seo.title || event.title,
+      seo.description || descriptionLead(event.summary, event.title),
+      `/events/${event.slug}`,
+      {
+        image: seo.image || event.image,
+        imageAlt: `${event.title} event poster`,
+        type: "article",
+        ...(seo.keywords ? { keywords: seo.keywords } : {}),
+        ...(seo.noindex ? { noIndex: true } : {}),
+      },
+    );
+  },
   component: EventDetail,
 });
 
@@ -51,46 +73,76 @@ function EventDetail() {
         year: "numeric",
       }),
     },
+    ...(event.time_label ? [{ icon: Clock, label: "Time", value: event.time_label }] : []),
     {
       icon: MapPin,
       label: "Format & location",
       value: [event.format, place].filter(Boolean).join(" · "),
     },
+    ...(event.entry_fee ? [{ icon: Ticket, label: "Entry", value: event.entry_fee }] : []),
+    ...(event.seats ? [{ icon: Armchair, label: "Seats", value: event.seats }] : []),
     { icon: Users, label: "Who can join", value: event.eligibility },
     { icon: Building2, label: "Organised by", value: event.organizer },
-  ];
+  ].slice(0, 6);
+  // Partner registration pages get the visitor's campaign tags once the page is in the browser.
+  const [registerHref, setRegisterHref] = useState(registrationUrl ?? "");
+  useEffect(() => {
+    if (registrationUrl) setRegisterHref(tagOutboundLink(registrationUrl, `event-${event.slug}`));
+  }, [registrationUrl, event.slug]);
+  const canRegister = !event.sample && !ended;
 
   return (
     <>
       <section className="relative overflow-hidden border-b border-border bg-surface/30 pb-12 pt-36 md:pb-16 md:pt-44">
         <Breadcrumbs current={event.title} />
-        {event.format === "In-person" && (
-          <JsonLd
-            data={{
-              "@context": "https://schema.org",
-              "@type": "Event",
-              name: event.title,
-              description: event.summary,
-              image: [absoluteUrl(event.image)],
-              url: `${SITE_URL}/events/${event.slug}`,
-              startDate: event.date,
-              eventStatus: ended
-                ? "https://schema.org/EventCompleted"
-                : "https://schema.org/EventScheduled",
-              eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-              location: {
-                "@type": "Place",
-                name: [event.location, event.city].filter(Boolean).join(", "),
-                address: {
-                  "@type": "PostalAddress",
-                  ...(event.city ? { addressLocality: event.city } : {}),
-                  addressCountry: "IN",
-                },
-              },
-              organizer: { "@id": `${SITE_URL}/#organization` },
-            }}
-          />
-        )}
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "Event",
+            name: event.seo?.title || event.title,
+            description: event.seo?.description || descriptionLead(event.summary, event.title),
+            image: [absoluteUrl(event.seo?.image || event.image)],
+            url: `${SITE_URL}/events/${event.slug}`,
+            startDate: isoStart(event.date, event.time_label),
+            eventStatus: ended
+              ? "https://schema.org/EventCompleted"
+              : "https://schema.org/EventScheduled",
+            eventAttendanceMode:
+              event.format === "Online"
+                ? "https://schema.org/OnlineEventAttendanceMode"
+                : "https://schema.org/OfflineEventAttendanceMode",
+            location:
+              event.format === "Online"
+                ? {
+                    "@type": "VirtualLocation",
+                    url: registrationUrl || `${SITE_URL}/events/${event.slug}`,
+                  }
+                : {
+                    "@type": "Place",
+                    name: place,
+                    address: {
+                      "@type": "PostalAddress",
+                      ...(event.city ? { addressLocality: event.city } : {}),
+                      addressCountry: "IN",
+                    },
+                  },
+            ...(/^free$/i.test(event.entry_fee ?? "")
+              ? {
+                  isAccessibleForFree: true,
+                  offers: {
+                    "@type": "Offer",
+                    price: 0,
+                    priceCurrency: "INR",
+                    availability: ended
+                      ? "https://schema.org/SoldOut"
+                      : "https://schema.org/InStock",
+                    url: `${SITE_URL}/events/${event.slug}`,
+                  },
+                }
+              : {}),
+            organizer: { "@id": `${SITE_URL}/#organization` },
+          }}
+        />
         <Container className="relative">
           <div className="flex flex-wrap items-center gap-2.5">
             <p className="eyebrow text-electric">{event.type}</p>
@@ -124,7 +176,12 @@ function EventDetail() {
               />
             </div>
           </div>
-          <dl className="animate-rise mt-10 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
+          <dl
+            className={cn(
+              "animate-rise mt-10 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2",
+              facts.length % 3 === 0 ? "lg:grid-cols-3" : "lg:grid-cols-4",
+            )}
+          >
             {facts.map(({ icon: Icon, label, value }) => (
               <div key={label} className="min-w-0 bg-background p-5 md:p-6">
                 <dt className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -141,13 +198,7 @@ function EventDetail() {
         <Container className="grid items-start gap-10 lg:grid-cols-[minmax(0,1.35fr)_minmax(18rem,0.8fr)] lg:gap-16">
           <aside className="space-y-6 lg:sticky lg:top-28 lg:order-2">
             <div className="rounded-3xl border border-border bg-surface p-6 md:p-7">
-              {registrationUrl ? (
-                <Button asChild variant="brand" size="lg" className="w-full">
-                  <a href={registrationUrl}>
-                    Register for this event <ArrowUpRight />
-                  </a>
-                </Button>
-              ) : event.sample ? (
+              {event.sample ? (
                 <>
                   <h2 className="font-display text-2xl font-medium">
                     A preview of what’s possible.
@@ -176,9 +227,24 @@ function EventDetail() {
                     <Link to="/community">Join the Community</Link>
                   </Button>
                 </>
-              ) : (
+              ) : registrationUrl ? (
                 <>
                   <h2 className="font-display text-2xl font-medium">Reserve your spot.</h2>
+                  <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                    Registration is handled by our event partner.
+                    {event.entry_fee && ` Entry: ${event.entry_fee}.`}
+                  </p>
+                  <Button asChild variant="brand" size="lg" className="mt-6 w-full">
+                    <a href={registerHref} target="_blank" rel="noopener">
+                      Register for this event <ArrowUpRight />
+                    </a>
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <h2 id="register" className="scroll-mt-28 font-display text-2xl font-medium">
+                    Reserve your spot.
+                  </h2>
                   <p className="mb-6 mt-3 text-sm leading-6 text-muted-foreground">
                     Joining details are emailed to you before the event.
                   </p>
@@ -216,6 +282,31 @@ function EventDetail() {
           </div>
         </Container>
       </section>
+      {canRegister && <div className="h-16 lg:hidden" aria-hidden="true" />}
+      {canRegister && (
+        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 px-5 py-3 backdrop-blur lg:hidden">
+          <Button asChild variant="brand" className="w-full">
+            {registrationUrl ? (
+              <a href={registerHref} target="_blank" rel="noopener">
+                Register for this event <ArrowUpRight />
+              </a>
+            ) : (
+              <a href="#register">
+                Reserve your spot <ArrowUpRight />
+              </a>
+            )}
+          </Button>
+        </div>
+      )}
     </>
   );
+}
+
+/** Schema.org start: the date, with the time when the label starts with one ("10:30 AM …"). */
+function isoStart(date: string, timeLabel?: string | null): string {
+  const match = timeLabel?.match(/^(\d{1,2})(?::(\d{2}))?\s?(AM|PM)/i);
+  if (!match) return date;
+  let hours = Number(match[1]) % 12;
+  if (match[3]!.toUpperCase() === "PM") hours += 12;
+  return `${date}T${String(hours).padStart(2, "0")}:${match[2] ?? "00"}:00+05:30`;
 }

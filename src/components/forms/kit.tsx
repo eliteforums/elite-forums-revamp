@@ -5,6 +5,7 @@ import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { flatten, type FieldErrors } from "@/lib/schemas";
+import { currentAttribution } from "@/lib/utm";
 
 export const inputCls =
   "min-h-11 w-full rounded-xl border border-input bg-background/60 px-4 py-3 text-base text-foreground placeholder:text-muted-foreground/70 transition-colors focus:border-turquoise focus:outline-none focus:ring-2 focus:ring-ring/30 aria-[invalid=true]:border-destructive md:text-sm";
@@ -125,7 +126,9 @@ export function useFormSubmit<S extends z.ZodTypeAny>(
     lock.current = true;
     setState("loading");
     try {
-      const res = await (submit as Submit)({ data: parsed.data as never });
+      const res = await (submit as Submit)({
+        data: { ...(parsed.data as object), utm: currentAttribution() } as never,
+      });
       if (res.ok) setState("success");
       else {
         setState("error");

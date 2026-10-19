@@ -61,10 +61,48 @@ export function rowContext(table: string, row: Row): string {
   return key === "program" ? programLabel(String(value ?? "")) : showValue(value);
 }
 
-const HIDDEN = new Set(["id", "status", "answers"]);
+const HIDDEN = new Set(["id", "status", "answers", "utm"]);
+
+const UTM_LABELS: Record<string, string> = {
+  utm_source: "Source",
+  utm_medium: "Medium",
+  utm_campaign: "Campaign",
+  utm_term: "Term",
+  utm_content: "Content",
+  landing_page: "Landing page",
+  referrer: "Referrer",
+};
+
+/** Campaign tags saved with a submission (empty before migration 0005). */
+export function rowUtm(row: Row): Record<string, string> {
+  const raw = row["utm"];
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return {};
+  return Object.fromEntries(
+    Object.entries(raw).filter(([, value]) => typeof value === "string" && value),
+  ) as Record<string, string>;
+}
+
+/** Short "where from" label for tables: source / campaign, the referring site, or Direct. */
+export function rowSource(row: Row): string {
+  const utm = rowUtm(row);
+  if (utm["utm_source"])
+    return [utm["utm_source"], utm["utm_campaign"]].filter(Boolean).join(" / ");
+  if (utm["referrer"]) {
+    try {
+      return new URL(utm["referrer"]).hostname.replace(/^www\./, "");
+    } catch {
+      return "Referral";
+    }
+  }
+  return "Direct";
+}
 
 /** Labelled answers for one submission, split into the main form and programme-specific answers. */
-export function rowDetails(row: Row): { main: [string, string][]; answers: [string, string][] } {
+export function rowDetails(row: Row): {
+  main: [string, string][];
+  answers: [string, string][];
+  source: [string, string][];
+} {
   const main: [string, string][] = [];
   for (const [key, value] of Object.entries(row)) {
     if (HIDDEN.has(key)) continue;
@@ -87,7 +125,10 @@ export function rowDetails(row: Row): { main: [string, string][]; answers: [stri
           showValue(value),
         ])
       : [];
-  return { main, answers };
+  const source = Object.entries(rowUtm(row)).map(
+    ([key, value]) => [UTM_LABELS[key] ?? key, value] as [string, string],
+  );
+  return { main, answers, source };
 }
 
 const csvCell = (value: string) => `"${value.replaceAll('"', '""')}"`;
@@ -96,10 +137,11 @@ const csvCell = (value: string) => `"${value.replaceAll('"', '""')}"`;
 export function downloadCsv(table: string, rows: Row[]) {
   const columns: string[] = [];
   const records = rows.map((row) => {
-    const { main, answers } = rowDetails(row);
+    const { main, answers, source } = rowDetails(row);
     const record = new Map<string, string>([
       ...main,
       ...answers,
+      ...source,
       ["Status", showValue(row["status"])],
     ]);
     for (const column of record.keys()) if (!columns.includes(column)) columns.push(column);

@@ -3,18 +3,13 @@ import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container, FinalCTA } from "@/components/site/Blocks";
 import { EcosystemGrid, JoinPaths, Mission } from "@/components/site/EcosystemSections";
-import { pageMeta } from "@/lib/metadata";
 import { Rich, resolveImage, useContent } from "@/lib/content-context";
 import { itemText } from "@/lib/site-content";
 import { FaqSection } from "@/components/site/FaqSection";
 
+import { contentMeta } from "@/lib/seo";
 export const Route = createFileRoute("/")({
-  head: () =>
-    pageMeta(
-      "Startup Community for Aspiring Founders in India",
-      "Join an India-focused startup community for student entrepreneurs and aspiring founders, with practical programmes, events and college partnerships.",
-      "/",
-    ),
+  head: ({ matches }) => contentMeta(matches, "home"),
   component: Home,
 });
 
@@ -54,21 +49,23 @@ function Home() {
           </div>
         </Container>
       </section>
-      <section className="border-b border-border py-8">
-        <Container className="grid gap-8 sm:grid-cols-3">
-          {c.items("pillars").map((pillar, i) => (
-            <div key={i} className="sm:border-r sm:border-border sm:last:border-0">
-              <p className="text-xl font-medium">{itemText(pillar, "title")}</p>
-              <p className="mt-2 text-xs text-muted-foreground">{itemText(pillar, "body")}</p>
-            </div>
-          ))}
-        </Container>
-      </section>
-      <EcosystemGrid />
-      <Mission />
-      <JoinPaths />
-      <FaqSection preview />
-      <FinalCTA />
+      {c.on("pillars") && (
+        <section className="border-b border-border py-8">
+          <Container className="grid gap-8 sm:grid-cols-3">
+            {c.items("pillars").map((pillar, i) => (
+              <div key={i} className="sm:border-r sm:border-border sm:last:border-0">
+                <p className="text-xl font-medium">{itemText(pillar, "title")}</p>
+                <p className="mt-2 text-xs text-muted-foreground">{itemText(pillar, "body")}</p>
+              </div>
+            ))}
+          </Container>
+        </section>
+      )}
+      {c.on("grid") && <EcosystemGrid />}
+      {c.on("mission") && <Mission />}
+      {c.on("join") && <JoinPaths />}
+      {c.on("faqs") && <FaqSection preview />}
+      {c.on("cta") && <FinalCTA />}
     </>
   );
 }

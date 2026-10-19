@@ -84,7 +84,8 @@ export function CountUp({ value, index = 0 }: { value: string; index?: number })
     };
   }, [index, target]);
 
-  if (!number) return <p className="display-xl text-4xl leading-none text-electric sm:text-5xl">{value}</p>;
+  if (!number)
+    return <p className="display-xl text-4xl leading-none text-electric sm:text-5xl">{value}</p>;
 
   return (
     <p

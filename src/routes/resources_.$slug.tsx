@@ -4,6 +4,7 @@ import { JsonLd } from "@/components/site/JsonLd";
 import { Button } from "@/components/ui/button";
 import { articlesFrom } from "@/lib/content";
 import { getSiteContent } from "@/lib/content.functions";
+import { useContent } from "@/lib/content-context";
 import { absoluteUrl, pageMeta, SITE_URL } from "@/lib/metadata";
 
 export const Route = createFileRoute("/resources_/$slug")({
@@ -29,6 +30,7 @@ export const Route = createFileRoute("/resources_/$slug")({
 
 function ArticleDetail() {
   const article = Route.useLoaderData();
+  const c = useContent("resources");
   return (
     <>
       {!article.sample && (
@@ -92,7 +94,7 @@ function ArticleDetail() {
             ))}
             <div className="border-t border-border pt-8">
               <Button asChild variant="outline">
-                <Link to="/resources">Back to resources</Link>
+                <Link to="/resources">{c.t("article.back")}</Link>
               </Button>
             </div>
           </div>

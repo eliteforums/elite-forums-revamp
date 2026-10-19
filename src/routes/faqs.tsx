@@ -1,25 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { FaqSection } from "@/components/site/FaqSection";
 import { PageHero } from "@/components/site/Blocks";
-import { pageMeta } from "@/lib/metadata";
 
+import { contentMeta } from "@/lib/seo";
+import { Rich, useContent } from "@/lib/content-context";
 export const Route = createFileRoute("/faqs")({
-  head: () =>
-    pageMeta(
-      "Startup Community and Program FAQs",
-      "Answers about Elite Forums, its founder community, startup programmes, coworking membership, college partnerships, applications and events in India.",
-      "/faqs",
-    ),
+  head: ({ matches }) => contentMeta(matches, "faqs"),
   component: Faqs,
 });
 
 function Faqs() {
+  const c = useContent("faqs");
   return (
     <>
       <PageHero
-        eyebrow="Frequently asked questions"
-        title="Start with the answers."
-        intro="A clear guide to the Elite Forums community, founder programmes, college partnerships and events."
+        eyebrow={c.t("hero.eyebrow")}
+        title={<Rich text={c.t("hero.title")} />}
+        intro={c.t("hero.intro")}
       />
       <FaqSection />
     </>

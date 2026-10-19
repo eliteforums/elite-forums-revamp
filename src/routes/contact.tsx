@@ -1,17 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Container, PageHero, SectionHead } from "@/components/site/Blocks";
 import { ContactForm } from "@/components/forms/Forms";
-import { pageMeta } from "@/lib/metadata";
 import { Rich, useContent } from "@/lib/content-context";
 import { itemText } from "@/lib/site-content";
 
+import { contentMeta } from "@/lib/seo";
 export const Route = createFileRoute("/contact")({
-  head: () =>
-    pageMeta(
-      "Contact Elite Forums",
-      "Contact Elite Forums about college and E-Cell partnerships, events, founder programmes, mentorship or collaboration.",
-      "/contact",
-    ),
+  head: ({ matches }) => contentMeta(matches, "contact"),
   component: ContactPage,
 });
 

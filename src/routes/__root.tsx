@@ -9,36 +9,33 @@ import {
   useRouterState,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { Toaster } from "@/components/ui/sonner";
 import { CookieConsent } from "@/components/site/CookieConsent";
-import { SiteContentProvider } from "@/lib/content-context";
+import { SiteContentProvider, useContent } from "@/lib/content-context";
 import { Analytics } from "@/components/site/Analytics";
 import { getSiteContent } from "@/lib/content.functions";
-import {
-  GOOGLE_TAG_ID,
-  GOOGLE_TAG_MANAGER_ID,
-} from "@/lib/analytics-config";
+import { GOOGLE_TAG_ID, GOOGLE_TAG_MANAGER_ID } from "@/lib/analytics-config";
+import { captureAttribution } from "@/lib/utm";
 import appCss from "../styles.css?url";
 
 function NotFoundComponent() {
+  const c = useContent("global");
   return (
     <div className="flex min-h-svh items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <p className="eyebrow text-electric">404 · Lost in the ecosystem</p>
-        <h1 className="display-xl mt-5 text-6xl text-foreground">Page not found</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
-        </p>
+        <p className="eyebrow text-electric">{c.t("notFound.eyebrow")}</p>
+        <h1 className="display-xl mt-5 text-6xl text-foreground">{c.t("notFound.title")}</h1>
+        <p className="mt-2 text-sm text-muted-foreground">{c.t("notFound.body")}</p>
         <div className="mt-6">
           <Link
             to="/"
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Go home
+            {c.t("notFound.button")}
           </Link>
         </div>
       </div>
@@ -199,10 +196,7 @@ function RootShell({ children }: { children: ReactNode }) {
         />
         <HeadContent />
         {!GOOGLE_TAG_MANAGER_ID && (
-          <script
-            async
-            src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_TAG_ID}`}
-          />
+          <script async src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_TAG_ID}`} />
         )}
       </head>
       <body>
@@ -263,6 +257,9 @@ function RootComponent() {
   const overrides = Route.useLoaderData();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const isAdminRoute = pathname === "/admin";
+  useEffect(() => {
+    if (!isAdminRoute) captureAttribution();
+  }, [pathname, isAdminRoute]);
 
   return (
     <QueryClientProvider client={queryClient}>

@@ -6,6 +6,7 @@ type PageMetaOptions = {
   type?: "website" | "article";
   noIndex?: boolean;
   noFollow?: boolean;
+  keywords?: string;
 };
 
 export function absoluteUrl(pathOrUrl: string) {
@@ -33,6 +34,7 @@ export function pageMeta(
     meta: [
       { title: fullTitle },
       { name: "description", content: description },
+      ...(options.keywords ? [{ name: "keywords", content: options.keywords }] : []),
       { name: "robots", content: robots },
       { name: "googlebot", content: robots },
       { name: "author", content: "Elite Forums" },

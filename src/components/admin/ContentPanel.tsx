@@ -11,7 +11,9 @@ import {
   type Item,
 } from "@/lib/site-content";
 import { cn } from "@/lib/utils";
-import { Card, FieldLabel, PanelHeader, errorMessage, fieldCls } from "./ui";
+import { Markdown } from "@/components/site/Markdown";
+import { ImageUpload } from "./ImageUpload";
+import { Card, FieldLabel, PanelHeader, Switch, errorMessage, fieldCls } from "./ui";
 
 type Draft = Record<string, ContentValue>;
 type Saved = Record<string, Record<string, unknown>>;
@@ -98,26 +100,36 @@ export function ContentPanel({ saved, onSaved }: { saved: Saved; onSaved: () => 
           className="flex gap-1 overflow-x-auto xl:flex-col xl:overflow-visible"
           aria-label="Pages"
         >
-          {CONTENT_PAGES.map((p) => {
-            const edited = Object.keys(saved[p.id] ?? {}).length > 0;
-            return (
-              <button
-                key={p.id}
-                onClick={() => choosePage(p.id)}
-                className={cn(
-                  "flex shrink-0 items-center justify-between gap-3 rounded-lg px-3 py-2 text-left text-sm transition-colors",
-                  p.id === pageId
-                    ? "bg-accent font-medium text-foreground"
-                    : "text-muted-foreground hover:bg-accent/50 hover:text-foreground",
-                )}
-              >
-                {p.label}
-                {edited && (
-                  <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-electric" title="Edited" />
-                )}
-              </button>
-            );
-          })}
+          {PAGE_GROUPS.map((group) => (
+            <div key={group.label} className="contents xl:block xl:space-y-1">
+              <p className="hidden px-3 pb-1 pt-4 text-[0.68rem] font-semibold uppercase tracking-wider text-muted-foreground first:pt-0 xl:block">
+                {group.label}
+              </p>
+              {CONTENT_PAGES.filter(group.includes).map((p) => {
+                const edited = Object.keys(saved[p.id] ?? {}).length > 0;
+                return (
+                  <button
+                    key={p.id}
+                    onClick={() => choosePage(p.id)}
+                    className={cn(
+                      "flex shrink-0 items-center justify-between gap-3 rounded-lg px-3 py-2 text-left text-sm transition-colors",
+                      p.id === pageId
+                        ? "bg-accent font-medium text-foreground"
+                        : "text-muted-foreground hover:bg-accent/50 hover:text-foreground",
+                    )}
+                  >
+                    {p.label}
+                    {edited && (
+                      <span
+                        className="h-1.5 w-1.5 shrink-0 rounded-full bg-electric"
+                        title="Edited"
+                      />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          ))}
         </nav>
         <div className="min-w-0 space-y-6 pb-24">
           <div className="flex flex-wrap items-center justify-between gap-3">
@@ -133,21 +145,54 @@ export function ContentPanel({ saved, onSaved }: { saved: Saved; onSaved: () => 
               </a>
             )}
           </div>
-          {page.sections.map((section) => (
-            <Card key={section.title} className="p-5 sm:p-6">
-              <h3 className="mb-5 text-sm font-semibold text-foreground">{section.title}</h3>
-              <div className="space-y-6">
-                {Object.entries(section.fields).map(([key, def]) => (
-                  <FieldEditor
-                    key={`${pageId}.${key}`}
-                    def={def}
-                    value={draft[key] ?? def.default}
-                    onChange={(value) => set(key, value)}
+          {page.sections.map((section) => {
+            const showKey = section.id ? `show.${section.id}` : null;
+            const visible = !showKey || draft[showKey] !== "off";
+            const fields = Object.entries(section.fields).filter(([key]) => key !== showKey);
+            return (
+              <Card key={section.title} className="p-5 sm:p-6">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <h3 className="text-sm font-semibold text-foreground">{section.title}</h3>
+                    {section.note && (
+                      <p className="mt-1 text-xs text-muted-foreground">{section.note}</p>
+                    )}
+                  </div>
+                  {showKey && (
+                    <label className="flex shrink-0 items-center gap-2 text-xs text-muted-foreground">
+                      {visible ? "Shown" : "Hidden"}
+                      <Switch
+                        checked={visible}
+                        label={`Show ${section.title}`}
+                        onChange={(on) => set(showKey, on ? "on" : "off")}
+                      />
+                    </label>
+                  )}
+                </div>
+                {section.title === "Search & sharing" && (
+                  <SearchPreview
+                    path={page.path ?? "/"}
+                    title={String(draft["seo.title"] ?? "")}
+                    description={String(draft["seo.description"] ?? "")}
                   />
-                ))}
-              </div>
-            </Card>
-          ))}
+                )}
+                {fields.length > 0 && (
+                  <div
+                    className={cn("mt-5 space-y-6", !visible && "pointer-events-none opacity-40")}
+                  >
+                    {fields.map(([key, def]) => (
+                      <FieldEditor
+                        key={`${pageId}.${key}`}
+                        def={def}
+                        value={draft[key] ?? def.default}
+                        onChange={(value) => set(key, value)}
+                      />
+                    ))}
+                  </div>
+                )}
+              </Card>
+            );
+          })}
         </div>
       </div>
       {dirty && (
@@ -166,6 +211,86 @@ export function ContentPanel({ saved, onSaved }: { saved: Saved; onSaved: () => 
         </div>
       )}
     </>
+  );
+}
+
+const LEGAL = new Set(["privacy", "terms", "refunds", "cookies", "dataDeletion"]);
+const SITE_WIDE = new Set(["global", "sections"]);
+const PAGE_GROUPS = [
+  { label: "Site-wide", includes: (p: { id: string }) => SITE_WIDE.has(p.id) },
+  {
+    label: "Pages",
+    includes: (p: { id: string }) => !SITE_WIDE.has(p.id) && !LEGAL.has(p.id),
+  },
+  { label: "Legal", includes: (p: { id: string }) => LEGAL.has(p.id) },
+];
+
+function SearchPreview({
+  path,
+  title,
+  description,
+}: {
+  path: string;
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="mt-4 rounded-xl border border-border bg-white p-4">
+      <p className="text-[0.7rem] font-medium uppercase tracking-wide text-[#70757a]">
+        Google preview
+      </p>
+      <p className="mt-2 truncate text-xs text-[#4d5156]">eliteforums.in{path}</p>
+      <p className="mt-1 line-clamp-1 text-lg leading-6 text-[#1a0dab]">{title} — Elite Forums</p>
+      <p className="mt-1 line-clamp-2 text-sm leading-5 text-[#4d5156]">{description}</p>
+      <p className="mt-3 text-xs text-[#70757a]">
+        Title {title.length + 15}/60 · Description {description.length}/160
+      </p>
+    </div>
+  );
+}
+
+function DocEditor({
+  def,
+  text,
+  onChange,
+  reset,
+}: {
+  def: FieldDef;
+  text: string;
+  onChange: (value: ContentValue) => void;
+  reset: React.ReactNode;
+}) {
+  const [preview, setPreview] = useState(false);
+  return (
+    <FieldLabel
+      label={def.label}
+      hint={def.hint}
+      action={
+        <span className="flex items-center gap-3">
+          {reset}
+          <button
+            type="button"
+            onClick={() => setPreview((p) => !p)}
+            className="text-xs text-electric hover:underline"
+          >
+            {preview ? "Edit" : "Preview"}
+          </button>
+        </span>
+      }
+    >
+      {preview ? (
+        <div className="max-h-[32rem] overflow-y-auto rounded-lg border border-border bg-background/60 p-5">
+          <Markdown text={text} />
+        </div>
+      ) : (
+        <textarea
+          className={cn(fieldCls, "font-mono text-[0.8rem] leading-6")}
+          rows={18}
+          value={text}
+          onChange={(e) => onChange(e.target.value)}
+        />
+      )}
+    </FieldLabel>
   );
 }
 
@@ -211,6 +336,19 @@ function FieldEditor({
   }
 
   const text = value as string;
+  if (def.type === "toggle")
+    return (
+      <div className="flex items-center justify-between gap-4">
+        <span className="text-xs font-medium text-foreground/90">{def.label}</span>
+        <Switch
+          checked={text === "on"}
+          label={def.label}
+          onChange={(on) => onChange(on ? "on" : "off")}
+        />
+      </div>
+    );
+  if (def.type === "doc")
+    return <DocEditor def={def} text={text} onChange={onChange} reset={reset} />;
   return (
     <FieldLabel label={def.label} hint={def.hint} action={reset}>
       {def.type === "text" || def.type === "image" ? (
@@ -228,8 +366,13 @@ function FieldEditor({
           onChange={(e) => onChange(e.target.value)}
         />
       )}
-      {def.type === "image" && /^https?:\/\//.test(text) && (
-        <img src={text} alt="" className="mt-2 h-28 rounded-lg border border-border object-cover" />
+      {def.type === "image" && (
+        <div className="mt-2 flex flex-wrap items-center gap-3">
+          <ImageUpload onUploaded={(url) => onChange(url)} />
+          {(/^https?:\/\//.test(text) || text.startsWith("/")) && (
+            <img src={text} alt="" className="h-20 rounded-lg border border-border object-cover" />
+          )}
+        </div>
       )}
     </FieldLabel>
   );

@@ -3,19 +3,14 @@ import { z } from "zod";
 import { Container, PageHero, SectionHead } from "@/components/site/Blocks";
 import { ProgramApplicationForm } from "@/components/forms/ProgramApplicationForm";
 import { Rich, useContent } from "@/lib/content-context";
-import { pageMeta } from "@/lib/metadata";
 import { itemText } from "@/lib/site-content";
 
+import { contentMeta } from "@/lib/seo";
 export const Route = createFileRoute("/apply")({
   validateSearch: z.object({
     program: z.enum(["cohort", "incubation", "coworking"]).optional().catch(undefined),
   }),
-  head: () =>
-    pageMeta(
-      "Apply to Startup Incubation and Cohort Programs",
-      "Apply to the Elite Forums Startup Cohort, Startup Incubation Program or Coworking Space Membership in India.",
-      "/apply",
-    ),
+  head: ({ matches }) => contentMeta(matches, "apply"),
   component: Apply,
 });
 
@@ -29,20 +24,22 @@ function Apply() {
         title={<Rich text={c.t("hero.title")} />}
         intro={c.t("hero.intro")}
       />
-      <section className="section-space border-b border-border">
-        <Container>
-          <SectionHead eyebrow={c.t("steps.eyebrow")} title={c.t("steps.title")} />
-          <div className="mt-10 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-            {c.items("steps").map((step, i) => (
-              <div key={i}>
-                <p className="font-display text-3xl text-electric">0{i + 1}</p>
-                <h3 className="mt-6 text-xl font-medium">{itemText(step, "title")}</h3>
-                <p className="mt-3 text-sm reading-copy">{itemText(step, "body")}</p>
-              </div>
-            ))}
-          </div>
-        </Container>
-      </section>
+      {c.on("steps") && (
+        <section className="section-space border-b border-border">
+          <Container>
+            <SectionHead eyebrow={c.t("steps.eyebrow")} title={c.t("steps.title")} />
+            <div className="mt-10 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+              {c.items("steps").map((step, i) => (
+                <div key={i}>
+                  <p className="font-display text-3xl text-electric">0{i + 1}</p>
+                  <h3 className="mt-6 text-xl font-medium">{itemText(step, "title")}</h3>
+                  <p className="mt-3 text-sm reading-copy">{itemText(step, "body")}</p>
+                </div>
+              ))}
+            </div>
+          </Container>
+        </section>
+      )}
       <section className="py-16 md:py-24">
         <Container className="max-w-4xl">
           <SectionHead eyebrow={c.t("form.eyebrow")} title={c.t("form.title")} />

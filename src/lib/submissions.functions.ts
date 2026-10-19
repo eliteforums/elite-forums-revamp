@@ -10,6 +10,7 @@ import {
   studentSchema,
 } from "./schemas";
 import { COMMON_KEYS, ACKNOWLEDGEMENTS, programApplicationSchema } from "./program-application";
+import { attributionSchema, type Attribution } from "./utm";
 
 type Table =
   | "student_registrations"
@@ -29,6 +30,14 @@ function supabaseEnv() {
   };
 }
 
+/** The form's own fields, plus where the visitor came from (sent alongside, not validated by the form schema). */
+const withAttribution =
+  <T>(parse: (d: unknown) => T) =>
+  (d: unknown): T & { utm: Attribution } => ({
+    ...parse(d),
+    utm: attributionSchema.parse((d as { utm?: unknown } | null)?.utm ?? {}),
+  });
+
 async function insertRow(table: Table, row: Record<string, unknown>): Promise<Result> {
   const { url, key } = supabaseEnv();
   if (!url || !key) return { ok: false, error: "Submissions are not configured yet." };
@@ -36,7 +45,14 @@ async function insertRow(table: Table, row: Record<string, unknown>): Promise<Re
     auth: { persistSession: false, autoRefreshToken: false },
   });
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { error } = await sb.from(table).insert(row as any);
+  let { error } = await sb.from(table).insert(row as any);
+  // Before the attribution migration (0005) runs, the utm column does not exist:
+  // save the submission without it rather than losing it.
+  if (error && "utm" in row && /utm/.test(error.message)) {
+    const { utm: _utm, ...rest } = row;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ({ error } = await sb.from(table).insert(rest as any));
+  }
   if (error) {
     if (error.code === "23505")
       return { ok: false, error: "You're already registered with this email." };
@@ -55,11 +71,12 @@ function strip<T extends Record<string, unknown>>(data: T, ...keys: string[]) {
 
 const make = <S extends z.ZodTypeAny>(schema: S, table: Table, hp: string) =>
   createServerFn({ method: "POST" })
-    .inputValidator((d: unknown) => schema.parse(d) as z.infer<S>)
+    .inputValidator(withAttribution((d: unknown) => schema.parse(d) as z.infer<S>))
     .handler(async ({ data }) => {
       const d = data as Record<string, unknown>;
       if (d[hp]) return { ok: true } as Result; // silently drop bots
-      return insertRow(table, strip(d, hp));
+      const { utm, ...fields } = d;
+      return insertRow(table, { ...strip(fields, hp), utm });
     });
 
 export const submitStudent = make(studentSchema, "student_registrations", "website");
@@ -69,9 +86,9 @@ export const submitContact = make(contactSchema, "contact_enquiries", "website")
 export const submitEventReg = make(eventRegSchema, "event_registrations", "website");
 
 export const submitProgramApplication = createServerFn({ method: "POST" })
-  .inputValidator((d: unknown) => programApplicationSchema.parse(d))
+  .inputValidator(withAttribution((d: unknown) => programApplicationSchema.parse(d)))
   .handler(async ({ data }) => {
-    const { website, program, ...fields } = data as Record<string, unknown>;
+    const { website, program, utm, ...fields } = data as Record<string, unknown>;
     if (website) return { ok: true } as Result; // silently drop bots
     // Questions asked of everyone are columns; the rest are programme-specific answers.
     const columnKeys = new Set<string>([...COMMON_KEYS, ...ACKNOWLEDGEMENTS.map((a) => a.key)]);
@@ -82,5 +99,5 @@ export const submitProgramApplication = createServerFn({ method: "POST" })
       else if (value !== "" && !(Array.isArray(value) && value.length === 0)) answers[key] = value;
     }
     row["whatsapp_available"] = row["whatsapp_available"] === "Yes";
-    return insertRow("program_applications", { ...row, answers });
+    return insertRow("program_applications", { ...row, answers, utm });
   });

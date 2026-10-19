@@ -17,6 +17,22 @@ export type EventItem = {
   agenda: { time: string; item: string }[];
   eligibility: string;
   organizer: string;
+  /** e.g. "10:30 AM onwards" */
+  time_label?: string | null;
+  /** e.g. "Free" or "₹499" */
+  entry_fee?: string | null;
+  /** e.g. "Limited to 100 participants" */
+  seats?: string | null;
+  seo?: EventSeo;
+};
+
+/** Per-event search and sharing settings; empty fields fall back to the event itself. */
+export type EventSeo = {
+  title?: string;
+  description?: string;
+  image?: string;
+  keywords?: string;
+  noindex?: boolean;
 };
 
 const todayIso = () => {

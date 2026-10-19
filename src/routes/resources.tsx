@@ -4,17 +4,12 @@ import { ArrowUpRight, Search } from "lucide-react";
 import { Container, PageHero, SampleBadge } from "@/components/site/Blocks";
 import { Button } from "@/components/ui/button";
 import { articlesFrom } from "@/lib/content";
-import { pageMeta } from "@/lib/metadata";
 import { Rich, useContent } from "@/lib/content-context";
 import { Route as RootRoute } from "./__root";
 
+import { contentMeta } from "@/lib/seo";
 export const Route = createFileRoute("/resources")({
-  head: () =>
-    pageMeta(
-      "Startup Guides for Students and Aspiring Founders",
-      "Explore practical startup guides on testing ideas, building campus E-Cells and learning to launch as a student founder.",
-      "/resources",
-    ),
+  head: ({ matches }) => contentMeta(matches, "resources"),
   component: Resources,
 });
 

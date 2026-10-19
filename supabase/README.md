@@ -8,6 +8,8 @@ This directory contains the complete database setup used by the website.
 - `migrations/0001_admin_console.sql` — managed events and editable site content.
 - `migrations/0002_form_submissions.sql` — student, college, ambassador, contact and event registration submissions.
 - `migrations/0003_program_applications.sql` — programme admission applications (Startup Cohort, Startup Incubation, Coworking Space Membership).
+- `migrations/0004_event_posters_and_registration_url.sql` — event poster storage and external registration links.
+- `migrations/0005_event_seo_and_utm.sql` — per-event SEO, time, entry and seats; campaign (UTM) attribution on every form.
 - `seed.sql` — intentionally empty production seed; events and submissions are created through the app.
 
 ## Apply the database

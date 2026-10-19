@@ -25,7 +25,22 @@ const eventInput = z.object({
   eligibility: z.string().trim().min(1).max(500),
   organizer: z.string().trim().min(1).max(180),
   published: z.boolean(),
+  time_label: z.string().trim().max(80).optional(),
+  entry_fee: z.string().trim().max(80).optional(),
+  seats: z.string().trim().max(120).optional(),
+  seo: z
+    .object({
+      title: z.string().trim().max(120).optional(),
+      description: z.string().trim().max(320).optional(),
+      image: z.string().trim().url().or(z.literal("")).optional(),
+      keywords: z.string().trim().max(300).optional(),
+      noindex: z.boolean().optional(),
+    })
+    .optional(),
 });
+
+/** Columns added by migration 0005; older databases save events without them. */
+const EVENT_EXTRAS = ["time_label", "entry_fee", "seats", "seo"] as const;
 
 const contentInput = z.object({
   key: z.string().refine((key) => CONTENT_PAGES.some((page) => page.id === key), "Unknown page"),
@@ -81,15 +96,44 @@ export const saveAdminEvent = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     assertAdmin(context.claims as Record<string, unknown>);
     const { id, ...fields } = data;
-    // An emptied city must clear the stored one, not leave it behind.
-    const event = { ...fields, city: fields.city || null };
-    const query = id
-      ? supabaseAdmin.from("admin_events").update(event).eq("id", id)
-      : supabaseAdmin.from("admin_events").insert(event);
-    const { data: saved, error } = await query
-      .select("id, registration_url")
-      .single();
-    if (error) throw new Error(`Unable to save event: ${error.message}`);
+    // Emptied optional fields must clear the stored value, not leave it behind.
+    const event: Record<string, unknown> = {
+      ...fields,
+      city: fields.city || null,
+      time_label: fields.time_label || null,
+      entry_fee: fields.entry_fee || null,
+      seats: fields.seats || null,
+      seo: Object.fromEntries(
+        Object.entries(fields.seo ?? {}).filter(([, value]) => value !== "" && value !== false),
+      ),
+    };
+    const write = (row: Record<string, unknown>) =>
+      (id
+        ? supabaseAdmin
+            .from("admin_events")
+            .update(row as never)
+            .eq("id", id)
+        : supabaseAdmin.from("admin_events").insert(row as never)
+      )
+        .select("id, registration_url")
+        .single();
+    let { data: saved, error } = await write(event);
+    if (error && EVENT_EXTRAS.some((column) => error!.message.includes(column))) {
+      const usesExtras = EVENT_EXTRAS.some((column) => {
+        const value = event[column];
+        return value && (typeof value !== "object" || Object.keys(value).length > 0);
+      });
+      if (usesExtras)
+        throw new Error(
+          "Time, entry, seats and SEO need the database update in supabase/migrations/0005_event_seo_and_utm.sql. Run it in the Supabase SQL editor, then save again.",
+        );
+      const legacy = Object.fromEntries(
+        Object.entries(event).filter(([key]) => !(EVENT_EXTRAS as readonly string[]).includes(key)),
+      );
+      ({ data: saved, error } = await write(legacy));
+    }
+    if (error || !saved)
+      throw new Error(`Unable to save event: ${error?.message ?? "unknown error"}`);
     if ((saved.registration_url ?? "") !== (fields.registration_url ?? "")) {
       throw new Error("The registration URL did not save. Check the Supabase event URL migration.");
     }
@@ -195,6 +239,10 @@ export const getPublicEvents = createServerFn({ method: "GET" }).handler(async (
     agenda: Array.isArray(event.agenda) ? event.agenda : [],
     city: event.city ?? undefined,
     registration_url: event.registration_url?.trim() || null,
+    seo:
+      "seo" in event && event.seo && typeof event.seo === "object" && !Array.isArray(event.seo)
+        ? event.seo
+        : {},
   })) as EventItem[];
   return managed;
 });

@@ -11,6 +11,7 @@ import {
   rowContext,
   rowDetails,
   rowName,
+  rowSource,
   type FormTable,
   type Row,
 } from "./submissions";
@@ -148,6 +149,7 @@ export function SubmissionsPanel({
               <tr>
                 <th className="px-5 py-3 font-medium">Name</th>
                 <th className="px-5 py-3 font-medium">Details</th>
+                <th className="px-5 py-3 font-medium">Source</th>
                 <th className="px-5 py-3 font-medium">Received</th>
                 <th className="px-5 py-3 font-medium">Status</th>
               </tr>
@@ -167,6 +169,9 @@ export function SubmissionsPanel({
                   </td>
                   <td className="max-w-xs truncate px-5 py-4 text-muted-foreground">
                     {rowContext(table, row)}
+                  </td>
+                  <td className="max-w-[12rem] truncate px-5 py-4 text-xs text-muted-foreground">
+                    {rowSource(row)}
                   </td>
                   <td className="whitespace-nowrap px-5 py-4 text-muted-foreground">
                     {timeAgo(row["created_at"])}
@@ -208,7 +213,7 @@ function SubmissionDrawer({
   onStatus: (status: string) => void;
   onClose: () => void;
 }) {
-  const { main, answers } = rowDetails(row);
+  const { main, answers, source } = rowDetails(row);
   const email = String(row["email"] ?? "");
   return (
     <Drawer
@@ -248,6 +253,16 @@ function SubmissionDrawer({
         </div>
       )}
       <DetailList entries={main} />
+      <p className="mb-4 mt-9 border-t border-border pt-6 text-xs font-semibold uppercase tracking-wider text-electric">
+        Where they came from
+      </p>
+      {source.length ? (
+        <DetailList entries={source} />
+      ) : (
+        <p className="text-sm text-muted-foreground">
+          Direct visit — no campaign link or referring site was recorded.
+        </p>
+      )}
       {answers.length > 0 && (
         <>
           <p className="mb-4 mt-9 border-t border-border pt-6 text-xs font-semibold uppercase tracking-wider text-electric">

@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { deleteAdminEvent, saveAdminEvent, uploadEventPoster } from "@/lib/admin.functions";
 import { cn } from "@/lib/utils";
 import { eventStatus } from "@/lib/content";
+import { descriptionLead } from "@/components/site/EventDescription";
+import { SeoFields, ShareLinks, type SeoDraft } from "./marketing";
 import { Card, Drawer, Empty, FieldLabel, PanelHeader, Pill, errorMessage, fieldCls } from "./ui";
 
 export type AdminEvent = {
@@ -23,15 +25,46 @@ export type AdminEvent = {
   organizer: string;
   published: boolean;
   registration_url: string | null;
+  time_label?: string | null;
+  entry_fee?: string | null;
+  seats?: string | null;
+  seo?: unknown;
 };
 
 type AgendaRow = { time: string; item: string };
-type Draft = Omit<AdminEvent, "id" | "agenda" | "city"> & {
+type Draft = Omit<
+  AdminEvent,
+  "id" | "agenda" | "city" | "time_label" | "entry_fee" | "seats" | "seo"
+> & {
   id?: string;
   city: string;
   agenda: AgendaRow[];
   registration_url: string;
+  time_label: string;
+  entry_fee: string;
+  seats: string;
+  seo: SeoDraft;
 };
+
+const blankSeo = (): SeoDraft => ({
+  title: "",
+  description: "",
+  image: "",
+  keywords: "",
+  noindex: false,
+});
+
+function toSeoDraft(value: unknown): SeoDraft {
+  const seo = (value && typeof value === "object" ? value : {}) as Record<string, unknown>;
+  const str = (key: string) => (typeof seo[key] === "string" ? (seo[key] as string) : "");
+  return {
+    title: str("title"),
+    description: str("description"),
+    image: str("image"),
+    keywords: str("keywords"),
+    noindex: seo["noindex"] === true,
+  };
+}
 
 const TYPES = ["Workshop", "Hackathon", "Founder Connect", "Bootcamp"] as const;
 const FORMATS = ["Online", "In-person"] as const;
@@ -47,6 +80,10 @@ const blank = (): Draft => ({
   summary: "",
   image: "/og-image.png",
   registration_url: "",
+  time_label: "",
+  entry_fee: "",
+  seats: "",
+  seo: blankSeo(),
   agenda: [{ time: "", item: "" }],
   eligibility: "",
   organizer: "Elite Forums",
@@ -57,6 +94,10 @@ const toDraft = (event: AdminEvent): Draft => ({
   ...event,
   city: event.city ?? "",
   registration_url: event.registration_url ?? "",
+  time_label: event.time_label ?? "",
+  entry_fee: event.entry_fee ?? "",
+  seats: event.seats ?? "",
+  seo: toSeoDraft(event.seo),
   agenda: Array.isArray(event.agenda)
     ? event.agenda.map((row) => ({
         time: String((row as AgendaRow | null)?.time ?? ""),
@@ -105,7 +146,7 @@ export function EventsPanel({
     if (missing) return void toast.error(`Add ${missing[1]} before saving.`);
     setSaving(true);
     try {
-      const { city, agenda, registration_url, ...rest } = draft;
+      const { city, agenda, registration_url, seo, ...rest } = draft;
       await saveAdminEvent({
         data: {
           ...rest,
@@ -114,6 +155,13 @@ export function EventsPanel({
           agenda: agenda.filter((row) => row.time.trim() || row.item.trim()),
           ...(city.trim() ? { city: city.trim() } : {}),
           registration_url: registration_url.trim(),
+          seo: {
+            title: seo.title.trim(),
+            description: seo.description.trim(),
+            image: seo.image.trim(),
+            keywords: seo.keywords.trim(),
+            noindex: seo.noindex,
+          },
         },
       });
       await refresh();
@@ -344,6 +392,32 @@ function EventDrawer({
             </select>
           </FieldLabel>
         </div>
+        <div className="grid gap-4 sm:grid-cols-3">
+          <FieldLabel label="Time (optional)">
+            <input
+              className={fieldCls}
+              value={draft.time_label}
+              placeholder="10:30 AM onwards"
+              onChange={(e) => set("time_label", e.target.value)}
+            />
+          </FieldLabel>
+          <FieldLabel label="Entry (optional)">
+            <input
+              className={fieldCls}
+              value={draft.entry_fee}
+              placeholder="Free, or ₹499"
+              onChange={(e) => set("entry_fee", e.target.value)}
+            />
+          </FieldLabel>
+          <FieldLabel label="Seats (optional)">
+            <input
+              className={fieldCls}
+              value={draft.seats}
+              placeholder="Limited to 100"
+              onChange={(e) => set("seats", e.target.value)}
+            />
+          </FieldLabel>
+        </div>
         <div className="grid gap-4 sm:grid-cols-2">
           <FieldLabel label="Location">
             <input
@@ -362,10 +436,32 @@ function EventDrawer({
             />
           </FieldLabel>
         </div>
-        <FieldLabel label="Summary">
+        <FieldLabel label="Description">
+          <details className="mb-2 rounded-lg border border-border bg-background/40 px-3 py-2 text-xs text-muted-foreground">
+            <summary className="cursor-pointer text-foreground/80">
+              How to format the description
+            </summary>
+            <ul className="mt-2 list-disc space-y-1 pl-4 leading-5">
+              <li>Leave a blank line between paragraphs.</li>
+              <li>
+                Start a line with an emoji (🎤 Meet the Speakers) or “## ” to make a section
+                heading.
+              </li>
+              <li>
+                Under a speakers heading, put each name on its own line, then their role, bio and
+                “Session: …”.
+              </li>
+              <li>
+                Start lines with a time (10:30 AM – 11:15 AM) and put the session on the next line
+                for a schedule.
+              </li>
+              <li>Start lines with “- ” for bullet points. **Double asterisks** make text bold.</li>
+              <li>Lines like “Date: …”, “Venue: …” grouped together become a details table.</li>
+            </ul>
+          </details>
           <textarea
             className={cn(fieldCls, "leading-6")}
-            rows={4}
+            rows={12}
             maxLength={10000}
             value={draft.summary}
             placeholder="What the event is and why someone should come."
@@ -470,6 +566,35 @@ function EventDrawer({
             <Plus /> Add agenda row
           </Button>
         </div>
+        <section className="border-t border-border pt-6">
+          <h3 className="text-sm font-semibold">Search & sharing</h3>
+          <p className="mb-4 mt-1 text-xs leading-5 text-muted-foreground">
+            How this event appears in Google and in link previews. Empty fields use the event's own
+            title, description and poster.
+          </p>
+          <SeoFields
+            seo={draft.seo}
+            onChange={(seo) => set("seo", seo)}
+            path={`/events/${draft.slug || "your-event"}`}
+            fallback={{
+              title: draft.title || "Event title",
+              description: descriptionLead(draft.summary, draft.title) || "The event description.",
+              image: draft.image,
+            }}
+          />
+        </section>
+        <section className="border-t border-border pt-6">
+          <h3 className="text-sm font-semibold">Share links with UTM tracking</h3>
+          <p className="mb-4 mt-1 text-xs leading-5 text-muted-foreground">
+            Use these when promoting the event. Registrations through each link are credited to its
+            channel in Submissions and Campaigns.
+          </p>
+          {draft.id && draft.slug ? (
+            <ShareLinks path={`/events/${draft.slug}`} campaign={`event-${draft.slug}`} />
+          ) : (
+            <p className="text-xs text-muted-foreground">Save the event to get its share links.</p>
+          )}
+        </section>
       </div>
     </Drawer>
   );

@@ -10,6 +10,14 @@
  * page, and *asterisks* highlight a word in the brand colour.
  */
 
+import { FAQS } from "./faqs";
+import {
+  COOKIES_DEFAULTS,
+  PRIVACY_DEFAULTS,
+  REFUNDS_DEFAULTS,
+  TERMS_DEFAULTS,
+} from "./legal-defaults";
+
 export type Item = Record<string, string | string[]>;
 
 type ItemFieldDef = {
@@ -19,7 +27,12 @@ type ItemFieldDef = {
 };
 
 export type FieldDef =
-  | { type: "text" | "textarea" | "rich" | "image"; label: string; default: string; hint?: string }
+  | {
+      type: "text" | "textarea" | "rich" | "image" | "doc" | "toggle";
+      label: string;
+      default: string;
+      hint?: string;
+    }
   | { type: "lines"; label: string; default: string[]; hint?: string }
   | {
       type: "items";
@@ -32,8 +45,25 @@ export type FieldDef =
       fixed?: boolean;
     };
 
-export type SectionDef = { title: string; fields: Record<string, FieldDef> };
-export type PageDef = { id: string; label: string; path?: string; sections: SectionDef[] };
+/**
+ * A section with an `id` can be switched off in the admin console; pages check
+ * it with `c.on(id)`. `note` explains a switch-only section whose words are
+ * edited elsewhere.
+ */
+export type SectionDef = {
+  title: string;
+  id?: string;
+  note?: string;
+  fields: Record<string, FieldDef>;
+};
+/** `seo` holds the page's default search title and description, editable per page. */
+export type PageDef = {
+  id: string;
+  label: string;
+  path?: string;
+  seo?: { title: string; description: string; noindex?: boolean };
+  sections: SectionDef[];
+};
 
 const text = (label: string, value: string, hint?: string): FieldDef => ({
   type: "text",
@@ -83,7 +113,7 @@ const hero = (eyebrow: string, title: string, intro: string): Record<string, Fie
   "hero.intro": area("Introduction", intro),
 });
 
-export const CONTENT_PAGES: PageDef[] = [
+const BASE_PAGES: PageDef[] = [
   {
     id: "global",
     label: "Header, footer & banner",
@@ -146,12 +176,42 @@ export const CONTENT_PAGES: PageDef[] = [
           "cta.secondary": text("Second button", "Partner Your College"),
         },
       },
+      {
+        title: "Cookie banner",
+        fields: {
+          "cookies.eyebrow": text("Small label", "Your privacy choices"),
+          "cookies.title": text("Title", "Cookies on Elite Forums"),
+          "cookies.body": area(
+            "Message",
+            "We use essential browser storage for security, authentication and form operation. Optional analytics help us understand page usage. The Google tag starts with analytics storage denied; accepting enables measurement.",
+          ),
+          "cookies.accept": text("Accept button", "Accept optional cookies"),
+          "cookies.essential": text("Essential-only button", "Essential only"),
+        },
+      },
+      {
+        title: "Page not found (404)",
+        fields: {
+          "notFound.eyebrow": text("Small label", "404 · Lost in the ecosystem"),
+          "notFound.title": text("Title", "Page not found"),
+          "notFound.body": area(
+            "Message",
+            "The page you're looking for doesn't exist or has been moved.",
+          ),
+          "notFound.button": text("Button", "Go home"),
+        },
+      },
     ],
   },
   {
     id: "home",
     label: "Homepage",
     path: "/",
+    seo: {
+      title: "Startup Community for Aspiring Founders in India",
+      description:
+        "Join an India-focused startup community for student entrepreneurs and aspiring founders, with practical programmes, events and college partnerships.",
+    },
     sections: [
       {
         title: "Hero",
@@ -169,6 +229,7 @@ export const CONTENT_PAGES: PageDef[] = [
       },
       {
         title: "Three pillars under the hero",
+        id: "pillars",
         fields: {
           pillars: items("Pillars", "Pillar", TITLE_BODY, [
             { title: "Aspiring founders", body: "Where ambition finds its people" },
@@ -176,6 +237,36 @@ export const CONTENT_PAGES: PageDef[] = [
             { title: "Founders & mentors", body: "Where experience opens doors" },
           ]),
         },
+      },
+      {
+        title: "Ecosystem grid",
+        id: "grid",
+        note: "Its words are edited under Shared sections.",
+        fields: {},
+      },
+      {
+        title: "Mission",
+        id: "mission",
+        note: "Its words are edited under Shared sections.",
+        fields: {},
+      },
+      {
+        title: "Two ways to join",
+        id: "join",
+        note: "Its words are edited under Shared sections.",
+        fields: {},
+      },
+      {
+        title: "FAQ preview",
+        id: "faqs",
+        note: "Its questions are edited under FAQs.",
+        fields: {},
+      },
+      {
+        title: "Closing banner",
+        id: "cta",
+        note: "Its words are edited under Header, footer & banner.",
+        fields: {},
       },
     ],
   },
@@ -303,6 +394,11 @@ export const CONTENT_PAGES: PageDef[] = [
     id: "lab",
     label: "Innovation Lab",
     path: "/innovation-lab",
+    seo: {
+      title: "Startup Innovation Lab",
+      description:
+        "See how the Elite Forums Innovation Lab helps turn community ideas into technology, working products and new ventures.",
+    },
     sections: [
       {
         title: "Hero",
@@ -318,6 +414,7 @@ export const CONTENT_PAGES: PageDef[] = [
       },
       {
         title: "Impact figures",
+        id: "stats",
         fields: {
           "stats.eyebrow": text("Small label", "Innovation Lab impact"),
           "stats.title": text("Title", "Ideas built into real outcomes."),
@@ -330,6 +427,7 @@ export const CONTENT_PAGES: PageDef[] = [
       },
       {
         title: "What we build",
+        id: "tracks",
         fields: {
           "tracks.eyebrow": text("Small label", "What we build"),
           "tracks.title": rich("Title", "Two things. Done properly."),
@@ -358,6 +456,7 @@ export const CONTENT_PAGES: PageDef[] = [
       },
       {
         title: "How the lab works",
+        id: "stages",
         fields: {
           "technologies.eyebrow": text("Technology focus: small label", "Technology focus"),
           "technologies.title": rich(
@@ -398,12 +497,29 @@ export const CONTENT_PAGES: PageDef[] = [
           ),
         },
       },
+      {
+        title: "Technology focus",
+        id: "technologies",
+        note: "Its words are edited in the What we build section above.",
+        fields: {},
+      },
+      {
+        title: "Closing banner",
+        id: "cta",
+        note: "Its title is edited in How the lab works; buttons under Header, footer & banner.",
+        fields: {},
+      },
     ],
   },
   {
     id: "colleges",
     label: "For Colleges & programmes",
     path: "/colleges",
+    seo: {
+      title: "Startup Programs for Colleges and E-Cells",
+      description:
+        "Explore incubation-centre setup and operations, founder sessions, mentoring and entrepreneurship programmes for colleges and student startup teams in India.",
+    },
     sections: [
       {
         title: "Hero",
@@ -415,6 +531,7 @@ export const CONTENT_PAGES: PageDef[] = [
       },
       {
         title: "What we offer colleges",
+        id: "offer",
         fields: {
           offer: items("Offers", "Offer", TITLE_BODY, [
             {
@@ -454,6 +571,7 @@ export const CONTENT_PAGES: PageDef[] = [
       },
       {
         title: "Founder programmes",
+        id: "programmes",
         fields: {
           "programmes.eyebrow": text("Small label", "Founder facilities"),
           "programmes.title": rich("Title", "Three ways to\n*build further.*"),
@@ -548,6 +666,7 @@ export const CONTENT_PAGES: PageDef[] = [
       },
       {
         title: "Partnership form heading",
+        id: "form",
         fields: {
           "form.eyebrow": text("Small label", "Apply"),
           "form.title": text("Title", "Partner your college"),
@@ -559,6 +678,11 @@ export const CONTENT_PAGES: PageDef[] = [
     id: "community",
     label: "Community",
     path: "/community",
+    seo: {
+      title: "Startup Community for Students and Founders",
+      description:
+        "Join Elite Forums to learn with aspiring founders, take part in workshops and hackathons, and connect with student entrepreneurs across India.",
+    },
     sections: [
       {
         title: "Hero",
@@ -577,6 +701,7 @@ export const CONTENT_PAGES: PageDef[] = [
       },
       {
         title: "Community network",
+        id: "stats",
         fields: {
           "stats.eyebrow": text("Small label", "The network"),
           "stats.title": text("Title", "A growing ecosystem of people and places."),
@@ -606,6 +731,11 @@ export const CONTENT_PAGES: PageDef[] = [
     id: "apply",
     label: "Programme application",
     path: "/apply",
+    seo: {
+      title: "Apply to Startup Incubation and Cohort Programs",
+      description:
+        "Apply to the Elite Forums Startup Cohort, Startup Incubation Program or Coworking Space Membership in India.",
+    },
     sections: [
       {
         title: "Hero",
@@ -617,6 +747,7 @@ export const CONTENT_PAGES: PageDef[] = [
       },
       {
         title: "How admission works",
+        id: "steps",
         fields: {
           "steps.eyebrow": text("Small label", "How admission works"),
           "steps.title": text("Title", "Four steps."),
@@ -648,6 +779,11 @@ export const CONTENT_PAGES: PageDef[] = [
     id: "ecosystem",
     label: "Ecosystem",
     path: "/ecosystem",
+    seo: {
+      title: "Startup Ecosystem for Aspiring Founders",
+      description:
+        "Explore how aspiring founders, college E-Cells, mentors and industry partners connect through the Elite Forums startup ecosystem.",
+    },
     sections: [
       {
         title: "Hero",
@@ -657,12 +793,41 @@ export const CONTENT_PAGES: PageDef[] = [
           "A shared space for aspiring founders, college communities, mentors and partners to learn, build and grow together.",
         ),
       },
+      {
+        title: "Ecosystem grid",
+        id: "grid",
+        note: "Its words are edited under Shared sections.",
+        fields: {},
+      },
+      {
+        title: "Mission",
+        id: "mission",
+        note: "Its words are edited under Shared sections.",
+        fields: {},
+      },
+      {
+        title: "Two ways to join",
+        id: "join",
+        note: "Its words are edited under Shared sections.",
+        fields: {},
+      },
+      {
+        title: "Closing banner",
+        id: "cta",
+        note: "Its words are edited under Header, footer & banner.",
+        fields: {},
+      },
     ],
   },
   {
     id: "events",
     label: "Events page",
     path: "/events",
+    seo: {
+      title: "Startup Events, Workshops and Hackathons in India",
+      description:
+        "Find startup workshops, hackathons and founder conversations for students and aspiring entrepreneurs in India.",
+    },
     sections: [
       {
         title: "Hero",
@@ -674,6 +839,7 @@ export const CONTENT_PAGES: PageDef[] = [
       },
       {
         title: "Calendar section",
+        id: "calendar",
         fields: {
           "calendar.eyebrow": text("Small label", "Live event calendar"),
           "calendar.title": text("Title", "What’s happening next."),
@@ -684,12 +850,38 @@ export const CONTENT_PAGES: PageDef[] = [
           "list.empty": text("Message when no events match", "No events in this selection."),
         },
       },
+      {
+        title: "Elite Forums events",
+        id: "list",
+        fields: {
+          "list.eyebrow": text("Small label", "Elite Forums events"),
+          "list.title": text("Title", "Hosted by us."),
+          "list.all": text("Filter: all types", "All"),
+          "list.dates": lines(
+            "Date filter options",
+            ["All dates", "Upcoming", "Past"],
+            "Three lines, in this order: all, upcoming, past.",
+          ),
+          "list.more": text("Card link", "Explore event"),
+        },
+      },
+      {
+        title: "Closing banner",
+        id: "cta",
+        note: "Its words are edited under Header, footer & banner.",
+        fields: {},
+      },
     ],
   },
   {
     id: "resources",
     label: "Resources & articles",
     path: "/resources",
+    seo: {
+      title: "Startup Guides for Students and Aspiring Founders",
+      description:
+        "Explore practical startup guides on testing ideas, building campus E-Cells and learning to launch as a student founder.",
+    },
     sections: [
       {
         title: "Hero",
@@ -780,12 +972,23 @@ export const CONTENT_PAGES: PageDef[] = [
           ),
         },
       },
+      {
+        title: "Article page",
+        fields: {
+          "article.back": text("Back link", "Back to resources"),
+        },
+      },
     ],
   },
   {
     id: "network",
     label: "Partner Network",
     path: "/network",
+    seo: {
+      title: "Startup and College Partner Network",
+      description:
+        "Connect your college, E-Cell, startup community or organisation with the Elite Forums entrepreneurship network.",
+    },
     sections: [
       {
         title: "Hero",
@@ -797,6 +1000,7 @@ export const CONTENT_PAGES: PageDef[] = [
       },
       {
         title: "Who the network is for",
+        id: "groups",
         fields: {
           "groups.eyebrow": text("Small label", "Better together"),
           "groups.title": text("Title", "Find your place in the network."),
@@ -818,6 +1022,7 @@ export const CONTENT_PAGES: PageDef[] = [
       },
       {
         title: "Partner institutions",
+        id: "partners",
         fields: {
           "partners.title": text("Title", "Partner institutions"),
           partners: items(
@@ -838,12 +1043,23 @@ export const CONTENT_PAGES: PageDef[] = [
           "partners.cta": text("Button", "Discuss a collaboration"),
         },
       },
+      {
+        title: "Closing banner",
+        id: "cta",
+        note: "Its words are edited under Header, footer & banner.",
+        fields: {},
+      },
     ],
   },
   {
     id: "ambassadors",
     label: "Campus Ambassadors",
     path: "/campus-ambassadors",
+    seo: {
+      title: "Campus Ambassador Program for Students",
+      description:
+        "Represent Elite Forums on your campus, connect student entrepreneurs and help grow a practical entrepreneurship community.",
+    },
     sections: [
       {
         title: "Hero",
@@ -855,6 +1071,7 @@ export const CONTENT_PAGES: PageDef[] = [
       },
       {
         title: "What ambassadors do",
+        id: "roles",
         fields: {
           roles: items("Roles", "Role", TITLE_BODY, [
             {
@@ -889,6 +1106,11 @@ export const CONTENT_PAGES: PageDef[] = [
     id: "contact",
     label: "Contact",
     path: "/contact",
+    seo: {
+      title: "Contact Elite Forums",
+      description:
+        "Contact Elite Forums about college and E-Cell partnerships, events, founder programmes, mentorship or collaboration.",
+    },
     sections: [
       {
         title: "Hero",
@@ -926,6 +1148,184 @@ export const CONTENT_PAGES: PageDef[] = [
     ],
   },
 ];
+
+const doc = (label: string, value: string): FieldDef => ({
+  type: "doc",
+  label,
+  default: value,
+  hint: "Blank line = new paragraph. “## ” starts a heading, “- ” a bullet point, **bold**, [link text](/path).",
+});
+
+const legalPage = (
+  id: string,
+  label: string,
+  path: string,
+  defaults: typeof PRIVACY_DEFAULTS,
+  seo: { title: string; description: string; noindex?: boolean },
+): PageDef => ({
+  id,
+  label,
+  path,
+  seo,
+  sections: [
+    { title: "Hero", fields: hero(defaults.eyebrow, defaults.title, defaults.intro) },
+    {
+      title: "Policy text",
+      fields: {
+        updated: text("Last updated line", defaults.updated),
+        notice: area("Notice box (leave empty to hide)", defaults.notice),
+        body: doc("Policy", defaults.body),
+      },
+    },
+  ],
+});
+
+const EXTRA_PAGES: PageDef[] = [
+  {
+    id: "faqs",
+    label: "FAQs",
+    path: "/faqs",
+    seo: {
+      title: "Startup Community and Program FAQs",
+      description:
+        "Answers about Elite Forums, its founder community, startup programmes, coworking membership, college partnerships, applications and events in India.",
+    },
+    sections: [
+      {
+        title: "Hero",
+        fields: hero(
+          "Frequently asked questions",
+          "Start with the answers.",
+          "A clear guide to the Elite Forums community, founder programmes, college partnerships and events.",
+        ),
+      },
+      {
+        title: "Questions and answers",
+        fields: {
+          "list.eyebrow": text("Small label", "Answers for founders"),
+          "list.title": text("Title on the FAQs page", "Clear answers before you begin."),
+          "list.previewTitle": text("Title on the homepage preview", "Frequently asked questions."),
+          "list.previewCount": text("How many questions the homepage shows", "5"),
+          "list.more": text("Homepage link to all FAQs", "View all FAQs"),
+          faqs: items(
+            "Questions",
+            "Question",
+            {
+              question: { type: "text", label: "Question" },
+              answer: { type: "textarea", label: "Answer" },
+            },
+            FAQS.map((faq) => ({ question: faq.question, answer: faq.answer })),
+          ),
+        },
+      },
+    ],
+  },
+  legalPage("privacy", "Privacy policy", "/privacy", PRIVACY_DEFAULTS, {
+    title: "Privacy Policy",
+    description:
+      "Learn what personal information Elite Forums collects, how it is used, and how to exercise your privacy choices.",
+  }),
+  legalPage("terms", "Terms of use", "/terms", TERMS_DEFAULTS, {
+    title: "Terms of Use",
+    description:
+      "Read the terms for using the Elite Forums website, community, events and programmes.",
+  }),
+  legalPage("refunds", "Refund policy", "/refunds", REFUNDS_DEFAULTS, {
+    title: "Refund and Cancellation Policy",
+    description:
+      "Understand refund requests, participant cancellations and event changes for paid Elite Forums programmes.",
+  }),
+  legalPage("cookies", "Cookie policy", "/cookies", COOKIES_DEFAULTS, {
+    title: "Cookie Policy",
+    description:
+      "Learn how Elite Forums uses essential browser storage and optional analytics cookies, and how to control your choice.",
+  }),
+  {
+    id: "dataDeletion",
+    label: "Data deletion request",
+    path: "/data-deletion",
+    seo: {
+      title: "Request Data Deletion",
+      description:
+        "Request access, correction or deletion of your personal information held by Elite Forums.",
+      noindex: true,
+    },
+    sections: [
+      {
+        title: "Hero",
+        fields: hero(
+          "Your privacy rights",
+          "Request data deletion",
+          "Tell us which personal data you want us to review, correct or delete.",
+        ),
+      },
+      {
+        title: "Beside the form",
+        fields: {
+          "steps.title": text("Title", "What happens next"),
+          steps: lines("Steps", [
+            "We verify the request and identify records associated with your details.",
+            "We assess legal, safety, fraud-prevention and record-keeping exceptions.",
+            "We delete, anonymise or explain why specific records must be retained.",
+            "We confirm the outcome using the contact details you provide.",
+          ]),
+          note: doc(
+            "Note",
+            "Do not include passwords, payment details, government identity numbers or other sensitive information. Requests are handled under applicable law and our [Privacy Policy](/privacy).",
+          ),
+        },
+      },
+    ],
+  },
+];
+
+/**
+ * Every page gets a "Search & sharing" section, and every switchable section a
+ * show/hide field ("show.<id>", "on" or "off").
+ */
+export const CONTENT_PAGES: PageDef[] = [...BASE_PAGES, ...EXTRA_PAGES].map((page) => ({
+  ...page,
+  sections: [
+    ...page.sections.map((section) =>
+      section.id
+        ? {
+            ...section,
+            fields: {
+              [`show.${section.id}`]: {
+                type: "toggle",
+                label: "Show this section",
+                default: "on",
+              } satisfies FieldDef,
+              ...section.fields,
+            },
+          }
+        : section,
+    ),
+    ...(page.seo
+      ? [
+          {
+            title: "Search & sharing",
+            fields: {
+              "seo.title": text("Search title", page.seo.title),
+              "seo.description": area("Search description", page.seo.description),
+              "seo.image": {
+                type: "image",
+                label: "Sharing image",
+                default: "",
+                hint: "Shown in WhatsApp, LinkedIn and other link previews (1200×630 works best). Leave empty for the site default.",
+              } satisfies FieldDef,
+              "seo.keywords": text("Keywords", "", "Comma-separated."),
+              "seo.noindex": {
+                type: "toggle",
+                label: "Hide this page from search engines",
+                default: page.seo.noindex ? "on" : "off",
+              } satisfies FieldDef,
+            },
+          },
+        ]
+      : []),
+  ],
+}));
 
 /** Saved overrides: page id → field key → value. */
 export type ContentValue = string | string[] | Item[];
@@ -978,6 +1378,8 @@ export type ContentReader = {
   list: (key: string) => string[];
   /** A repeatable group; `text`/`lines` read one entry's fields safely. */
   items: (key: string) => Item[];
+  /** Whether a switchable section (or a toggle field) is on. */
+  on: (id: string) => boolean;
 };
 
 export function contentReader(page: string, overrides: ContentOverrides): ContentReader {
@@ -990,6 +1392,10 @@ export function contentReader(page: string, overrides: ContentOverrides): Conten
     items: (key) => {
       const value = resolveField(page, key, overrides);
       return Array.isArray(value) ? (value as Item[]) : [];
+    },
+    on: (id) => {
+      const key = id.includes(".") ? id : `show.${id}`;
+      return resolveField(page, key, overrides) !== "off";
     },
   };
 }
