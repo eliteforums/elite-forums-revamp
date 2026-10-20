@@ -63,6 +63,7 @@ const STATUS_STYLES: Record<string, string> = {
   closed: "border-border bg-muted text-muted-foreground",
   live: "border-electric/40 bg-electric/10 text-electric",
   draft: "border-border bg-muted text-muted-foreground",
+  warning: "border-amber-400/40 bg-amber-400/10 text-amber-400",
 };
 
 export function Pill({ tone, children }: { tone: string; children: ReactNode }) {

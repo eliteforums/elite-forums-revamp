@@ -22,14 +22,22 @@ import { Route as EcosystemRouteImport } from './routes/ecosystem'
 import { Route as EventsRouteImport } from './routes/events'
 import { Route as FaqsRouteImport } from './routes/faqs'
 import { Route as InnovationLabRouteImport } from './routes/innovation-lab'
+import { Route as LmsRouteImport } from './routes/lms'
 import { Route as NetworkRouteImport } from './routes/network'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as RefundsRouteImport } from './routes/refunds'
 import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as CertificatesSerialRouteImport } from './routes/certificates.$serial'
 import { Route as EventsSlugRouteImport } from './routes/events_.$slug'
+import { Route as LmsIndexRouteImport } from './routes/lms.index'
+import { Route as LmsAccountRouteImport } from './routes/lms.account'
+import { Route as LmsCertificatesRouteImport } from './routes/lms.certificates'
+import { Route as LmsManageRouteImport } from './routes/lms.manage'
 import { Route as ResourcesSlugRouteImport } from './routes/resources_.$slug'
+import { Route as LmsProgramsProgramIdRouteImport } from './routes/lms.programs.$programId'
+import { Route as LmsProgramsProgramIdLessonsLessonIdRouteImport } from './routes/lms.programs.$programId_.lessons.$lessonId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -96,6 +104,11 @@ const InnovationLabRoute = InnovationLabRouteImport.update({
   path: '/innovation-lab',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LmsRoute = LmsRouteImport.update({
+  id: '/lms',
+  path: '/lms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NetworkRoute = NetworkRouteImport.update({
   id: '/network',
   path: '/network',
@@ -126,16 +139,52 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CertificatesSerialRoute = CertificatesSerialRouteImport.update({
+  id: '/certificates/$serial',
+  path: '/certificates/$serial',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EventsSlugRoute = EventsSlugRouteImport.update({
   id: '/events_/$slug',
   path: '/events/$slug',
   getParentRoute: () => rootRouteImport,
+} as any)
+const LmsIndexRoute = LmsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => LmsRoute,
+} as any)
+const LmsAccountRoute = LmsAccountRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => LmsRoute,
+} as any)
+const LmsCertificatesRoute = LmsCertificatesRouteImport.update({
+  id: '/certificates',
+  path: '/certificates',
+  getParentRoute: () => LmsRoute,
+} as any)
+const LmsManageRoute = LmsManageRouteImport.update({
+  id: '/manage',
+  path: '/manage',
+  getParentRoute: () => LmsRoute,
 } as any)
 const ResourcesSlugRoute = ResourcesSlugRouteImport.update({
   id: '/resources_/$slug',
   path: '/resources/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LmsProgramsProgramIdRoute = LmsProgramsProgramIdRouteImport.update({
+  id: '/programs/$programId',
+  path: '/programs/$programId',
+  getParentRoute: () => LmsRoute,
+} as any)
+const LmsProgramsProgramIdLessonsLessonIdRoute =
+  LmsProgramsProgramIdLessonsLessonIdRouteImport.update({
+    id: '/programs/$programId_/lessons/$lessonId',
+    path: '/programs/$programId/lessons/$lessonId',
+    getParentRoute: () => LmsRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -151,14 +200,22 @@ export interface FileRoutesByFullPath {
   '/events': typeof EventsRoute
   '/faqs': typeof FaqsRoute
   '/innovation-lab': typeof InnovationLabRoute
+  '/lms': typeof LmsRouteWithChildren
   '/network': typeof NetworkRoute
   '/privacy': typeof PrivacyRoute
   '/refunds': typeof RefundsRoute
   '/resources': typeof ResourcesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/certificates/$serial': typeof CertificatesSerialRoute
   '/events/$slug': typeof EventsSlugRoute
+  '/lms/account': typeof LmsAccountRoute
+  '/lms/certificates': typeof LmsCertificatesRoute
+  '/lms/manage': typeof LmsManageRoute
   '/resources/$slug': typeof ResourcesSlugRoute
+  '/lms/': typeof LmsIndexRoute
+  '/lms/programs/$programId': typeof LmsProgramsProgramIdRoute
+  '/lms/programs/$programId/lessons/$lessonId': typeof LmsProgramsProgramIdLessonsLessonIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -180,8 +237,15 @@ export interface FileRoutesByTo {
   '/resources': typeof ResourcesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/certificates/$serial': typeof CertificatesSerialRoute
   '/events/$slug': typeof EventsSlugRoute
+  '/lms/account': typeof LmsAccountRoute
+  '/lms/certificates': typeof LmsCertificatesRoute
+  '/lms/manage': typeof LmsManageRoute
   '/resources/$slug': typeof ResourcesSlugRoute
+  '/lms': typeof LmsIndexRoute
+  '/lms/programs/$programId': typeof LmsProgramsProgramIdRoute
+  '/lms/programs/$programId/lessons/$lessonId': typeof LmsProgramsProgramIdLessonsLessonIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -198,14 +262,22 @@ export interface FileRoutesById {
   '/events': typeof EventsRoute
   '/faqs': typeof FaqsRoute
   '/innovation-lab': typeof InnovationLabRoute
+  '/lms': typeof LmsRouteWithChildren
   '/network': typeof NetworkRoute
   '/privacy': typeof PrivacyRoute
   '/refunds': typeof RefundsRoute
   '/resources': typeof ResourcesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/certificates/$serial': typeof CertificatesSerialRoute
   '/events_/$slug': typeof EventsSlugRoute
+  '/lms/account': typeof LmsAccountRoute
+  '/lms/certificates': typeof LmsCertificatesRoute
+  '/lms/manage': typeof LmsManageRoute
   '/resources_/$slug': typeof ResourcesSlugRoute
+  '/lms/': typeof LmsIndexRoute
+  '/lms/programs/$programId': typeof LmsProgramsProgramIdRoute
+  '/lms/programs/$programId_/lessons/$lessonId': typeof LmsProgramsProgramIdLessonsLessonIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -223,14 +295,22 @@ export interface FileRouteTypes {
     | '/events'
     | '/faqs'
     | '/innovation-lab'
+    | '/lms'
     | '/network'
     | '/privacy'
     | '/refunds'
     | '/resources'
     | '/sitemap.xml'
     | '/terms'
+    | '/certificates/$serial'
     | '/events/$slug'
+    | '/lms/account'
+    | '/lms/certificates'
+    | '/lms/manage'
     | '/resources/$slug'
+    | '/lms/'
+    | '/lms/programs/$programId'
+    | '/lms/programs/$programId/lessons/$lessonId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -252,8 +332,15 @@ export interface FileRouteTypes {
     | '/resources'
     | '/sitemap.xml'
     | '/terms'
+    | '/certificates/$serial'
     | '/events/$slug'
+    | '/lms/account'
+    | '/lms/certificates'
+    | '/lms/manage'
     | '/resources/$slug'
+    | '/lms'
+    | '/lms/programs/$programId'
+    | '/lms/programs/$programId/lessons/$lessonId'
   id:
     | '__root__'
     | '/'
@@ -269,14 +356,22 @@ export interface FileRouteTypes {
     | '/events'
     | '/faqs'
     | '/innovation-lab'
+    | '/lms'
     | '/network'
     | '/privacy'
     | '/refunds'
     | '/resources'
     | '/sitemap.xml'
     | '/terms'
+    | '/certificates/$serial'
     | '/events_/$slug'
+    | '/lms/account'
+    | '/lms/certificates'
+    | '/lms/manage'
     | '/resources_/$slug'
+    | '/lms/'
+    | '/lms/programs/$programId'
+    | '/lms/programs/$programId_/lessons/$lessonId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -293,12 +388,14 @@ export interface RootRouteChildren {
   EventsRoute: typeof EventsRoute
   FaqsRoute: typeof FaqsRoute
   InnovationLabRoute: typeof InnovationLabRoute
+  LmsRoute: typeof LmsRouteWithChildren
   NetworkRoute: typeof NetworkRoute
   PrivacyRoute: typeof PrivacyRoute
   RefundsRoute: typeof RefundsRoute
   ResourcesRoute: typeof ResourcesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
+  CertificatesSerialRoute: typeof CertificatesSerialRoute
   EventsSlugRoute: typeof EventsSlugRoute
   ResourcesSlugRoute: typeof ResourcesSlugRoute
 }
@@ -396,6 +493,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InnovationLabRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lms': {
+      id: '/lms'
+      path: '/lms'
+      fullPath: '/lms'
+      preLoaderRoute: typeof LmsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/network': {
       id: '/network'
       path: '/network'
@@ -438,12 +542,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/certificates/$serial': {
+      id: '/certificates/$serial'
+      path: '/certificates/$serial'
+      fullPath: '/certificates/$serial'
+      preLoaderRoute: typeof CertificatesSerialRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/events_/$slug': {
       id: '/events_/$slug'
       path: '/events/$slug'
       fullPath: '/events/$slug'
       preLoaderRoute: typeof EventsSlugRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/lms/': {
+      id: '/lms/'
+      path: '/'
+      fullPath: '/lms/'
+      preLoaderRoute: typeof LmsIndexRouteImport
+      parentRoute: typeof LmsRoute
+    }
+    '/lms/account': {
+      id: '/lms/account'
+      path: '/account'
+      fullPath: '/lms/account'
+      preLoaderRoute: typeof LmsAccountRouteImport
+      parentRoute: typeof LmsRoute
+    }
+    '/lms/certificates': {
+      id: '/lms/certificates'
+      path: '/certificates'
+      fullPath: '/lms/certificates'
+      preLoaderRoute: typeof LmsCertificatesRouteImport
+      parentRoute: typeof LmsRoute
+    }
+    '/lms/manage': {
+      id: '/lms/manage'
+      path: '/manage'
+      fullPath: '/lms/manage'
+      preLoaderRoute: typeof LmsManageRouteImport
+      parentRoute: typeof LmsRoute
     }
     '/resources_/$slug': {
       id: '/resources_/$slug'
@@ -452,8 +591,43 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResourcesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lms/programs/$programId': {
+      id: '/lms/programs/$programId'
+      path: '/programs/$programId'
+      fullPath: '/lms/programs/$programId'
+      preLoaderRoute: typeof LmsProgramsProgramIdRouteImport
+      parentRoute: typeof LmsRoute
+    }
+    '/lms/programs/$programId_/lessons/$lessonId': {
+      id: '/lms/programs/$programId_/lessons/$lessonId'
+      path: '/programs/$programId/lessons/$lessonId'
+      fullPath: '/lms/programs/$programId/lessons/$lessonId'
+      preLoaderRoute: typeof LmsProgramsProgramIdLessonsLessonIdRouteImport
+      parentRoute: typeof LmsRoute
+    }
   }
 }
+
+interface LmsRouteChildren {
+  LmsAccountRoute: typeof LmsAccountRoute
+  LmsCertificatesRoute: typeof LmsCertificatesRoute
+  LmsManageRoute: typeof LmsManageRoute
+  LmsIndexRoute: typeof LmsIndexRoute
+  LmsProgramsProgramIdRoute: typeof LmsProgramsProgramIdRoute
+  LmsProgramsProgramIdLessonsLessonIdRoute: typeof LmsProgramsProgramIdLessonsLessonIdRoute
+}
+
+const LmsRouteChildren: LmsRouteChildren = {
+  LmsAccountRoute: LmsAccountRoute,
+  LmsCertificatesRoute: LmsCertificatesRoute,
+  LmsManageRoute: LmsManageRoute,
+  LmsIndexRoute: LmsIndexRoute,
+  LmsProgramsProgramIdRoute: LmsProgramsProgramIdRoute,
+  LmsProgramsProgramIdLessonsLessonIdRoute:
+    LmsProgramsProgramIdLessonsLessonIdRoute,
+}
+
+const LmsRouteWithChildren = LmsRoute._addFileChildren(LmsRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -469,12 +643,14 @@ const rootRouteChildren: RootRouteChildren = {
   EventsRoute: EventsRoute,
   FaqsRoute: FaqsRoute,
   InnovationLabRoute: InnovationLabRoute,
+  LmsRoute: LmsRouteWithChildren,
   NetworkRoute: NetworkRoute,
   PrivacyRoute: PrivacyRoute,
   RefundsRoute: RefundsRoute,
   ResourcesRoute: ResourcesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
+  CertificatesSerialRoute: CertificatesSerialRoute,
   EventsSlugRoute: EventsSlugRoute,
   ResourcesSlugRoute: ResourcesSlugRoute,
 }

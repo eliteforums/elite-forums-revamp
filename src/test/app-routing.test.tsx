@@ -14,4 +14,17 @@ describe("App routing", () => {
 
     expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
   });
+
+  it.each([
+    ["/lms", "/lms/"],
+    ["/lms/manage", "/lms/manage"],
+    ["/lms/certificates", "/lms/certificates"],
+    ["/lms/programs/abc", "/lms/programs/$programId"],
+    ["/lms/programs/abc/lessons/def", "/lms/programs/$programId_/lessons/$lessonId"],
+    ["/certificates/EF-2026-ABCDEF", "/certificates/$serial"],
+  ])("matches the learning platform page for %s", (path, routeId) => {
+    const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
+
+    expect(router.matchRoutes(path).at(-1)?.routeId).toBe(routeId);
+  });
 });

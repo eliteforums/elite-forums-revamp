@@ -1428,6 +1428,73 @@ const EXTRA_PAGES: PageDef[] = [
       "Learn how Elite Forums uses essential browser storage and optional analytics cookies, and how to control your choice.",
   }),
   {
+    id: "lms",
+    label: "Learning platform",
+    path: "/lms",
+    sections: [
+      {
+        title: "Sign-in page",
+        fields: {
+          "signin.eyebrow": text("Small label", "Elite Forums Learning"),
+          "signin.title": rich("Headline", "Learn, build and\n*launch together.*"),
+          "signin.intro": area(
+            "Introduction",
+            "Your cohort, classes, assignments and certificates in one place. Sign in with the details the Elite Forums team sent you.",
+          ),
+          "signin.help": area(
+            "Help text",
+            `Lost your login? Write to ${CONTACT.email} and we'll reset it for you.`,
+          ),
+        },
+      },
+      {
+        title: "Learner home",
+        fields: {
+          "home.welcome": text("Greeting", "Welcome back"),
+          "home.intro": area(
+            "Line under the greeting",
+            "Pick up where you left off, join your next class or grab your certificates.",
+          ),
+          "home.emptyTitle": text(
+            "Title when not enrolled yet",
+            "You're not enrolled in a programme yet",
+          ),
+          "home.emptyBody": area(
+            "Text when not enrolled yet",
+            "When the team adds you to a cohort or course, it will appear here.",
+          ),
+          "help.email": text("Support email", CONTACT.email),
+        },
+      },
+      {
+        title: "Certificates",
+        fields: {
+          "cert.issuer": text("Issued by", "Elite Forums"),
+          "cert.defaultTitle": text("Default certificate title", "Certificate of Completion"),
+          "cert.intro": text("Line above the name", "This is to certify that"),
+          "cert.body": text("Line below the name", "has successfully completed"),
+          "cert.signatory": text("Signatory name", "Harsh Tambade"),
+          "cert.signatoryTitle": text("Signatory title", "Founder, Elite Forums"),
+          "cert.signature": {
+            type: "image",
+            label: "Signature image",
+            default: "",
+            hint: "Optional. A signature on a transparent background (PNG) works best.",
+          },
+          "cert.secondSignatory": text("Second signatory name", "", "Optional."),
+          "cert.secondSignatoryTitle": text("Second signatory title", ""),
+          "cert.secondSignature": {
+            type: "image",
+            label: "Second signature image",
+            default: "",
+            hint: "Optional.",
+          },
+          "cert.footer": text("Footer line", "Building India's next generation of founders"),
+        },
+      },
+    ],
+  },
+  {
     id: "dataDeletion",
     label: "Data deletion request",
     path: "/data-deletion",

@@ -289,3 +289,17 @@
     transform: none;
   }
 }
+
+/* Certificates print alone, edge to edge on one A4 landscape sheet. */
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 0;
+  }
+  body:has(.print-certificate) {
+    background: #fff !important;
+  }
+  body:has(.print-certificate) > :not(main) {
+    display: none !important;
+  }
+}

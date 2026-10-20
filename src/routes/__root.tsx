@@ -294,7 +294,8 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const overrides = Route.useLoaderData();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
-  const isAdminRoute = pathname === "/admin";
+  // The admin console and the learning platform bring their own layout.
+  const isAdminRoute = pathname === "/admin" || pathname === "/lms" || pathname.startsWith("/lms/");
   useEffect(() => {
     if (!isAdminRoute) captureAttribution();
   }, [pathname, isAdminRoute]);

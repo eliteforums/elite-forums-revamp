@@ -7,6 +7,7 @@ import {
   ClipboardList,
   ExternalLink,
   FileText,
+  GraduationCap,
   Inbox,
   LayoutDashboard,
   Loader2,
@@ -284,6 +285,12 @@ function AdminDashboard({ email }: { email: string }) {
         </nav>
         <div className="space-y-1 border-t border-border p-3">
           <a
+            href="/lms/manage?tab=overview"
+            className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-muted-foreground transition-colors hover:bg-accent/60 hover:text-foreground"
+          >
+            <GraduationCap className="h-4 w-4" /> Learning platform
+          </a>
+          <a
             href="/"
             target="_blank"
             rel="noreferrer"
@@ -305,6 +312,12 @@ function AdminDashboard({ email }: { email: string }) {
       <header className="sticky top-0 z-30 border-b border-border bg-background/90 backdrop-blur lg:hidden">
         <div className="flex h-14 items-center justify-between px-5">
           <Logo className="h-7" />
+          <a
+            href="/lms/manage?tab=overview"
+            className="ml-auto mr-1 flex min-h-11 items-center gap-1.5 rounded-lg px-2 text-xs text-muted-foreground hover:bg-accent hover:text-foreground"
+          >
+            <GraduationCap className="h-4 w-4" /> LMS
+          </a>
           <button
             onClick={() => void signOut()}
             aria-label="Sign out"
