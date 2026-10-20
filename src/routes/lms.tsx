@@ -241,6 +241,9 @@ function SignIn() {
           <p className="mt-6 text-center text-xs leading-5 text-muted-foreground">
             {c.t("signin.help")}
           </p>
+          <p className="mt-2 text-center text-xs leading-5 text-muted-foreground">
+            Elite Forums team: sign in with your admin console email and password.
+          </p>
           <a
             href="/"
             className="mt-4 block text-center text-sm text-muted-foreground hover:text-foreground"
