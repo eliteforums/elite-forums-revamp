@@ -1,6 +1,14 @@
 /** Shapes and helpers shared by the learning platform's pages and server functions. */
 
-export const PROGRAM_KINDS = ["cohort", "course", "bootcamp", "fellowship", "workshop"] as const;
+export const PROGRAM_KINDS = [
+  "cohort",
+  "incubation",
+  "course",
+  "bootcamp",
+  "fellowship",
+  "workshop",
+  "membership",
+] as const;
 export const COHORT_STATUSES = ["upcoming", "active", "completed", "archived"] as const;
 export const LESSON_KINDS = ["video", "reading", "assignment", "live", "resource"] as const;
 export const ENROLLMENT_STATUSES = ["active", "completed", "dropped"] as const;
@@ -11,10 +19,12 @@ export type LessonKind = (typeof LESSON_KINDS)[number];
 
 export const PROGRAM_KIND_LABELS: Record<ProgramKind, string> = {
   cohort: "Cohort programme",
+  incubation: "Incubation programme",
   course: "Self-paced course",
   bootcamp: "Bootcamp",
   fellowship: "Fellowship",
   workshop: "Workshop series",
+  membership: "Membership",
 };
 
 export const LESSON_KIND_LABELS: Record<LessonKind, string> = {
