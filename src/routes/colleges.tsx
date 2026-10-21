@@ -55,33 +55,15 @@ function Colleges() {
                       {itemText(copy, "intro")}
                     </p>
                     <ul className="mt-7 space-y-3 border-t border-border pt-6">
-                      {itemLines(copy, "benefits").map((benefit) => {
-                        const isLead =
-                          benefit.toLowerCase().startsWith("everything included in") ||
-                          benefit.toLowerCase().startsWith("**everything included in");
-                        const cleanBenefit = benefit.replace(/^\*\*|\*\*$/g, "");
-
-                        if (isLead) {
-                          return (
-                            <li
-                              key={benefit}
-                              className="pt-1 pb-1 text-sm font-semibold text-foreground tracking-tight"
-                            >
-                              <span>{cleanBenefit}</span>
-                            </li>
-                          );
-                        }
-
-                        return (
-                          <li
-                            key={benefit}
-                            className="flex gap-3 text-sm leading-6 text-muted-foreground"
-                          >
-                            <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-electric" />
-                            <span>{cleanBenefit}</span>
-                          </li>
-                        );
-                      })}
+                      {itemLines(copy, "benefits").map((benefit) => (
+                        <li
+                          key={benefit}
+                          className="flex gap-3 text-sm leading-6 text-muted-foreground"
+                        >
+                          <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-electric" />
+                          <span>{benefit}</span>
+                        </li>
+                      ))}
                     </ul>
                     <Link
                       to="/apply"
