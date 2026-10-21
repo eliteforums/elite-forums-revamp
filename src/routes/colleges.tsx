@@ -55,10 +55,14 @@ function Colleges() {
                       {itemText(copy, "intro")}
                     </p>
                     <ul className="mt-7 space-y-3 border-t border-border pt-6">
-                      {itemLines(copy, "benefits").map((benefit) => (
+                      {itemLines(copy, "benefits").map((benefit, benefitIndex) => (
                         <li
                           key={benefit}
-                          className="flex gap-3 text-sm leading-6 text-muted-foreground"
+                          className={`flex gap-3 text-sm leading-6 ${
+                            id === "incubation" && benefitIndex === 0
+                              ? "rounded-md border border-electric/30 bg-electric/5 px-3 py-2 font-medium text-foreground"
+                              : "text-muted-foreground"
+                          }`}
                         >
                           <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-electric" />
                           <span>{benefit}</span>
